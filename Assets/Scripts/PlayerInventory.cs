@@ -2,15 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory
+public class PlayerInventory : MonoBehaviour
 {
-    int gold;
-    public int Gold { 
-        get => gold;
-
-        set { 
-            gold += value;
-        } 
+    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private InventoryObject inventoryObject;
+    private void OnEnable()
+    {
+        inventoryObject.OnItemEquiped += RecalculateStats;
     }
-    //List<IItem> items;
+    public void TryPickupItem(BaseItemObject item, int amount)
+    {
+        Debug.Log($"TryPickupItem {item.name}, {amount}");
+        inventoryObject.AddItem(item, amount);
+    }
+    public void RecalculateStats(BaseItemObject itemObject)
+    {
+        if(itemObject is ISendModifires statData)
+        {
+            statData.Apply(playerStats);
+        }
+    }
+    private void OnDisable()
+    {
+        inventoryObject.OnItemEquiped -= RecalculateStats;
+    }
+    private void OnApplicationQuit()
+    {
+        inventoryObject.InventorySlots.Clear();
+    }
 }

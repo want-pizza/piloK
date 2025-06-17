@@ -92,7 +92,6 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-        //ApplyMovement();
     }
     private void OnSetIsGrounded(bool triggered)
     {
@@ -129,6 +128,10 @@ public class PlayerMovement : MonoBehaviour
     private void DisableDashCooldown()
     {
         isDashCooldown = false;
+        if (isGrounded)
+        {
+            wasOnGroundAfterDash = true;
+        }
     }
     private void DisableDashing()
     {

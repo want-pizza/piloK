@@ -2,8 +2,9 @@
 
 public interface IPickupable
 {
-    Sprite Icon { get; }
-    AudioClip PickupSound { get; }
-    string DisplayName { get; }
-    void OnPickup(PlayerStats playerStats);
+    Sprite GetIcon { get; }
+    AudioClip GetPickupSound { get; }
+    string GetDisplayName { get; }
+    string GetDescription { get; }
+    void OnPickup(PlayerInventory inventory);
 }

@@ -1,11 +1,22 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PickupItem : MonoBehaviour
+public class PickupItem : MonoBehaviour, IPickupable
 {
-    [SerializeField] private BaseItemData itemData;
+
+    [SerializeField] private BaseItemObject itemData;
     [SerializeField] private Vector2 triggerSize = new Vector2(1f, 1f);
     [SerializeField] private bool useBoxCollider = true;
+    [SerializeField] private int amount = 1;
+
+    public Sprite GetIcon => itemData.Icon;
+
+    public AudioClip GetPickupSound => itemData.PickupSound;
+
+    public string GetDisplayName => itemData.DisplayName;
+
+    public string GetDescription => itemData.Description;
 
     private void Reset()
     {
@@ -52,14 +63,19 @@ public class PickupItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerStats playerStats))
+        if (other.TryGetComponent(out PlayerInventory inventory))
         {
-            itemData.OnPickup(playerStats);
+            OnPickup(inventory);
 
             if (itemData.PickupSound != null)
                 AudioSource.PlayClipAtPoint(itemData.PickupSound, transform.position);
 
             Destroy(gameObject);
         }
+    }
+
+    public void OnPickup(PlayerInventory inventory)
+    {
+        inventory.TryPickupItem(itemData, amount);
     }
 }

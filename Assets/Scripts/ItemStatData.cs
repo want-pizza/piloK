@@ -2,17 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Items/Stat Item")]
-public class ItemStatData : BaseItemData
+public class ItemStatData : BaseItemObject, ISendModifires
 {
     public List<StatBonus> bonuses;
 
-    public override void OnPickup(PlayerStats playerStats)
-    {
-        Debug.Log("Trying apply stats");
-        Apply(playerStats);
-    }
-
-    public override void Apply(PlayerStats stats)
+    public void Apply(PlayerStats stats)
     {
         foreach (var bonus in bonuses)
         {

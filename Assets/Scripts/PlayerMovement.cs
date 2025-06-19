@@ -63,13 +63,9 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAction _inputActions;
     private float _inputX = 0f;
 
-    private void Awake()
-    {
-        _inputActions = new PlayerAction();
-    }
     private void OnEnable()
     {
-        _inputActions.Player.Enable();
+        _inputActions = InputManager.Instance.PlayerActions;
         _inputActions.Player.Move.performed += ctx => _inputX = ctx.ReadValue<Vector2>().x;
         _inputActions.Player.Move.canceled += ctx => _inputX = 0;
         _inputActions.Player.Jump.started += ctx => HandleJump();

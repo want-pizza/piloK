@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class BaseItemObject : ScriptableObject
 {
     [Header("Meta Info")]
+    [SerializeField] private int id;
     [SerializeField] private string displayName;
     [SerializeField] private Sprite icon;
     [SerializeField] private AudioClip pickupSound;
@@ -11,6 +12,7 @@ public abstract class BaseItemObject : ScriptableObject
     [SerializeField] private string description;
 
 
+    public int Id => id;
     public Sprite Icon => icon;
     public AudioClip PickupSound => pickupSound;
     public string DisplayName => displayName;

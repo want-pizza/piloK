@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
@@ -12,43 +13,74 @@ public class DisplayInventory : MonoBehaviour
     public int X_SPACE_BETWEEN_ITEM;
     public int Y_SPACE_BETWEEN_ITEMS;
     public int NUMBER_OF_COLUMN;
-    [SerializeField] private GameObject cell;
-    Dictionary<InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
+    [SerializeField] private GameObject cellPrefab;
+    Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
     private void OnEnable()
     {
         inventory.OnItemEquiped += UpdateUI;
+        RefreshUI();
     }
-    void Start()
+    private void Awake()
     {
-        CreateDisplay();
-    }
-
-    // Update is called once per frame
-    private void UpdateUI(BaseItemObject itemObject)
-    {
-        var obj = Instantiate(cell, Vector3.zero, Quaternion.identity, transform);
-        Image image = obj.GetComponent<Image>();
-        image.sprite = itemObject.Icon;
-        obj.GetComponent<RectTransform>().localPosition = GetPosition(inventory.InventorySlots.Count-1);
-        itemsDisplayed.Add(inventory.InventorySlots[inventory.InventorySlots.Count-1], obj);
+        CreateSlots();
     }
 
-    public void CreateDisplay()
+    public void UpdateUI(BaseItemObject itemObject)
     {
-        for (int i = 0; i < inventory.InventorySlots.Count; i++) 
+        Debug.Log("UpdateUI");
+        for (int i = 0; i < inventory.InventorySlots.Length; i++)
         {
-            BaseItemObject itemObject = inventory.InventorySlots[i].Item;
-            
-            var obj = Instantiate(cell,Vector3.zero, Quaternion.identity, transform);
-            Image image = obj.GetComponent<Image>();
-            image.sprite = itemObject.Icon;
-            obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-            itemsDisplayed.Add(inventory.InventorySlots[i], obj);
+            var slot = inventory.InventorySlots[i];
+            if (slot.Item == itemObject)
+            {
+                foreach (var kvp in itemsDisplayed)
+                {
+                    Debug.Log($"kvp.Value - {kvp.Value}");
+                    if (kvp.Value == slot)
+                    {
+                        Image img = kvp.Key.GetComponent<Image>();
+                        img.sprite = itemObject.Icon;
+                        img.enabled = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    public void CreateSlots()
+    {
+        for (int i = 0; i < inventory.InventorySlots.Length; i++)
+        {
+            var cell = Instantiate(cellPrefab, Vector3.zero, Quaternion.identity, transform);
+            cell.GetComponent<RectTransform>().localPosition = GetPosition(i);
+
+            itemsDisplayed.Add(cell, inventory.InventorySlots[i]);
         }
     }
     private Vector3 GetPosition(int i)
     {
-        return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_OF_COLUMN)), Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i % NUMBER_OF_COLUMN)), 0f);
+        return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_OF_COLUMN)), Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i / NUMBER_OF_COLUMN)), 0f);
+    }
+
+    public void RefreshUI()
+    {
+        for (int i = 0; i < inventory.InventorySlots.Length; i++)
+        {
+            var slot = inventory.InventorySlots[i];
+            if (slot.Item != null)
+            {
+                foreach (var kvp in itemsDisplayed)
+                {
+                    if (kvp.Value == slot)
+                    {
+                        Image img = kvp.Key.GetComponent<Image>();
+                        img.sprite = slot.Item.Icon;
+                        img.enabled = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
     private void OnDisable()
     {

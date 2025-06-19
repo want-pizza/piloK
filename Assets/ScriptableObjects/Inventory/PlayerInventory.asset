@@ -13,5 +13,39 @@ MonoBehaviour:
   m_Name: PlayerInventory
   m_EditorClassIdentifier: 
   InventorySlots:
-  - Item: {fileID: 0}
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
+    Amount: 0
+  - Id: -1
+    Item: {fileID: 0}
     Amount: 0

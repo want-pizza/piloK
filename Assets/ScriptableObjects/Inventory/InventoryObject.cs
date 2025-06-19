@@ -3,32 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "InventorySystem/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    public List<InventorySlot> InventorySlots = new List<InventorySlot>();
+    public InventorySlot[] InventorySlots = new InventorySlot[15];
     public Action<BaseItemObject> OnItemEquiped;
-    public void AddItem(BaseItemObject itemObject, int amount)
+
+    public void SetEmptySlot(BaseItemObject itemObject, int amount)
     {
-        Debug.Log($"start");
-        bool hasItem = false;
-        if (itemObject.IsStackable)
+        for (int i = 0; i < InventorySlots.Length; i++)
         {
-            foreach (InventorySlot slot in InventorySlots)
+            if (InventorySlots[i].Item == null)
             {
-                if (slot.Item == itemObject)
-                {
-                    Debug.Log($"Item was in inventory");
-                    slot.AddAmount(amount);
-                    hasItem = true;
-                    break;
-                }
+                InventorySlots[i].UpdateSlot(itemObject.Id, itemObject, amount);
+                OnItemEquiped?.Invoke(itemObject);
+                break;
             }
-        }
-        else if (!hasItem)
-        {
-            InventorySlots.Add(new InventorySlot(itemObject, amount));
-            OnItemEquiped.Invoke(itemObject);
         }
     }
 }
@@ -36,11 +27,27 @@ public class InventoryObject : ScriptableObject
 [System.Serializable]
 public class InventorySlot
 {
+    public int Id = -1;
     public BaseItemObject Item;
     public int Amount;
 
-    public InventorySlot(BaseItemObject item, int amount)
+    public InventorySlot()
     {
+        Id = -1;
+        Item = null;
+        Amount = 0;
+    }
+
+    public InventorySlot(int id, BaseItemObject item, int amount)
+    {
+        Id = id;
+        Item = item;
+        Amount = amount;
+    }
+
+    public void UpdateSlot(int id, BaseItemObject item, int amount)
+    {
+        Id = id;
         Item = item;
         Amount = amount;
     }

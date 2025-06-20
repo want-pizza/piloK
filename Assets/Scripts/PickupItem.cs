@@ -63,18 +63,26 @@ public class PickupItem : MonoBehaviour, IPickupable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerInventory inventory))
+        if (other.TryGetComponent(out PlayerInventoryPresenter inventory))
         {
-            OnPickup(inventory);
+            bool added = inventory.TryPickupItem(itemData, amount);
 
-            if (itemData.PickupSound != null)
-                AudioSource.PlayClipAtPoint(itemData.PickupSound, transform.position);
+            if (added)
+            {
+                if (itemData.PickupSound != null)
+                    AudioSource.PlayClipAtPoint(itemData.PickupSound, transform.position);
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("Inventory full! Can't pick up the item.");
+            }
         }
     }
 
-    public void OnPickup(PlayerInventory inventory)
+
+    public void OnPickup(PlayerInventoryPresenter inventory)
     {
         inventory.TryPickupItem(itemData, amount);
     }

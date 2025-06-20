@@ -12,9 +12,10 @@ public class TriggerChecker : MonoBehaviour
     private bool _isTriggered = false;
 
     public bool IsTriggered
-    { 
-        get => _isTriggered; 
-        private set {
+    {
+        get => _isTriggered;
+        private set
+        {
             if (_isTriggered != value)
             {
                 _isTriggered = value;

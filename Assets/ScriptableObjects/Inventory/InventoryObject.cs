@@ -10,17 +10,18 @@ public class InventoryObject : ScriptableObject
     public InventorySlot[] InventorySlots = new InventorySlot[15];
     public Action<BaseItemObject> OnItemEquiped;
 
-    public void SetEmptySlot(BaseItemObject itemObject, int amount)
+    public bool SetEmptySlot(BaseItemObject itemObject, int amount)
     {
         for (int i = 0; i < InventorySlots.Length; i++)
         {
             if (InventorySlots[i].Item == null)
             {
-                InventorySlots[i].UpdateSlot(itemObject.Id, itemObject, amount);
+                InventorySlots[i].UpdateSlot(i, itemObject, amount);
                 OnItemEquiped?.Invoke(itemObject);
-                break;
+                return true;
             }
         }
+        return false;
     }
 }
 

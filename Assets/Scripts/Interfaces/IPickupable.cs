@@ -6,5 +6,5 @@ public interface IPickupable
     AudioClip GetPickupSound { get; }
     string GetDisplayName { get; }
     string GetDescription { get; }
-    void OnPickup(PlayerInventory inventory);
+    void OnPickup(PlayerInventoryPresenter inventory);
 }

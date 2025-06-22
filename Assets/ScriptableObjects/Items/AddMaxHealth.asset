@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
   m_Name: AddMaxHealth
   m_EditorClassIdentifier: 
+  id: 0
   displayName: Apple
   icon: {fileID: 21300000, guid: d48b9b36e7a77a34c8b03402d979ac9f, type: 3}
   pickupSound: {fileID: 0}

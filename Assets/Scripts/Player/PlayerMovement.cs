@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Windows;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IMove
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -62,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerAction _inputActions;
     private float _inputX = 0f;
+
+    public float XVelocity { get => _velocityX; }
+    public float YVelocity { get => _velocityY; }
 
     private void OnEnable()
     {

@@ -29,7 +29,7 @@ public class PlayerCombat : MonoBehaviour
     private Vector2 GetAttackDirection()
     {
         Vector2 moveInput = inputActions.Player.Move.ReadValue<Vector2>();
-        Vector2 baseDir = characterFacing.FacingDirection;
+        Vector2 baseDir = characterFacing.IsFacingRight == true ? Vector2.right: Vector2.left;
 
         if (moveInput.y > 0.5f)
             return Vector2.up;

@@ -43,7 +43,7 @@ public class CameraManager : MonoBehaviour
 
     public void LerpYDamping(bool isPlayerFalling)
     {
-        Debug.Log($"[CameraManager] Starting Y damping lerp. Falling: {isPlayerFalling}");
+        //Debug.Log($"[CameraManager] Starting Y damping lerp. Falling: {isPlayerFalling}");
         _lerpYPanCoroutine = StartCoroutine(LerpYAction(isPlayerFalling));
     }
 
@@ -58,12 +58,12 @@ public class CameraManager : MonoBehaviour
         {
             endDampAmount = _fallPanAmount;
             LerpedFromPlayerFalling = true;
-            Debug.Log("[CameraManager] Falling detected. Changing YDamping to fall value.");
+            //Debug.Log("[CameraManager] Falling detected. Changing YDamping to fall value.");
         }
         else
         {
             endDampAmount = _normYPanAmount;
-            Debug.Log("[CameraManager] Returning to normal YDamping.");
+            //Debug.Log("[CameraManager] Returning to normal YDamping.");
         }
 
         float elapsedTime = 0f;
@@ -75,7 +75,7 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"[CameraManager] Finished lerping YDamping. Final value: {_framingTransposer.m_YDamping}");
+        //Debug.Log($"[CameraManager] Finished lerping YDamping. Final value: {_framingTransposer.m_YDamping}");
         IsLerpingYDamping = false;
     }
 

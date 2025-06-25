@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldownTime = 0.5f;
     [SerializeField] private float dashTime = 0.2f;
+    [SerializeField] private float XScaling = 2f;
+    [SerializeField] private float YScaling = 10f;
 
     [Header("Collision")]
     [SerializeField] private TriggerChecker groundChecker;
@@ -134,13 +136,13 @@ public class PlayerMovement : MonoBehaviour, IMove
     }
     private void DisableDashing()
     {
-        Debug.Log($"DisableDashing; wasDashInterrupted = {wasDashInterrupted}");
+        //Debug.Log($"DisableDashing; wasDashInterrupted = {wasDashInterrupted}");
         if (!wasDashInterrupted)
         {
             isDashing = false;
             isDashCooldown = true;
-            _velocityX /= 2;
-            _velocityY /= 10;
+            _velocityX /= XScaling;
+            _velocityY /= YScaling;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
         }
     }
@@ -262,8 +264,8 @@ public class PlayerMovement : MonoBehaviour, IMove
             }
             wasDashInterrupted = true;
             isDashing = false;
-            _velocityX /= 2;
-            _velocityY /= 2;
+            _velocityX /= 2; //need rewrite
+            _velocityY /= 5;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
             return;
         }
@@ -272,10 +274,10 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void HandleDash()
     {
-        Debug.Log("Try dashing");
+        //Debug.Log("Try dashing");
         if (CanDash())
         {
-            Debug.Log("Start dashing");
+           // Debug.Log("Start dashing");
             isDashing = true;
             wasDashInterrupted = false;
             wasOnGroundAfterDash = false;

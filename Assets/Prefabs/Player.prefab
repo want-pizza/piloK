@@ -214,6 +214,8 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldownTime: 0.5
   dashTime: 0.2
+  XScaling: 5
+  YScaling: 10
   groundChecker: {fileID: 2618801775323015131}
   leftWallChecker: {fileID: 3257411743301264670}
   rightWallChecker: {fileID: 1468771601207243416}
@@ -235,8 +237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173cf6588bba03a46b034664cbcbf3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  displayInventory: {fileID: 0}
   playerStats: {fileID: 2700398928418572655}
-  inventoryObject: {fileID: 11400000, guid: b05faf97a0617b043a00920f5c69f0a7, type: 2}
 --- !u!114 &2700398928418572655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +320,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4

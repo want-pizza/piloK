@@ -51,7 +51,7 @@ public class CharacterFacing : MonoBehaviour
             !CameraManager.Instance.IsLerpingYDamping &&
             !CameraManager.Instance.LerpedFromPlayerFalling)
         {
-            Debug.Log("[CharacterFacing] Detected falling. Triggering camera lerp to fall state.");
+            //Debug.Log("[CharacterFacing] Detected falling. Triggering camera lerp to fall state.");
             CameraManager.Instance.LerpYDamping(true);
         }
 
@@ -59,7 +59,7 @@ public class CharacterFacing : MonoBehaviour
             !CameraManager.Instance.IsLerpingYDamping &&
             CameraManager.Instance.LerpedFromPlayerFalling)
         {
-            Debug.Log("[CharacterFacing] Falling ended. Triggering camera return to normal.");
+            //Debug.Log("[CharacterFacing] Falling ended. Triggering camera return to normal.");
             CameraManager.Instance.LerpedFromPlayerFalling = false;
             CameraManager.Instance.LerpYDamping(false);
         }

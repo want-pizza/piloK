@@ -25,7 +25,7 @@ public class TriggerChecker : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"OnTriggerEnter2D - {(1 << collision.gameObject.layer)} = {layerMask.value}");
+        //Debug.Log($"OnTriggerEnter2D - {(1 << collision.gameObject.layer)} = {layerMask.value}");
         if ((layerMask.value & (1 << collision.gameObject.layer)) != 0)
         {
             triggerCount++;

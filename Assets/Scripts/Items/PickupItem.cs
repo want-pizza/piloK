@@ -7,7 +7,6 @@ public class PickupItem : MonoBehaviour, IPickupable
 
     [SerializeField] private BaseItemObject itemData;
     [SerializeField] private Vector2 triggerSize = new Vector2(1f, 1f);
-    [SerializeField] private bool useBoxCollider = true;
     [SerializeField] private int amount = 1;
 
     public Sprite GetIcon => itemData.Icon;
@@ -26,6 +25,7 @@ public class PickupItem : MonoBehaviour, IPickupable
     private void Awake()
     {
         SetupCollider();
+        gameObject.GetComponent<SpriteRenderer>().sprite = GetIcon;
     }
 
     private void SetupCollider()
@@ -34,18 +34,9 @@ public class PickupItem : MonoBehaviour, IPickupable
 
         if (collider == null)
         {
-            if (useBoxCollider)
-            {
-                var box = gameObject.AddComponent<BoxCollider2D>();
-                box.size = triggerSize;
-                box.isTrigger = true;
-            }
-            else
-            {
-                var circle = gameObject.AddComponent<CircleCollider2D>();
-                circle.radius = Mathf.Max(triggerSize.x, triggerSize.y) / 2f;
-                circle.isTrigger = true;
-            }
+            var box = gameObject.AddComponent<BoxCollider2D>();
+            box.size = triggerSize;
+            box.isTrigger = true;
         }
         else
         {

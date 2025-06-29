@@ -8,7 +8,6 @@ public class SpikeColliderBySprite : MonoBehaviour
 
     void Awake()
     {
-        // Дозволяє використовувати кілька BoxCollider2D на одному об'єкті
         colliders = GetComponents<BoxCollider2D>();
         if (colliders.Length == 0)
         {
@@ -21,7 +20,6 @@ public class SpikeColliderBySprite : MonoBehaviour
         Tilemap tilemap = GetComponentInParent<Tilemap>();
         if (tilemap == null)
         {
-            Debug.LogWarning("Tilemap не знайдено в батьківських об'єктах");
             return;
         }
 
@@ -29,13 +27,11 @@ public class SpikeColliderBySprite : MonoBehaviour
         Sprite sprite = tilemap.GetSprite(cellPos);
         if (sprite == null)
         {
-            Debug.LogWarning("Спрайт не знайдено у Tilemap в позиції " + cellPos);
             return;
         }
 
         string spriteName = sprite.name;
 
-        // Очистити всі наявні колайдери
         foreach (var c in colliders)
         {
             c.enabled = false;
@@ -81,7 +77,7 @@ public class SpikeColliderBySprite : MonoBehaviour
 
             default:
                 SetCollider(0, Vector2.zero, Vector2.one);
-                Debug.LogWarning($"Невідомий спрайт \"{spriteName}\" — встановлено колайдер за замовчуванням.");
+                Debug.LogWarning($"unnoun sprite \"{spriteName}\"");
                 break;
         }
     }

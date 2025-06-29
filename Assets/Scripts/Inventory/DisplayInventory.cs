@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,12 @@ public class DisplayInventory : MonoBehaviour
     [SerializeField] private int Y_START;
     [SerializeField] private int X_SPACE_BETWEEN_ITEM;
     [SerializeField] private int Y_SPACE_BETWEEN_ITEMS;
-    [SerializeField] private int NUMBER_OF_COLUMN;
+    [SerializeField] private int NUMBER_SLOTS_IN_COLUMN;
 
+    [SerializeField] private GameObject interactionMenu;
     private Dictionary<GameObject, InventorySlot> itemsDisplayed = new();
+
+    public int GetNumberSlotsInColumn { get => NUMBER_SLOTS_IN_COLUMN; }
 
     public void CreateSlots(InventorySlot[] slots)
     {
@@ -40,7 +44,7 @@ public class DisplayInventory : MonoBehaviour
     public void RefreshUI(InventorySlot[] slots)
     {
         Debug.Log("RefreshUI");
-
+        SelectFirstSlot();
         foreach (var kvp in itemsDisplayed)
         {
             Image img = kvp.Key.GetComponent<Image>();
@@ -66,14 +70,49 @@ public class DisplayInventory : MonoBehaviour
             }
         }
     }
+    public void SelectFirstSlot()
+    {
+        if (itemsDisplayed.Count == 0) return;
+        Debug.Log("try select");
+        HighlightCell(0);
+    }
 
+    public void HighlightCell(int index)
+    {
+        foreach (var kvp in itemsDisplayed) {
+            Debug.Log($"id = {kvp.Value.Id}");
+            if (kvp.Value.Id == index)
+            {
+                var outline = kvp.Key.GetComponent<Outline>();
+                if (outline != null)
+                {
+                    Debug.Log("outline.enabled");
+                    outline.enabled = true;
+                }
+            }
+        }
+       
+    }
 
-
-
+    public void ShowInteractionMenu(BaseItemObject item)
+    {
+        if (interactionMenu != null)
+        {
+            interactionMenu.SetActive(true);
+        }
+    }
+    public void ShowInteractionMenu(List<InteractionHint> hints)
+    { 
+    
+    }
+    public void HideInteractionMenu()
+    {
+        interactionMenu?.SetActive(false);
+    }
     private Vector3 GetPosition(int i)
     {
-        return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_OF_COLUMN)),
-                           Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i / NUMBER_OF_COLUMN)),
+        return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_SLOTS_IN_COLUMN)),
+                           Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i / NUMBER_SLOTS_IN_COLUMN)),
                            0f);
     }
 }

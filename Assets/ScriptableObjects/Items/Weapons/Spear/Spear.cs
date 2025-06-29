@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpearHitbox : MonoBehaviour
+public class Spear : MonoBehaviour, IWeapon
 {
     private Transform owner;
     private Vector2 attackDir;
@@ -32,5 +32,10 @@ public class SpearHitbox : MonoBehaviour
     private bool IsGrounded()
     {
         return groundChecker.IsTriggered;
+    }
+
+    public void Attack(Vector2 direction, Transform owner)
+    {
+        throw new System.NotImplementedException();
     }
 }

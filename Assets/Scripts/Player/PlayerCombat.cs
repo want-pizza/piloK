@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Transform attackOrigin;
-    [SerializeField] private SpearItem spear;
+    [SerializeField] private WeaponItemObject spear;
     [SerializeField] private TriggerChecker groundChecker;
     [SerializeField] private CharacterFacing characterFacing;
 
@@ -23,7 +23,7 @@ public class PlayerCombat : MonoBehaviour
     private void TryAttack()
     {
         Vector2 attackDir = GetAttackDirection();
-        spear.Attack(attackDir, attackOrigin);
+        //spear.Attack(attackDir, attackOrigin);
     }
 
     private Vector2 GetAttackDirection()

@@ -7,8 +7,20 @@ using static UnityEditor.Progress;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "InventorySystem/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    public InventorySlot[] InventorySlots = new InventorySlot[15];
+    public int CountSlots = 15;
+    public InventorySlot[] InventorySlots;
     public Action<BaseItemObject> OnItemEquiped;
+    private void OnEnable()
+    {
+        if (InventorySlots == null || InventorySlots.Length != CountSlots || InventorySlots[0] == null)
+        {
+            InventorySlots = new InventorySlot[CountSlots];
+            for (int i = 0; i < CountSlots; i++)
+            {
+                InventorySlots[i] = new InventorySlot(i, null, 0);
+            }
+        }
+    }
 
     public bool SetEmptySlot(BaseItemObject itemObject, int amount)
     {
@@ -20,6 +32,17 @@ public class InventoryObject : ScriptableObject
                 OnItemEquiped?.Invoke(itemObject);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public bool DropItem(int index)
+    {
+        if (InventorySlots[index]?.Item )
+        {
+            InventorySlots[index].Item = null;
+            InventorySlots[index].Amount = 0;
+            return true;
         }
         return false;
     }

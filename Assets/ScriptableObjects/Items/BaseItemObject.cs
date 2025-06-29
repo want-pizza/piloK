@@ -11,6 +11,13 @@ public abstract class BaseItemObject : ScriptableObject
     [TextArea(15,20)]
     [SerializeField] private string description;
 
+    public virtual void Use(PlayerStats stats) { }
+    public virtual bool CanEquip => false;
+    public virtual bool CanUnequip => true;
+    public virtual bool IsEquipped => false;
+    public virtual void Equip(PlayerStats stats) { }
+    public virtual void Unequip(PlayerStats stats) { }
+
 
     public int Id => id;
     public Sprite Icon => icon;

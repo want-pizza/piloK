@@ -21,6 +21,30 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
             statData.Apply(playerStats);
         }
     }
+    protected override void ToggleInventory()
+    {
+        isOpen = !isOpen;
+        displayInventory.gameObject.SetActive(isOpen);
+
+        if (isOpen)
+        {
+            displayInventory.RefreshUI(inventory.InventorySlots);
+            InputManager.Instance.SwitchState(PlayerState.Inventory);
+            Debug.Log("Inventory opened, enabling input");
+            EnableInventoryInput();
+            displayInventory.HighlightCell(selectedIndex);
+            displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
+        }
+        else
+        {
+            InputManager.Instance.SwitchState(PlayerState.Normal);
+            Debug.Log("Inventory closed, disabling input");
+            DisableInventoryInput();
+            displayInventory.UnhighlightCell(selectedIndex);
+            displayInventory.CleanInteractionMenu();
+            displayInventory.HideInteractionMenu();
+        }
+    }
     protected override void OnDisable()
     {
         base.OnDisable();

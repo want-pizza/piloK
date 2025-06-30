@@ -42,50 +42,81 @@ public abstract class InventoryPresenterBase : MonoBehaviour
             DisableInventoryInput();
         }
     }
-    private void EnableInventoryInput()
+    protected void EnableInventoryInput()
     {
-        inputActions.Player.Move.performed += OnMove;
-        inputActions.Player.Attack.started += OnInteract;
+        inputActions.Player.Move.performed += OnMoveInCells;
+        inputActions.Player.Attack.started += OnEquip;
     }
 
-    private void DisableInventoryInput()
+    protected void DisableInventoryInput()
     {
-        inputActions.Player.Move.performed -= OnMove;
-        inputActions.Player.Attack.started -= OnInteract;
+        inputActions.Player.Move.performed -= OnMoveInCells;
+        inputActions.Player.Attack.started -= OnEquip;
     }
-    private void OnMove(InputAction.CallbackContext ctx)
+    private void OnMoveInCells(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
+        //Debug.Log($"Inventory received move input: {input}");
         HandleInventoryNavigation(input);
     }
 
-    private void OnInteract(InputAction.CallbackContext ctx)
+    private void OnEquip(InputAction.CallbackContext ctx)
     {
         //HandleInventoryInteraction();
     }
 
-    private void HandleInventoryNavigation(Vector2 input)
+    protected void HandleInventoryNavigation(Vector2 input)
     {
         int columns = displayInventory.GetNumberSlotsInColumn;
         int totalSlots = inventory.CountSlots;
+        int rows = Mathf.CeilToInt((float)totalSlots / columns);
+
         int previousIndex = selectedIndex;
 
         if (input.x > 0.1f)
-            selectedIndex += 1;
+        {
+            int col = (selectedIndex % columns + 1) % columns;
+            int row = selectedIndex / columns;
+            selectedIndex = row * columns + col;
+        }
         else if (input.x < -0.1f)
-            selectedIndex -= 1;
+        {
+            int col = (selectedIndex % columns - 1 + columns) % columns;
+            int row = selectedIndex / columns;
+            selectedIndex = row * columns + col;
+        }
         else if (input.y > 0.1f)
-            selectedIndex -= columns;
+        {
+            int col = selectedIndex % columns;
+            int row = (selectedIndex / columns - 1 + rows) % rows;
+            selectedIndex = row * columns + col;
+        }
         else if (input.y < -0.1f)
-            selectedIndex += columns;
+        {
+            int col = selectedIndex % columns;
+            int row = (selectedIndex / columns + 1) % rows;
+            selectedIndex = row * columns + col;
+        }
 
-        // Clamp
-        selectedIndex = Mathf.Clamp(selectedIndex, 0, totalSlots - 1);
+        if (selectedIndex >= totalSlots)
+        {
+            selectedIndex = previousIndex;
+            return;
+        }
 
-        if (previousIndex != selectedIndex)
-            displayInventory.HighlightCell(selectedIndex);
+        displayInventory.UnhighlightCell(previousIndex);
+        displayInventory.CleanInteractionMenu();
+
+        displayInventory.HighlightCell(selectedIndex);
+        if (inventory.InventorySlots[selectedIndex].Item != null)
+        {
+            displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
+        }
+        else
+        {
+            displayInventory.HideInteractionMenu();
+        }
     }
-
 
     protected virtual void ShowEquippedItem(BaseItemObject item)
     {
@@ -104,20 +135,15 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
         return success;
     }
-    protected virtual void ShowInteractionForSlot(int slotIndex)
+    protected virtual List<InteractionHint> GetInteractionHintsForSlot(int slotIndex)
     {
         var slot = inventory.InventorySlots[slotIndex];
-        if (slot.Item == null)
-        {
-            displayInventory.HideInteractionMenu();
-            return;
-        }
+        var hints = new List<InteractionHint>();
 
-        var hints = new List<InteractionHint>
-    {
-        new InteractionHint { Description = "Drop", Key = KeyCode.Q },
-        new InteractionHint { Description = "Move", Key = KeyCode.LeftShift }
-    };
+        if (slot.Item == null) return hints;
+
+        hints.Add(new InteractionHint { Description = "Drop", Key = KeyCode.Q });
+        hints.Add(new InteractionHint { Description = "Move", Key = KeyCode.LeftShift });
 
         if (slot.Item.CanEquip)
         {
@@ -128,7 +154,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
             });
         }
 
-        displayInventory.ShowInteractionMenu(hints);
+        return hints;
     }
 
     protected virtual void OnDisable()

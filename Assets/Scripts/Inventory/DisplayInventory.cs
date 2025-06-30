@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class DisplayInventory : MonoBehaviour
     [SerializeField] private int NUMBER_SLOTS_IN_COLUMN;
 
     [SerializeField] private GameObject interactionMenu;
+    [SerializeField] private GameObject hintTemplate;
+
     private Dictionary<GameObject, InventorySlot> itemsDisplayed = new();
 
     public int GetNumberSlotsInColumn { get => NUMBER_SLOTS_IN_COLUMN; }
@@ -44,7 +47,6 @@ public class DisplayInventory : MonoBehaviour
     public void RefreshUI(InventorySlot[] slots)
     {
         Debug.Log("RefreshUI");
-        SelectFirstSlot();
         foreach (var kvp in itemsDisplayed)
         {
             Image img = kvp.Key.GetComponent<Image>();
@@ -70,40 +72,61 @@ public class DisplayInventory : MonoBehaviour
             }
         }
     }
-    public void SelectFirstSlot()
-    {
-        if (itemsDisplayed.Count == 0) return;
-        Debug.Log("try select");
-        HighlightCell(0);
-    }
 
     public void HighlightCell(int index)
     {
         foreach (var kvp in itemsDisplayed) {
-            Debug.Log($"id = {kvp.Value.Id}");
+            //Debug.Log($"id = {kvp.Value.Id}");
             if (kvp.Value.Id == index)
             {
-                var outline = kvp.Key.GetComponent<Outline>();
+                var outline = kvp.Key.GetComponentInChildren<Outline>();
                 if (outline != null)
                 {
-                    Debug.Log("outline.enabled");
+                    Debug.Log($" outline.effectColor - {outline.effectColor}");
                     outline.enabled = true;
                 }
             }
         }
        
     }
-
-    public void ShowInteractionMenu(BaseItemObject item)
+    public void UnhighlightCell(int index)
     {
-        if (interactionMenu != null)
+        foreach (var kvp in itemsDisplayed)
         {
-            interactionMenu.SetActive(true);
+            //Debug.Log($"id = {kvp.Value.Id}");
+            if (kvp.Value.Id == index)
+            {
+                var outline = kvp.Key.GetComponentInChildren<Outline>();
+                if (outline != null)
+                {
+                    Debug.Log($" outline.effectColor - {outline.effectColor}");
+                    outline.enabled = false;
+                }
+            }
         }
     }
     public void ShowInteractionMenu(List<InteractionHint> hints)
-    { 
-    
+    {
+        if (interactionMenu == null) return;
+
+        interactionMenu.SetActive(true);
+
+        foreach (var hint in hints)
+        {
+            GameObject hintGO = Instantiate(hintTemplate, interactionMenu.transform);
+            hintGO.SetActive(true);
+
+            var text = hintGO.GetComponent<TMPro.TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.text = $"[{hint.Key}] {hint.Description}";
+            }
+        }
+    }
+    internal void CleanInteractionMenu()
+    {
+        foreach (Transform child in interactionMenu.transform)
+            Destroy(child.gameObject);
     }
     public void HideInteractionMenu()
     {

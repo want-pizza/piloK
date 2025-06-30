@@ -92,6 +92,8 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void Update()
     {
+        if (InputManager.Instance.CurrentState != PlayerState.Normal)
+            return;
         HandleMovement();
     }
     private void OnSetIsGrounded(bool triggered)

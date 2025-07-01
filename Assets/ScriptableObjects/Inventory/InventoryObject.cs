@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using static UnityEditor.Progress;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "InventorySystem/Inventory")]
@@ -9,7 +10,7 @@ public class InventoryObject : ScriptableObject
 {
     public int CountSlots = 15;
     public InventorySlot[] InventorySlots;
-    public Action<BaseItemObject> OnItemEquiped;
+    public Action<BaseItemObject> OnItemEquiped, OnItemAdded;
     private void OnEnable()
     {
         if (InventorySlots == null || InventorySlots.Length != CountSlots || InventorySlots[0] == null)
@@ -29,9 +30,20 @@ public class InventoryObject : ScriptableObject
             if (InventorySlots[i].Item == null)
             {
                 InventorySlots[i].UpdateSlot(i, itemObject, amount);
-                OnItemEquiped?.Invoke(itemObject);
+                OnItemAdded?.Invoke(itemObject);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public bool EquipItem(int index)
+    {
+        if(InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)
+        {
+            InventorySlots[index].IsEquipped = true;
+            OnItemEquiped?.Invoke(InventorySlots[index].Item);
+            return true;
         }
         return false;
     }
@@ -54,6 +66,7 @@ public class InventorySlot
     public int Id = -1;
     public BaseItemObject Item;
     public int Amount;
+    public bool IsEquipped = false;
 
     public InventorySlot()
     {

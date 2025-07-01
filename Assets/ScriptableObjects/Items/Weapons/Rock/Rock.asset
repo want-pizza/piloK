@@ -16,5 +16,12 @@ MonoBehaviour:
   displayName: Rock
   icon: {fileID: -1723509321, guid: 198c5cf9dad20144995fd44cf395c218, type: 3}
   pickupSound: {fileID: 0}
+  canEquip: 1
+  canUnequip: 1
   isStackable: 0
   description: Rock. He's heavy.
+  bonuses:
+  - statType: 1
+    amount: 5
+  weaponBehaviorPrefab: {fileID: 0}
+  attackAnimations: []

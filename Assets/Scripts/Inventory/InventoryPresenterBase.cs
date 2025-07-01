@@ -24,7 +24,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        inventory.OnItemEquiped += ShowEquippedItem;
+        inventory.OnItemAdded += ShowInventoryItem;
         inputActions.Player.Inventory.started += ctx => ToggleInventory();
     }
     protected virtual void ToggleInventory()
@@ -45,13 +45,13 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected void EnableInventoryInput()
     {
         inputActions.Player.Move.performed += OnMoveInCells;
-        inputActions.Player.Attack.started += OnEquip;
+        inputActions.Player.Attack.started += OnTryEquip;
     }
 
     protected void DisableInventoryInput()
     {
         inputActions.Player.Move.performed -= OnMoveInCells;
-        inputActions.Player.Attack.started -= OnEquip;
+        inputActions.Player.Attack.started -= OnTryEquip;
     }
     private void OnMoveInCells(InputAction.CallbackContext ctx)
     {
@@ -60,9 +60,13 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         HandleInventoryNavigation(input);
     }
 
-    private void OnEquip(InputAction.CallbackContext ctx)
+    private void OnTryEquip(InputAction.CallbackContext ctx)
     {
-        //HandleInventoryInteraction();
+        bool itemEquiped = inventory.EquipItem(selectedIndex);
+        if (!itemEquiped)
+        {
+            Debug.Log("item wasnt equiped");
+        }
     }
 
     protected void HandleInventoryNavigation(Vector2 input)
@@ -118,7 +122,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         }
     }
 
-    protected virtual void ShowEquippedItem(BaseItemObject item)
+    protected virtual void ShowInventoryItem(BaseItemObject item)
     {
         if (isOpen)
         {
@@ -142,15 +146,15 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
         if (slot.Item == null) return hints;
 
-        hints.Add(new InteractionHint { Description = "Drop", Key = KeyCode.Q });
-        hints.Add(new InteractionHint { Description = "Move", Key = KeyCode.LeftShift });
+        hints.Add(new InteractionHint { Description = "Drop", Key = inputActions.Player.Dash.GetBindingDisplayString() });
+        hints.Add(new InteractionHint { Description = "Move", Key = inputActions.Player.Jump.GetBindingDisplayString() });
 
-        if (slot.Item.CanEquip)
+        if (slot.Item.CanEquip)  //need add intervace for equipable items
         {
             hints.Add(new InteractionHint
             {
-                Description = slot.Item.IsEquipped ? "Unequip" : "Equip",
-                Key = KeyCode.E
+                Description = slot.IsEquipped ? "Unequip" : "Equip",
+                Key = inputActions.Player.Attack.GetBindingDisplayString()
             });
         }
 
@@ -159,7 +163,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        inventory.OnItemEquiped -= ShowEquippedItem;
+        inventory.OnItemAdded -= ShowInventoryItem;
         inputActions.Player.Inventory.started -= ctx => ToggleInventory();
     }
 }

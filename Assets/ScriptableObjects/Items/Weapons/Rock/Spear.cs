@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Spear : MonoBehaviour, IWeapon
+public class Spear : MonoBehaviour
 {
     private Transform owner;
     private Vector2 attackDir;
@@ -35,6 +35,21 @@ public class Spear : MonoBehaviour, IWeapon
     }
 
     public void Attack(Vector2 direction, Transform owner)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void PerformAttack(Animator animator)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Equip(GameObject player)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Unequip(GameObject player)
     {
         throw new System.NotImplementedException();
     }

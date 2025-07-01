@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInventoryPresenter : InventoryPresenterBase
 {
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private System.Action<WeaponItemObject> OnWeaponEquiped;
 
     protected override void OnEnable()
     {

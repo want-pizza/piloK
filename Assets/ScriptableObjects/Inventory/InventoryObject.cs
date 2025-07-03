@@ -10,9 +10,11 @@ public class InventoryObject : ScriptableObject
 {
     public int CountSlots = 15;
     public InventorySlot[] InventorySlots;
-    public Action<BaseItemObject> OnItemEquiped, OnItemAdded;
+    public Action<BaseItemObject> OnItemEquiped, OnItemAdded, OnItemUnequiped;
+    private int EquippedWeaponIndex = -1;
     private void OnEnable()
     {
+        EquippedWeaponIndex = -1;
         if (InventorySlots == null || InventorySlots.Length != CountSlots || InventorySlots[0] == null)
         {
             InventorySlots = new InventorySlot[CountSlots];
@@ -41,12 +43,19 @@ public class InventoryObject : ScriptableObject
     {
         if(InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)
         {
+            Debug.Log($"EquippedWeaponIndex - {EquippedWeaponIndex}");
+            if(EquippedWeaponIndex != -1)
+            {
+                UnequipItem(EquippedWeaponIndex);
+            }
             InventorySlots[index].IsEquipped = true;
+            EquippedWeaponIndex = index;
             OnItemEquiped?.Invoke(InventorySlots[index].Item);
             return true;
         }
         return false;
     }
+
 
     public bool DropItem(int index)
     {
@@ -57,6 +66,23 @@ public class InventoryObject : ScriptableObject
             return true;
         }
         return false;
+    }
+
+    public bool UnequipItem(int selectedIndex)
+    {
+        if (InventorySlots[selectedIndex].Item.CanUnequip)
+        {
+            EquippedWeaponIndex = -1;
+            InventorySlots[selectedIndex].IsEquipped = false;
+            OnItemUnequiped?.Invoke(InventorySlots[selectedIndex].Item);
+            return true;
+        }
+        else return false;
+    }
+
+    public bool SlotIsEquiped(int selectedIndex)
+    {
+        return InventorySlots[selectedIndex].IsEquipped;
     }
 }
 

@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 087deb95c56f089498bd2b44ea933b4e, type: 3}
-  m_Name: Rock
+  m_Name: SmallRock
   m_EditorClassIdentifier: 
-  id: 1
-  displayName: Rock
-  icon: {fileID: -1723509321, guid: 198c5cf9dad20144995fd44cf395c218, type: 3}
+  id: 2
+  displayName: rocky
+  icon: {fileID: -1697259713, guid: 7370ff9939d3f764694abb40009e2284, type: 3}
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 1
   isStackable: 0
-  description: Rock. He's heavy.
-  bonuses:
-  - statType: 1
-    amount: 5
-  weaponBehaviorPrefab: {fileID: 0}
+  description: 
+  bonuses: []
+  weaponBehaviorPrefab: {fileID: 6272153258032662885, guid: cce8f5d7e4ab0694abb8b541a6b26b9a, type: 3}
   attackAnimations: []

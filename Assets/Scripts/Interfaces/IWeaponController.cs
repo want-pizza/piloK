@@ -5,5 +5,5 @@ using UnityEngine.InputSystem;
 
 public interface IWeaponController
 {
-    void EquipWeapon(WeaponItemObject weaponItem);
+    void EquipWeapon(BaseItemObject weaponItem);
 }

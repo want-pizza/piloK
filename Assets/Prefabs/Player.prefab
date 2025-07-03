@@ -133,7 +133,6 @@ Transform:
   - {fileID: 3385131912563439921}
   - {fileID: 2362254328206293081}
   - {fileID: 6697282509430899999}
-  - {fileID: 5366973757583604973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9089082588652217062
@@ -151,6 +150,8 @@ MonoBehaviour:
   groundChecker: {fileID: 2618801775323015131}
   characterFacing: {fileID: 5786988514693778511}
   weaponHolder: {fileID: 5366973757583604973}
+  equipEventChannel: {fileID: 11400000, guid: 1a605faa127b9eb4e9396dd08d4b2e26, type: 2}
+  unequipEventChannel: {fileID: 11400000, guid: 412620dc6e0199d4386fd025f6cf42f4, type: 2}
 --- !u!114 &7722336147454920206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +206,8 @@ MonoBehaviour:
   inventory: {fileID: 11400000, guid: b05faf97a0617b043a00920f5c69f0a7, type: 2}
   displayInventory: {fileID: 0}
   playerStats: {fileID: 2700398928418572655}
+  equipEventChannel: {fileID: 11400000, guid: 1a605faa127b9eb4e9396dd08d4b2e26, type: 2}
+  unequipEventChannel: {fileID: 11400000, guid: 412620dc6e0199d4386fd025f6cf42f4, type: 2}
 --- !u!114 &2700398928418572655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,7 +321,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7603547560326371548}
+  m_Father: {fileID: 6697282509430899999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5386733180917489210
 GameObject:
@@ -629,7 +632,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5366973757583604973}
   m_Father: {fileID: 7603547560326371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8706406994755025844

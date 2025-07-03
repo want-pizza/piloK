@@ -82,7 +82,7 @@ public class DisplayInventory : MonoBehaviour
                 var outline = kvp.Key.GetComponentInChildren<Outline>();
                 if (outline != null)
                 {
-                    Debug.Log($" outline.effectColor - {outline.effectColor}");
+                    //Debug.Log($" outline.effectColor - {outline.effectColor}");
                     outline.enabled = true;
                 }
             }

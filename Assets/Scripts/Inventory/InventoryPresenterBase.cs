@@ -45,13 +45,13 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected void EnableInventoryInput()
     {
         inputActions.Player.Move.performed += OnMoveInCells;
-        inputActions.Player.Attack.started += OnTryEquip;
+        inputActions.Player.Attack.started += TryEquip;
     }
 
     protected void DisableInventoryInput()
     {
         inputActions.Player.Move.performed -= OnMoveInCells;
-        inputActions.Player.Attack.started -= OnTryEquip;
+        inputActions.Player.Attack.started -= TryEquip;
     }
     private void OnMoveInCells(InputAction.CallbackContext ctx)
     {
@@ -60,8 +60,13 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         HandleInventoryNavigation(input);
     }
 
-    private void OnTryEquip(InputAction.CallbackContext ctx)
+    protected virtual void TryEquip(InputAction.CallbackContext ctx)
     {
+        if (inventory.SlotIsEquiped(selectedIndex))
+        {
+            bool itemunequiped = inventory.UnequipItem(selectedIndex);
+            return;
+        }
         bool itemEquiped = inventory.EquipItem(selectedIndex);
         if (!itemEquiped)
         {

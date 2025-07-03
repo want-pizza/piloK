@@ -10,6 +10,8 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
     private PlayerAction inputActions;
 
     [SerializeField] private Transform weaponHolder;
+    [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
+    [SerializeField] private InventoryEquipEventChannelSO unequipEventChannel;
     private WeaponBehavior currentWeaponBehavior;
 
     private void Awake()
@@ -19,33 +21,40 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
 
     private void OnEnable()
     {
+        equipEventChannel.OnItemEquipped += EquipWeapon;
+        unequipEventChannel.OnItemEquipped += UnequipWeapon;
         inputActions.Player.Attack.started += OnAttackPerformed;
     }
-
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if (currentWeaponBehavior != null)
-        {
-            Vector2 lookDirection = GetAttackDirection();
-            currentWeaponBehavior.Attack(lookDirection);
-        }
+        if(InputManager.Instance.CurrentState == PlayerState.Normal)
+            if (currentWeaponBehavior != null)
+            {
+                Vector2 lookDirection = GetAttackDirection();
+                currentWeaponBehavior.Attack(lookDirection);
+            }
     }
 
-    public void EquipWeapon(WeaponItemObject weaponItem)
+    public void EquipWeapon(BaseItemObject weaponItem)
     {
-        if (currentWeaponBehavior != null)
-        {
-            Destroy(currentWeaponBehavior.gameObject);
-        }
+        Debug.Log($"weaponItem equiped = {weaponItem.name}");
 
         GameObject spawnedWeapon = Instantiate(
-            weaponItem.weaponBehaviorPrefab,
+            ((WeaponItemObject)weaponItem).weaponBehaviorPrefab,
             weaponHolder.position,
             weaponHolder.rotation,
             weaponHolder
         );
 
         currentWeaponBehavior = spawnedWeapon.GetComponent<WeaponBehavior>();
+        Debug.Log($"currentWeaponBehavior.name - {currentWeaponBehavior.name}");
+    }
+
+    private void UnequipWeapon(BaseItemObject weaponItem)
+    {
+        Debug.Log($"weaponItem unequiped = {weaponItem.name}");
+        Destroy(currentWeaponBehavior.gameObject);
+        //can add sound, play animation itp
     }
     private Vector2 GetAttackDirection()
     {
@@ -68,5 +77,7 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
     private void OnDisable()
     {
         inputActions.Player.Attack.started -= OnAttackPerformed;
+        unequipEventChannel.OnItemEquipped -= UnequipWeapon;
+        equipEventChannel.OnItemEquipped -= EquipWeapon;
     }
 }

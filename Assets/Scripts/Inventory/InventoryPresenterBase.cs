@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,8 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected PlayerAction inputActions;
     protected bool isOpen;
     protected int selectedIndex;
+    protected bool itemIsMoving = false;
+    protected int movingItemIndex;
 
     protected virtual void Awake()
     {
@@ -19,15 +22,15 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         {
             inventory.InventorySlots[i] = new InventorySlot(i, null, 0);
         }
-        displayInventory.CreateSlots(inventory.InventorySlots);
+        displayInventory.CreateSlots(inventory.InventorySlots.Length);
     }
 
     protected virtual void OnEnable()
     {
         inventory.OnItemAdded += ShowInventoryItem;
-        inputActions.Player.Inventory.started += ctx => ToggleInventory();
+        inputActions.Player.Inventory.started += ToggleInventory;
     }
-    protected virtual void ToggleInventory()
+    protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
         isOpen = !isOpen;
         displayInventory.gameObject.SetActive(isOpen);
@@ -35,25 +38,68 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         if (isOpen)
         {
             displayInventory.RefreshUI(inventory.InventorySlots);
+            EnableMoveItem();
             EnableInventoryInput();
         }
         else
         {
+            DisableMoveItem();
             DisableInventoryInput();
         }
     }
+    protected void EnableMoveItem()
+    {
+        Debug.Log("EnableMoveItem");
+        inputActions.Player.Jump.started += MoveItem;
+        EnableEquip();
+    }
+    protected void DisableMoveItem()
+    {
+        Debug.Log("DisableMoveItem");
+        inputActions.Player.Jump.started -= MoveItem;
+        if (itemIsMoving)
+            DisableEquip();
+
+        itemIsMoving = false;
+    }
     protected void EnableInventoryInput()
     {
-        inputActions.Player.Move.performed += OnMoveInCells;
-        inputActions.Player.Attack.started += TryEquip;
+        inputActions.Player.Move.performed += MoveInCells;
+        
     }
-
     protected void DisableInventoryInput()
     {
-        inputActions.Player.Move.performed -= OnMoveInCells;
+        inputActions.Player.Move.performed -= MoveInCells;
+    }
+    protected void EnableEquip()
+    {
+        inputActions.Player.Attack.started += TryEquip;
+    }
+    protected void DisableEquip()
+    {
         inputActions.Player.Attack.started -= TryEquip;
     }
-    private void OnMoveInCells(InputAction.CallbackContext ctx)
+    protected void MoveItem(InputAction.CallbackContext ctx)
+    {
+        if (!itemIsMoving)
+        {
+            if (inventory.InventorySlots[selectedIndex].Item != null)
+            {
+                movingItemIndex = selectedIndex;
+                itemIsMoving = true;
+                DisableEquip();
+            }
+        }
+        else
+        {
+            inventory.SwapItems(movingItemIndex, selectedIndex);
+            itemIsMoving = false;
+            EnableEquip();
+            displayInventory.RefreshUI(inventory.InventorySlots);
+        }
+        Debug.Log($"movingItemIndex - {movingItemIndex}; itemIsMoving - {itemIsMoving};");
+    }
+    private void MoveInCells(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
         //Debug.Log($"Inventory received move input: {input}");
@@ -169,6 +215,6 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void OnDisable()
     {
         inventory.OnItemAdded -= ShowInventoryItem;
-        inputActions.Player.Inventory.started -= ctx => ToggleInventory();
+        inputActions.Player.Inventory.started -= ToggleInventory;
     }
 }

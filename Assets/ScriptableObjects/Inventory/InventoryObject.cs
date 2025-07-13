@@ -39,6 +39,14 @@ public class InventoryObject : ScriptableObject
         return false;
     }
 
+    public void SwapItems(int i1, int i2)
+    {
+        //Debug.Log($"i1 - {i1}; i2 - {i2}");
+        InventorySlot temp = InventorySlots[i1];
+        InventorySlots[i1] = InventorySlots[i2];
+        InventorySlots[i2] = temp;
+    }
+
     public bool EquipItem(int index)
     {
         if(InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)

@@ -16,40 +16,26 @@ public class DisplayInventory : MonoBehaviour
     [SerializeField] private GameObject interactionMenu;
     [SerializeField] private GameObject hintTemplate;
 
-    private Dictionary<GameObject, InventorySlot> itemsDisplayed = new();
+    private List<GameObject> cells = new();
 
     public int GetNumberSlotsInColumn { get => NUMBER_SLOTS_IN_COLUMN; }
 
-    public void CreateSlots(InventorySlot[] slots)
+    public void CreateSlots(int quantity)
     {
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < quantity; i++)
         {
             var cell = Instantiate(cellPrefab, Vector3.zero, Quaternion.identity, transform);
             cell.GetComponent<RectTransform>().localPosition = GetPosition(i);
-            itemsDisplayed.Add(cell, slots[i]);
-        }
-    }
-
-    public void UpdateSlotUI(BaseItemObject itemObject)
-    {
-        foreach (var kvp in itemsDisplayed)
-        {
-            if (kvp.Value.Item == itemObject)
-            {
-                Image img = kvp.Key.GetComponent<Image>();
-                img.sprite = itemObject.Icon;
-                img.enabled = true;
-                break;
-            }
+            cells.Add(cell);
         }
     }
 
     public void RefreshUI(InventorySlot[] slots)
     {
         Debug.Log("RefreshUI");
-        foreach (var kvp in itemsDisplayed)
+        foreach (var cell in cells)
         {
-            Image img = kvp.Key.GetComponent<Image>();
+            Image img = cell.GetComponent<Image>();
             img.sprite = null;
             img.enabled = false;
         }
@@ -59,50 +45,29 @@ public class DisplayInventory : MonoBehaviour
             var slot = slots[i];
             if (slot.Item != null)
             {
-                foreach (var kvp in itemsDisplayed)
-                {
-                    if (kvp.Value.Id == slot.Id)
-                    {
-                        Image img = kvp.Key.GetComponent<Image>();
-                        img.sprite = slot.Item.Icon;
-                        img.enabled = true;
-                        break;
-                    }
-                }
+                Image img = cells[i].GetComponent<Image>();
+                img.sprite = slot.Item.Icon;
+                img.enabled = true;
             }
         }
     }
 
     public void HighlightCell(int index)
     {
-        foreach (var kvp in itemsDisplayed) {
-            //Debug.Log($"id = {kvp.Value.Id}");
-            if (kvp.Value.Id == index)
-            {
-                var outline = kvp.Key.GetComponentInChildren<Outline>();
-                if (outline != null)
-                {
-                    //Debug.Log($" outline.effectColor - {outline.effectColor}");
-                    outline.enabled = true;
-                }
-            }
+        var outline = cells[index].GetComponentInChildren<Outline>();
+        if (outline != null)
+        {
+            //Debug.Log($" outline.effectColor - {outline.effectColor}");
+            outline.enabled = true;
         }
-       
     }
     public void UnhighlightCell(int index)
     {
-        foreach (var kvp in itemsDisplayed)
+        var outline = cells[index].GetComponentInChildren<Outline>();
+        if (outline != null)
         {
-            //Debug.Log($"id = {kvp.Value.Id}");
-            if (kvp.Value.Id == index)
-            {
-                var outline = kvp.Key.GetComponentInChildren<Outline>();
-                if (outline != null)
-                {
-                    Debug.Log($" outline.effectColor - {outline.effectColor}");
-                    outline.enabled = false;
-                }
-            }
+            //Debug.Log($" outline.effectColor - {outline.effectColor}");
+            outline.enabled = false;
         }
     }
     public void ShowInteractionMenu(List<InteractionHint> hints)

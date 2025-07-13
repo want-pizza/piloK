@@ -39,7 +39,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
     {
         throw new NotImplementedException();
     }
-    protected override void ToggleInventory()
+    protected override void ToggleInventory(InputAction.CallbackContext ctx)
     {
         isOpen = !isOpen;
         displayInventory.gameObject.SetActive(isOpen);
@@ -50,6 +50,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
             InputManager.Instance.SwitchState(PlayerState.Inventory);
             //Debug.Log("Inventory opened, enabling input");
             EnableInventoryInput();
+            EnableMoveItem();
             displayInventory.HighlightCell(selectedIndex);
             displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
         }
@@ -58,6 +59,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
             InputManager.Instance.SwitchState(PlayerState.Normal);
             //Debug.Log("Inventory closed, disabling input");
             DisableInventoryInput();
+            DisableMoveItem();
             displayInventory.UnhighlightCell(selectedIndex);
             displayInventory.CleanInteractionMenu();
             displayInventory.HideInteractionMenu();

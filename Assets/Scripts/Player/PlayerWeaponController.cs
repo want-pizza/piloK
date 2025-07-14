@@ -27,7 +27,7 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
     }
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if(InputManager.Instance.CurrentState == PlayerState.Normal)
+        //if(InputManager.Instance.CurrentState == PlayerState.Normal)
             if (currentWeaponBehavior != null)
             {
                 Vector2 lookDirection = GetAttackDirection();

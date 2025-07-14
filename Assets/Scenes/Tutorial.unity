@@ -36725,6 +36725,18 @@ PrefabInstance:
       propertyPath: displayInventory
       value: 
       objectReference: {fileID: 1002419878}
+    - target: {fileID: 6697282509430899999, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6697282509430899999, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6697282509430899999, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7603547560326371548, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1

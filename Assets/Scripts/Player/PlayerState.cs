@@ -1,7 +1,10 @@
 public enum PlayerState
 {
-    Normal,
-    Inventory,
-    Dialogue,
-    Dead
+    Idle,
+    Run,
+    Jump,
+    Fall,
+    WallSlide,
+    Dash,
+    Attack
 }

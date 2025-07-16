@@ -45,13 +45,13 @@ public class PlayerMovement : MonoBehaviour, IMove
     private string dashEventName = "dashEndTimer";
     private string dashCooldownEventName = "dashTimer";
     private bool isDashCooldown = false;
-    private bool isDashing = false;
+    private Field<bool> isDashing = new Field<bool>(false);
     private bool wasDashInterrupted = false;
     private Vector2 dashDirection;
 
-    private float _velocityX;
+    private Field<float> _velocityX = new Field<float>();
     private float _velocityY;
-    public bool isGrounded;
+    public Field<bool> isGrounded = new Field<bool>(false);
     private bool isTouchingCeiling;
     private bool isTouchingLeftWall;
     private bool isTouchingRightWall;
@@ -67,6 +67,12 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
+
+    // public Fields
+    public Field<float> FieldVelocityX => _velocityX;
+    public Field<bool> FieldIsGrounded => isGrounded;
+    public Field<bool> FieldIsDashing => isDashing;
+
 
     private void OnEnable()
     {
@@ -92,13 +98,11 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void Update()
     {
-        if (InputManager.Instance.CurrentState != PlayerState.Idle)
-            return;
         HandleMovement();
     }
     private void OnSetIsGrounded(bool triggered)
     {
-        isGrounded = triggered;
+        isGrounded.Value = triggered;
         if (isGrounded)
         {
             isJumping = false;
@@ -141,9 +145,9 @@ public class PlayerMovement : MonoBehaviour, IMove
         //Debug.Log($"DisableDashing; wasDashInterrupted = {wasDashInterrupted}");
         if (!wasDashInterrupted)
         {
-            isDashing = false;
+            isDashing.Value = false;
             isDashCooldown = true;
-            _velocityX /= XScaling;
+            _velocityX.Value /= XScaling;
             _velocityY /= YScaling;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
         }
@@ -175,11 +179,11 @@ public class PlayerMovement : MonoBehaviour, IMove
             {
                 if (isTouchingLeftWall)
                 {
-                    _velocityX = wallJumpForce * Mathf.Sign(transform.localScale.x);
+                    _velocityX.Value = wallJumpForce * Mathf.Sign(transform.localScale.x);
                 }
                 else if (isTouchingRightWall)
                 {
-                    _velocityX = wallJumpForce * -Mathf.Sign(transform.localScale.x);
+                    _velocityX.Value = wallJumpForce * -Mathf.Sign(transform.localScale.x);
                 }
             }
         }
@@ -211,16 +215,16 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (Mathf.Abs(_inputX) > 0.1f) 
         {
 
-            _velocityX = Mathf.MoveTowards(
-                    _velocityX,
+            _velocityX.Value = Mathf.MoveTowards(
+                    _velocityX.Value,
                     targetVelocityX,
                     accelerationRate * Time.deltaTime
                 );
         }
         else
         {
-            _velocityX = Mathf.MoveTowards(
-                _velocityX,
+            _velocityX.Value = Mathf.MoveTowards(
+                _velocityX.Value,
                 0,
                 decelerationRate * Time.deltaTime
             );
@@ -228,7 +232,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         if (IsHittingWall(_velocityX))
         {
-            _velocityX = 0;
+            _velocityX.Value = 0;
         }
 
         if (!isGrounded)
@@ -255,7 +259,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void HandleDashMovement()
     {
         Vector2 moveDir = dashDirection.normalized;
-        _velocityX = moveDir.x * dashSpeed;
+        _velocityX.Value = moveDir.x * dashSpeed;
         _velocityY = moveDir.y * dashSpeed;
 
         if (IsHittingWall(moveDir.x))
@@ -265,8 +269,8 @@ public class PlayerMovement : MonoBehaviour, IMove
                 wasOnGroundAfterDash = true;
             }
             wasDashInterrupted = true;
-            isDashing = false;
-            _velocityX /= 2; //need rewrite
+            isDashing.Value = false;
+            _velocityX.Value /= 2; //need rewrite
             _velocityY /= 5;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
             return;
@@ -280,7 +284,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (CanDash())
         {
            // Debug.Log("Start dashing");
-            isDashing = true;
+            isDashing.Value = true;
             wasDashInterrupted = false;
             wasOnGroundAfterDash = false;
 

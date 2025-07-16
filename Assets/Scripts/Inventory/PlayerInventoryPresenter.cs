@@ -47,7 +47,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         if (isOpen)
         {
             displayInventory.RefreshUI(inventory.InventorySlots);
-            InputManager.Instance.SwitchState(PlayerState.Inventory);
+            //InputManager.Instance.SwitchState(PlayerState.Inventory);
             //Debug.Log("Inventory opened, enabling input");
             EnableInventoryInput();
             EnableMoveItem();
@@ -56,7 +56,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         }
         else
         {
-            InputManager.Instance.SwitchState(PlayerState.Normal);
+            //InputManager.Instance.SwitchState(PlayerState.Normal);
             //Debug.Log("Inventory closed, disabling input");
             DisableInventoryInput();
             DisableMoveItem();

@@ -19,6 +19,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         {
             currentState = (PlayerState)newState;
             currentState.OnEnter();
+            Debug.Log($"current state - {typeof(T)}");
         }
         else
         {
@@ -36,7 +37,6 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     {
         currentState = (PlayerState)states[typeof(PlayerIdleState)];
         currentState.OnEnter();
-        Debug.Log($"curState = {currentState}");
     }
 
     private void CreateStatesAndTransitions()
@@ -50,15 +50,15 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         transitions.Add(typeof(RunTransition), runTransition);
         List<Transition> tempTransitionList = new List<Transition>();
         tempTransitionList.Add(runTransition);
-        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, tempTransitionList, "Idle"));
-        states.Add(typeof(PlayerRunState), new PlayerRunState(this, null, movement.FieldVelocityX, "Run"));
+        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", runTransition));
+        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run"));
     }
 
-    public void PlayerAnimation(string name)
+    public void PlayAnimation(string name)
     {
         animator.Play(name);
     }
-    public void PlayerAnimation(string name, float speed)
+    public void PlayAnimation(string name, float speed)
     {
         animator.Play(name, 1, speed);
     }

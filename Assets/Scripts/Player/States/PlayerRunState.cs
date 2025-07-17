@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerRunState : PlayerState
 {
     private Field<float> xVelocity;
-    public PlayerRunState(PlayerStateMachine _stateMachine, List<Transition> _transitions, Field<float> _XVelocity, string _animationName) 
+    public PlayerRunState(PlayerStateMachine _stateMachine, Field<float> _XVelocity, string _animationName, params Transition[] _transitions) 
     {
         stateMachine = _stateMachine;
         transitions = _transitions;
@@ -17,7 +17,8 @@ public class PlayerRunState : PlayerState
     {
         base.OnEnter();
         xVelocity.OnValueChanged += OnSpeedChanged;
-        stateMachine.PlayerAnimation(animationName, 0.1f);
+        stateMachine.PlayAnimation(animationName);
+        Debug.Log("OnEnter - PlayerRunState");
     }
     public override void OnExit()
     {
@@ -26,7 +27,7 @@ public class PlayerRunState : PlayerState
     }
     private void OnSpeedChanged(float _speed)
     {
-        float speed = Mathf.Clamp01(_speed); // need tests
+        float speed = Mathf.InverseLerp(0, 5, Mathf.Abs(_speed)); // need tests
         stateMachine.ChangeAnimationSpeed(speed);
     }
 }

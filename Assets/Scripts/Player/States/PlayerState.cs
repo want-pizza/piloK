@@ -8,7 +8,7 @@ public abstract class PlayerState : IState
     //PlayerInventoryPresenter inventoryPresenter;
     //PlayerWeaponController controller;
     protected PlayerStateMachine stateMachine;
-    protected List<Transition> transitions = new List<Transition>();
+    protected Transition[] transitions;
     protected string animationName;
 
     public virtual void OnEnter()

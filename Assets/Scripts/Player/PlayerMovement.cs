@@ -50,17 +50,17 @@ public class PlayerMovement : MonoBehaviour, IMove
     private Vector2 dashDirection;
 
     private Field<float> _velocityX = new Field<float>();
-    private float _velocityY;
-    public Field<bool> isGrounded = new Field<bool>(false);
+    private Field<float> _velocityY = new Field<float>();
+    private Field<bool> isGrounded = new Field<bool>(false);
     private bool isTouchingCeiling;
-    private bool isTouchingLeftWall;
-    private bool isTouchingRightWall;
+    private Field<bool> isTouchingLeftWall = new Field<bool>(false);
+    private Field<bool> isTouchingRightWall = new Field<bool>(false);
     private string coyoteEventName = "coyoteTimer";
     private bool isCanCoyoteJump;
     private string jumpBufferEventName = "bufferJump";
     public bool isJumpBufferTimming = false;
     private bool isJumpRelease;
-    private bool isJumping;
+    private Field<bool> isJumping = new Field<bool>(false);
 
     private PlayerAction _inputActions;
     private float _inputX = 0f;
@@ -68,11 +68,13 @@ public class PlayerMovement : MonoBehaviour, IMove
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
 
-    // public Fields
+    // public Field getters
     public Field<float> FieldVelocityX => _velocityX;
+    public Field<float> FieldVelocityY => _velocityX;
     public Field<bool> FieldIsGrounded => isGrounded;
+    public Field<bool> FieldIsTouchingLeftWall => isTouchingLeftWall;
+    public Field<bool> FieldIsTouchingRightWall => isTouchingRightWall;
     public Field<bool> FieldIsDashing => isDashing;
-
 
     private void OnEnable()
     {
@@ -85,8 +87,8 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         //GroundCheckers
         groundChecker.OnTriggeredStateChanged += OnSetIsGrounded;
-        leftWallChecker.OnTriggeredStateChanged += triggered => isTouchingLeftWall = triggered;
-        rightWallChecker.OnTriggeredStateChanged += triggered => isTouchingRightWall = triggered;
+        leftWallChecker.OnTriggeredStateChanged += triggered => isTouchingLeftWall.Value = triggered;
+        rightWallChecker.OnTriggeredStateChanged += triggered => isTouchingRightWall.Value = triggered;
         ceilingChecker.OnTriggeredStateChanged += triggered => isTouchingCeiling = triggered;
 
         //EventBus
@@ -105,7 +107,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         isGrounded.Value = triggered;
         if (isGrounded)
         {
-            isJumping = false;
+            isJumping.Value = false;
 
             if (isJumpBufferTimming)
             {
@@ -148,7 +150,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             isDashing.Value = false;
             isDashCooldown = true;
             _velocityX.Value /= XScaling;
-            _velocityY /= YScaling;
+            _velocityY.Value /= YScaling;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
         }
     }
@@ -156,7 +158,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         if (_velocityY > 0)
         {
-            _velocityY *= jumpReleaseFactor;
+            _velocityY.Value *= jumpReleaseFactor;
             isJumpRelease = true;
         }
         else
@@ -170,8 +172,8 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (CanJump())
         {
             float jumpForce = Mathf.Sqrt(2 * Mathf.Abs(fallGravity) * jumpHeight);
-            _velocityY = jumpForce;
-            isJumping = true;
+            _velocityY.Value = jumpForce;
+            isJumping.Value = true;
             isJumpBufferTimming = false;
             //Debug.Log($"Jump initiated: _velocityY = {_velocityY}");
 
@@ -237,7 +239,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         if (!isGrounded)
         {
-            _velocityY = Mathf.MoveTowards(
+            _velocityY.Value = Mathf.MoveTowards(
                 _velocityY,
                 -maxFallSpeed,
                 fallGravity * Time.deltaTime
@@ -245,12 +247,12 @@ public class PlayerMovement : MonoBehaviour, IMove
         }
         else if (_velocityY < 0)
         {
-            _velocityY = 0;
+            _velocityY.Value = 0;
         }
 
         if (isTouchingCeiling && _velocityY > 0)
         {
-            _velocityY = 0;
+            _velocityY.Value = 0;
         }
 
         transform.position += new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime * 2;
@@ -260,7 +262,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         Vector2 moveDir = dashDirection.normalized;
         _velocityX.Value = moveDir.x * dashSpeed;
-        _velocityY = moveDir.y * dashSpeed;
+        _velocityY.Value = moveDir.y * dashSpeed;
 
         if (IsHittingWall(moveDir.x))
         {
@@ -271,7 +273,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             wasDashInterrupted = true;
             isDashing.Value = false;
             _velocityX.Value /= 2; //need rewrite
-            _velocityY /= 5;
+            _velocityY.Value /= 5;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
             return;
         }
@@ -322,12 +324,12 @@ public class PlayerMovement : MonoBehaviour, IMove
         _inputActions.Player.Move.performed -= ctx => _inputX = ctx.ReadValue<Vector2>().x;
         _inputActions.Player.Move.canceled -= ctx => _inputX = 0;
         _inputActions.Player.Jump.performed -= ctx => HandleJump();
-        _inputActions.Player.Jump.canceled -= ctx => _velocityY *= _velocityY > 0 ? 0.5f : 1f;
+        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
         _inputActions.Player.Disable();
 
         groundChecker.OnTriggeredStateChanged -= OnSetIsGrounded;
-        leftWallChecker.OnTriggeredStateChanged -= triggered => isTouchingLeftWall = triggered;
-        rightWallChecker.OnTriggeredStateChanged -= triggered => isTouchingRightWall = triggered;
+        leftWallChecker.OnTriggeredStateChanged -= triggered => isTouchingLeftWall.Value = triggered;
+        rightWallChecker.OnTriggeredStateChanged -= triggered => isTouchingRightWall.Value = triggered;
 
         TimerEventBus.Unsubscribe(coyoteEventName, DisableCoyoteTime);
         TimerEventBus.Unsubscribe(jumpBufferEventName, DisableJumpBufferTimming);

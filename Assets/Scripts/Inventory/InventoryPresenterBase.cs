@@ -10,10 +10,13 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     [SerializeField] protected DisplayInventory displayInventory;
     protected bool inventoryInputEnabled;
     protected PlayerAction inputActions;
-    protected bool isOpen;
+    protected Field<bool> isOpen = new Field<bool>();
     protected int selectedIndex;
     protected bool itemIsMoving = false;
     protected int movingItemIndex;
+
+    // public Field getters
+    public Field<bool> IsOpen => isOpen;
 
     protected virtual void Awake()
     {
@@ -32,7 +35,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     }
     protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        isOpen = !isOpen;
+        isOpen.Value = !isOpen;
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)

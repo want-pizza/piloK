@@ -12,6 +12,7 @@ public class PlayerIdleState : PlayerState
     public override void OnEnter()
     {
         base.OnEnter();
+        stateMachine.ChangeAnimationSpeed(1f);
         stateMachine.PlayAnimation(animationName);
         Debug.Log($"WasEntered - {animationName}, transition - {transitions[0]}");
     }

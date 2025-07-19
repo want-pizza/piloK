@@ -17,16 +17,33 @@ public class IdleTransition : Transition
     }
     public override void OnEnable()
     {
-        
+        xVelocityField.OnValueChanged += OnXVelosityChanged;
+        isGroundedField.OnValueChanged += OnIsGroundedChanged;
+        isInventoryOpenField.OnValueChanged += OnIsInventoryOpenChanged;
     }
     public override void OnDisable()
     {
-        throw new System.NotImplementedException();
+        xVelocityField.OnValueChanged -= OnXVelosityChanged;
+        isGroundedField.OnValueChanged -= OnIsGroundedChanged;
+        isInventoryOpenField.OnValueChanged -= OnIsInventoryOpenChanged;
     }
     public override void TryTransition()
     {
-        throw new System.NotImplementedException();
+        if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
+            stateMachine.ChangeState<PlayerIdleState>();
     }
 
-
+    private void OnXVelosityChanged(float velocity)
+    {
+        TryTransition();
+    }
+    private void OnIsGroundedChanged(bool grounded)
+    {
+        //Debug.Log($"OnIsGroundedChanged - {grounded}");
+        TryTransition();
+    }
+    private void OnIsInventoryOpenChanged(bool isOpen)
+    {
+        TryTransition();
+    }
 }

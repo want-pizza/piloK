@@ -18,7 +18,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         inventory.OnItemEquiped += AddStats;
         //inventory.OnItemUnequiped += RemoveStats;
         inventory.OnItemUnequiped += UnequipItem;
-        isOpen = false;
+        isOpen.Value = false;
         displayInventory.gameObject.SetActive(isOpen);
     }
 
@@ -41,7 +41,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
     }
     protected override void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        isOpen = !isOpen;
+        isOpen.Value = !isOpen;
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)

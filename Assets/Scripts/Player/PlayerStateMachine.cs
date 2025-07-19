@@ -7,9 +7,9 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
 {
     private PlayerState currentState;
     private Dictionary<Type, IState> states= new Dictionary<Type, IState>();
-    private Dictionary<Type, Transition> transitions = new Dictionary<Type, Transition>();
     [SerializeField] public Animator animator;
     [SerializeField] private PlayerMovement movement;
+    [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
 
     public void ChangeState<T>() where T : IState
     {
@@ -46,25 +46,35 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing);
+        Transition idleTransition = new IdleTransition(
+                            this,
+                            movement.FieldVelocityX,
+                            movement.FieldIsGrounded,
+                            inventoryPresenter.IsOpen);
+        Transition wallSliceTrasition = new WallSlideTransition(
+                            this,
+                            movement.FieldIsGrounded,
+                            movement.FieldIsTouchingLeftWall,
+                            movement.FieldIsTouchingRightWall,
+                            movement.FieldVelocityY);
 
-        transitions.Add(typeof(RunTransition), runTransition);
-        List<Transition> tempTransitionList = new List<Transition>();
-        tempTransitionList.Add(runTransition);
         states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", runTransition));
-        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run"));
+        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", idleTransition, wallSliceTrasition));
+        states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
     }
 
     public void PlayAnimation(string name)
     {
-        animator.Play(name);
+        animator.CrossFade(name, 0f);
     }
     public void PlayAnimation(string name, float speed)
     {
-        animator.Play(name, 1, speed);
+        animator.Play(name, 0, speed);
     }
 
-    internal void ChangeAnimationSpeed(float speed)
+    public void ChangeAnimationSpeed(float speed)
     {
         animator.speed = speed;
+        Debug.Log($"animator.speed - {animator.speed}; speed - {speed}");
     }
 }

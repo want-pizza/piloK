@@ -31,7 +31,7 @@ public class RunTransition : Transition
 
     public override void TryTransition()
     {
-        if (velocityXField != 0 && isGroundedField && !isDashingField)
+        if (Mathf.Abs(velocityXField) >= 0.05 && isGroundedField && !isDashingField)
             stateMachine.ChangeState<PlayerRunState>();
     }
 

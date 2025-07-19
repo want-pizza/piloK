@@ -4,9 +4,6 @@ using UnityEngine;
 
 public abstract class PlayerState : IState
 {
-    //PlayerMovement movement;
-    //PlayerInventoryPresenter inventoryPresenter;
-    //PlayerWeaponController controller;
     protected PlayerStateMachine stateMachine;
     protected Transition[] transitions;
     protected string animationName;

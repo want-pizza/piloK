@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFallState : MonoBehaviour
+public class PlayerFallState : PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerFallState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
     {
-        
+        stateMachine = _stateMachine;
+        transitions = _transitions;
+        Debug.Log($"count transitions - {_transitions.Length}");
+        animationName = _animationName;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        base.OnEnter();
+        SelectAnimation();
     }
 }

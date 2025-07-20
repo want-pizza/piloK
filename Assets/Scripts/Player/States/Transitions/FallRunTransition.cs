@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallRunTransition : MonoBehaviour
+public class FallRunTransition : RunTransition
 {
-    // Start is called before the first frame update
-    void Start()
+    private string animationBoolValueName;
+    public FallRunTransition(IStateMachine stateMachine, Field<float> velocityXField, Field<bool> isGroundedField, Field<bool> isDashingField, string _animationBoolValueName)
+                            : base(stateMachine, velocityXField, isGroundedField, isDashingField)
     {
-        
+        animationBoolValueName = _animationBoolValueName;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void TryTransition()
     {
-        
+        if (Mathf.Abs(velocityXField) >= 0.05 && isGroundedField && !isDashingField)
+            stateMachine.ChangeState<PlayerRunState>(animationBoolValueName);
     }
 }

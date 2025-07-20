@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class IdleTransition : Transition
 {
-    IStateMachine stateMachine;
-    private Field<float> xVelocityField;
-    Field<bool> isGroundedField, isInventoryOpenField;
+    protected IStateMachine stateMachine;
+    protected Field<float> xVelocityField;
+    protected Field<bool> isGroundedField, isInventoryOpenField;
     public IdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField) 
     {
         stateMachine = _stateMachine;

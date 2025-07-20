@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallSlideState : PlayerState 
+public class PlayerFlyingUpwardState : PlayerState
 {
-    public PlayerWallSlideState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
+    public PlayerFlyingUpwardState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
     {
         stateMachine = _stateMachine;
-        animationName = _animationName;
         transitions = _transitions;
+        animationName = _animationName;
     }
     public override void OnEnter()
     {

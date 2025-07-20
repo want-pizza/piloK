@@ -1,9 +1,9 @@
 using UnityEngine;
 public class RunTransition : Transition
 {
-    private Field<float> velocityXField;
-    private Field<bool> isGroundedField;
-    private Field<bool> isDashingField;
+    protected Field<float> velocityXField;
+    protected Field<bool> isGroundedField;
+    protected Field<bool> isDashingField;
 
     public RunTransition(IStateMachine stateMachine, Field<float> velocityXField, Field<bool> isGroundedField, Field<bool> isDashingField)
     {
@@ -41,7 +41,7 @@ public class RunTransition : Transition
     }
     private void OnIsGroundedChanged(bool grounded)
     {
-        Debug.Log($"OnIsGroundedChanged - {grounded}");
+        //Debug.Log($"OnIsGroundedChanged - {grounded}");
         TryTransition();
     }
     private void OnIsDashingChanged(bool _isDashing)

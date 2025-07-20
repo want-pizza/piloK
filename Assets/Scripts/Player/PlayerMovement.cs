@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     public Field<bool> FieldIsTouchingLeftWall => isTouchingLeftWall;
     public Field<bool> FieldIsTouchingRightWall => isTouchingRightWall;
     public Field<bool> FieldIsDashing => isDashing;
+    public Field<bool> FieldIsJumping => isJumping;
 
     private void OnEnable()
     {

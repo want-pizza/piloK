@@ -6,12 +6,14 @@ public class JumpTransition : Transition
 {
     Field<bool> isGrounded, isJumping;
     Field<float> velocityY;
-
-    public JumpTransition(IStateMachine stateMachine, Field<bool> isGrounded, Field<bool> isJumping, Field<float> velocityY)
+    private string boolValueName;
+    public JumpTransition(IStateMachine stateMachine, Field<bool> isGrounded, Field<bool> isJumping, Field<float> velocityY, string transitionAnimationName)
     {
+        this.stateMachine = stateMachine;
         this.isGrounded = isGrounded;
         this.isJumping = isJumping;
         this.velocityY = velocityY;
+        this.boolValueName = transitionAnimationName;
     }
     public override void OnEnable()
     {
@@ -29,7 +31,7 @@ public class JumpTransition : Transition
     public override void TryTransition()
     {
         if (!isGrounded && isJumping && velocityY > 0f)
-            stateMachine.ChangeState<PlayerJumpState>();
+            stateMachine.ChangeState<PlayerFlyingUpwardState>(boolValueName);
     }
     private void OnIsGroundedChanged(bool grounded)
     {

@@ -222,6 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8398162290184574175}
   movement: {fileID: 7722336147454920206}
+  inventoryPresenter: {fileID: 0}
 --- !u!114 &2700398928418572655
 MonoBehaviour:
   m_ObjectHideFlags: 0

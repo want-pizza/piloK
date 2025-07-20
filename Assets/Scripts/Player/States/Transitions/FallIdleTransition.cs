@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class FallIdleTransition : MonoBehaviour
+public class FallIdleTransition : IdleTransition
 {
-    // Start is called before the first frame update
-    void Start()
+    private string boolValueName;
+    public FallIdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField, string _boolValueName)
+                              : base(_stateMachine, _xVelocityField, _isGroundedField, _isInventoryOpenField) 
     {
-        
+        boolValueName = _boolValueName;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void TryTransition()
     {
-        
+        if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
+            stateMachine.ChangeState<PlayerIdleState>(boolValueName);
     }
 }

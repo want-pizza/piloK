@@ -13,7 +13,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
 
     protected override void OnEnable()
     {
-        Debug.Log("PlayerInventoryPresenter OnEnable");
+        //Debug.Log("PlayerInventoryPresenter OnEnable");
         base.OnEnable();
         inventory.OnItemEquiped += AddStats;
         //inventory.OnItemUnequiped += RemoveStats;

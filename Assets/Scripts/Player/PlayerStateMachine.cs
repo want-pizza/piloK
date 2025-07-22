@@ -75,9 +75,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         //                    movement.FieldVelocityY);
         Transition jumpTransition = new JumpTransition(
                             this,
-                            movement.FieldIsGrounded,
                             movement.FieldIsJumping,
-                            movement.FieldVelocityY,
                             "StartJumping");
         Transition fallTransition = new FallTransition(
                             this,
@@ -122,7 +120,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     public void ChangeAnimationSpeed(float speed)
     {
         animator.speed = speed;
-        Debug.Log($"animator.speed - {animator.speed}; speed - {speed}");
+        //Debug.Log($"animator.speed - {animator.speed}; speed - {speed}");
     }
     public void OnTransitionAnimationEnd()
     {

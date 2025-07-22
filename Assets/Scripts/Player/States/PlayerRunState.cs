@@ -25,12 +25,12 @@ public class PlayerRunState : PlayerState
         base.OnExit();
         xVelocity.OnValueChanged -= OnSpeedChanged;
         
-        stateMachine.ChangeAnimationSpeed(1f);
+        //stateMachine.ChangeAnimationSpeed(1f);
         Debug.Log("OnExit - PlayerRunState");
     }
     private void OnSpeedChanged(float _speed)
     {
         float speed = Mathf.InverseLerp(-0.1f, 5f, Mathf.Abs(_speed)); // need tests
-        stateMachine.ChangeAnimationSpeed(speed);
+        //stateMachine.ChangeAnimationSpeed(speed);
     }
 }

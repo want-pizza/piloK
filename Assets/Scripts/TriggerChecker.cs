@@ -19,6 +19,7 @@ public class TriggerChecker : MonoBehaviour
             if (_isTriggered != value)
             {
                 _isTriggered = value;
+                //Debug.Log("OnTriggeredStateChanged?.Invoke");
                 OnTriggeredStateChanged?.Invoke(_isTriggered);
             }
         }

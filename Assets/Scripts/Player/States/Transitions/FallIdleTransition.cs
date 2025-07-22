@@ -11,7 +11,7 @@ public class FallIdleTransition : IdleTransition
     {
         boolValueName = _boolValueName;
     }
-    public override void TryTransition()
+    protected override void TryTransition()
     {
         if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
             stateMachine.ChangeState<PlayerIdleState>(boolValueName);

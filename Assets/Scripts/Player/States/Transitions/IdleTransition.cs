@@ -27,7 +27,7 @@ public class IdleTransition : Transition
         isGroundedField.OnValueChanged -= OnIsGroundedChanged;
         isInventoryOpenField.OnValueChanged -= OnIsInventoryOpenChanged;
     }
-    public override void TryTransition()
+    protected override void TryTransition()
     {
         if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
             stateMachine.ChangeState<PlayerIdleState>();

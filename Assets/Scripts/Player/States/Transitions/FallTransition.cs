@@ -23,8 +23,9 @@ public class FallTransition : Transition
         isGrounded.OnValueChanged -= OnIsGroundedChanged;
         velosityY.OnValueChanged -= OnYVelocityChanged;
     }
-    public override void TryTransition()
+    protected override void TryTransition()
     {
+        DebugFields();
         if (!isGrounded && velosityY < 0)
             stateMachine.ChangeState<PlayerFallState>();
     }
@@ -36,5 +37,9 @@ public class FallTransition : Transition
     private void OnYVelocityChanged(float velocity)
     {
         TryTransition();
+    }
+    protected override void DebugFields()
+    {
+        Debug.Log($"FallTransition: OnIsGroundedChanged - {isGrounded.Value}; velosityY = {velosityY.Value}");
     }
 }

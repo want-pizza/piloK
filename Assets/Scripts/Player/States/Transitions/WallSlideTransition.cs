@@ -38,7 +38,7 @@ public class WallSlideTransition : Transition
         yVelosity.OnValueChanged -= OnYVelocityChanged;
     }
 
-    public override void TryTransition()
+    protected override void TryTransition()
     {
         if (isGrounded.Value && (isTouchingLeftWall.Value || isTouchingRightWall.Value) && yVelosity.Value < 0f)
         {

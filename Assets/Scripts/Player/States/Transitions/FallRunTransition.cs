@@ -10,7 +10,7 @@ public class FallRunTransition : RunTransition
     {
         animationBoolValueName = _animationBoolValueName;
     }
-    public override void TryTransition()
+    protected override void TryTransition()
     {
         if (Mathf.Abs(velocityXField) >= 0.05 && isGroundedField && !isDashingField)
             stateMachine.ChangeState<PlayerRunState>(animationBoolValueName);

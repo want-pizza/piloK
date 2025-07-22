@@ -15,7 +15,7 @@ public class RunTransition : Transition
 
     public override void OnEnable()
     {
-        Debug.Log("OnEnable");
+        //Debug.Log("OnEnable");
         velocityXField.OnValueChanged += OnXVelosityChanged;
         isGroundedField.OnValueChanged += OnIsGroundedChanged;
         isDashingField.OnValueChanged += OnIsDashingChanged;
@@ -23,13 +23,13 @@ public class RunTransition : Transition
 
     public override void OnDisable()
     {
-        Debug.Log("OnDisable");
+        //Debug.Log("OnDisable");
         velocityXField.OnValueChanged -= OnXVelosityChanged;
         isGroundedField.OnValueChanged -= OnIsGroundedChanged;
         isDashingField.OnValueChanged -= OnIsDashingChanged;
     }
 
-    public override void TryTransition()
+    protected override void TryTransition()
     {
         if (Mathf.Abs(velocityXField) >= 0.05 && isGroundedField && !isDashingField)
             stateMachine.ChangeState<PlayerRunState>();

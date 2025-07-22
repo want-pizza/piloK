@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private TriggerChecker ceilingChecker;
     [SerializeField] private LayerMask groundLayer;
 
-
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
     private string dashCooldownEventName = "dashTimer";
@@ -58,7 +57,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private string coyoteEventName = "coyoteTimer";
     private bool isCanCoyoteJump;
     private string jumpBufferEventName = "bufferJump";
-    public bool isJumpBufferTimming = false;
+    private bool isJumpBufferTimming = false;
     private bool isJumpRelease;
     private Field<bool> isJumping = new Field<bool>(false);
 
@@ -70,7 +69,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     // public Field getters
     public Field<float> FieldVelocityX => _velocityX;
-    public Field<float> FieldVelocityY => _velocityX;
+    public Field<float> FieldVelocityY => _velocityY;
     public Field<bool> FieldIsGrounded => isGrounded;
     public Field<bool> FieldIsTouchingLeftWall => isTouchingLeftWall;
     public Field<bool> FieldIsTouchingRightWall => isTouchingRightWall;
@@ -109,6 +108,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (isGrounded)
         {
             isJumping.Value = false;
+            Debug.Log("Field isJumping = false");
 
             if (isJumpBufferTimming)
             {
@@ -174,6 +174,8 @@ public class PlayerMovement : MonoBehaviour, IMove
         {
             float jumpForce = Mathf.Sqrt(2 * Mathf.Abs(fallGravity) * jumpHeight);
             _velocityY.Value = jumpForce;
+            Debug.Log($"Field _velocityY = {_velocityY.Value}");
+            Debug.Log("Field isJumping = true");
             isJumping.Value = true;
             isJumpBufferTimming = false;
             //Debug.Log($"Jump initiated: _velocityY = {_velocityY}");
@@ -245,6 +247,7 @@ public class PlayerMovement : MonoBehaviour, IMove
                 -maxFallSpeed,
                 fallGravity * Time.deltaTime
             );
+            Debug.Log($"_velocityY.Value - {_velocityY.Value}");
         }
         else if (_velocityY < 0)
         {

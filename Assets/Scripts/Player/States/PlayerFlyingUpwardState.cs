@@ -12,6 +12,7 @@ public class PlayerFlyingUpwardState : PlayerState
     }
     public override void OnEnter()
     {
+        Debug.Log("FlyingUpwardState OnEnter()");
         base.OnEnter();
         SelectAnimation();
     }

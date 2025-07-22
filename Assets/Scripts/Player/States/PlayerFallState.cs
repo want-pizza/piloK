@@ -8,7 +8,7 @@ public class PlayerFallState : PlayerState
     {
         stateMachine = _stateMachine;
         transitions = _transitions;
-        Debug.Log($"count transitions - {_transitions.Length}");
+        //Debug.Log($"count transitions - {_transitions.Length}");
         animationName = _animationName;
     }
     public override void OnEnter()

@@ -15,7 +15,7 @@ public abstract class PlayerState : IState
         //Debug.Log($"OnEnter; transitions = {transitions.Count}");
         foreach (var transition in transitions)
         {
-            Debug.Log($"{transition.ToString()}");
+            //Debug.Log($"{transition.ToString()}");
             transition.OnEnable();
         }
     }
@@ -24,7 +24,7 @@ public abstract class PlayerState : IState
         //Debug.Log($"OnEnter; transitions = {transitions.Count}");
         foreach (var transition in transitions)
         {
-            Debug.Log($"{transition.ToString()}");
+            //Debug.Log($"{transition.ToString()}");
             transition.OnEnable();
         }
         SelectTransitionAnimation(boolValueName);

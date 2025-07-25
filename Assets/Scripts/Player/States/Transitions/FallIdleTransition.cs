@@ -13,7 +13,12 @@ public class FallIdleTransition : IdleTransition
     }
     protected override void TryTransition()
     {
+        DebugFields();
         if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
             stateMachine.ChangeState<PlayerIdleState>(boolValueName);
+    }
+    protected override void DebugFields()
+    {
+        Debug.Log($"FallIdleTransition: xVelocityField - {xVelocityField.Value}; isGroundedField - {isGroundedField.Value}");
     }
 }

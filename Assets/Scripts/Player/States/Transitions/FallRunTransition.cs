@@ -15,4 +15,8 @@ public class FallRunTransition : RunTransition
         if (Mathf.Abs(velocityXField) >= 0.05 && isGroundedField && !isDashingField)
             stateMachine.ChangeState<PlayerRunState>(animationBoolValueName);
     }
+    protected override void DebugFields()
+    {
+        Debug.Log($"FallRunTransition: xVelocityField - {velocityXField}; isGroundedField - {isGroundedField}");
+    }
 }

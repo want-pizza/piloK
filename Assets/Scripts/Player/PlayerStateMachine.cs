@@ -83,13 +83,13 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldVelocityY);
         Transition fallIdleTransition = new FallIdleTransition(
                             this,
-                            movement.FieldVelocityY,
+                            movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             inventoryPresenter.IsOpen,
                             "Landing");
         Transition fallRunTransition = new FallRunTransition(
                             this,
-                            movement.FieldVelocityY,
+                            movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing,
                             "Landing");

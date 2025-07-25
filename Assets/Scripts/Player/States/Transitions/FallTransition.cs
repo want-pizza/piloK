@@ -40,6 +40,6 @@ public class FallTransition : Transition
     }
     protected override void DebugFields()
     {
-        Debug.Log($"FallTransition: OnIsGroundedChanged - {isGrounded.Value}; velosityY = {velosityY.Value}");
+        //Debug.Log($"FallTransition: OnIsGroundedChanged - {isGrounded.Value}; velosityY = {velosityY.Value}");
     }
 }

@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void OnSetIsGrounded(bool triggered)
     {
         isGrounded.Value = triggered;
+        Debug.Log($"IsGrounded = {triggered}");
         if (isGrounded)
         {
             isJumping.Value = false;
@@ -172,10 +173,11 @@ public class PlayerMovement : MonoBehaviour, IMove
         Debug.Log("HandleJump called");
         if (CanJump())
         {
+            Debug.Log("CanJump - true");
             float jumpForce = Mathf.Sqrt(2 * Mathf.Abs(fallGravity) * jumpHeight);
             _velocityY.Value = jumpForce;
-            Debug.Log($"Field _velocityY = {_velocityY.Value}");
-            Debug.Log("Field isJumping = true");
+            //Debug.Log($"Field _velocityY = {_velocityY.Value}");
+            //Debug.Log("Field isJumping = true");
             isJumping.Value = true;
             isJumpBufferTimming = false;
             //Debug.Log($"Jump initiated: _velocityY = {_velocityY}");
@@ -192,7 +194,7 @@ public class PlayerMovement : MonoBehaviour, IMove
                 }
             }
         }
-        else if (!isJumpBufferTimming && isJumping)
+        else if (!isJumpBufferTimming && _velocityY.Value < 0)
         {
             TimerManager.Instance.AddTimer(jumpBufferTime, jumpBufferEventName);
             isJumpBufferTimming = true;
@@ -247,7 +249,7 @@ public class PlayerMovement : MonoBehaviour, IMove
                 -maxFallSpeed,
                 fallGravity * Time.deltaTime
             );
-            Debug.Log($"_velocityY.Value - {_velocityY.Value}");
+            //Debug.Log($"_velocityY.Value - {_velocityY.Value}");
         }
         else if (_velocityY < 0)
         {

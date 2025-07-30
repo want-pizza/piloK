@@ -20,11 +20,11 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         {
             currentState = (PlayerState)newState;
             currentState.OnEnter();
-            Debug.Log($"current state - {typeof(T)}");
+            //Debug.Log($"current state - {typeof(T)}");
         }
         else
         {
-            Debug.LogError($"State of type {typeof(T)} not found!");
+            //Debug.LogError($"State of type {typeof(T)} not found!");
         }
     }
     public void ChangeState<T>(string boolVariableName) where T : IState
@@ -66,6 +66,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
+                            movement.FieldIsDashing,
                             inventoryPresenter.IsOpen);
         //Transition wallSliceTrasition = new WallSlideTransition(
         //                    this,
@@ -76,16 +77,24 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         Transition jumpTransition = new JumpTransition(
                             this,
                             movement.FieldIsJumping,
+                            movement.FieldIsGrounded,
                             "StartJumping");
+        Transition flyingUpwardTransition = new FlyingUpwardTransition(
+                            this,
+                            movement.FieldIsGrounded,
+                            movement.FieldVelocityY,
+                            movement.FieldIsDashing);
         Transition fallTransition = new FallTransition(
                             this,
                             movement.FieldIsGrounded,
+                            movement.FieldIsDashing,
                             movement.FieldVelocityY);
         Transition fallIdleTransition = new FallIdleTransition(
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             inventoryPresenter.IsOpen,
+                            movement.FieldIsDashing,
                             "Landing");
         Transition fallRunTransition = new FallRunTransition(
                             this,
@@ -93,12 +102,16 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing,
                             "Landing");
+        Transition dashTransition = new DashTransition(
+                            this,
+                            movement.FieldIsDashing);
 
-        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", runTransition, jumpTransition, fallTransition));
-        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", jumpTransition, fallTransition, idleTransition));
+        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", runTransition, jumpTransition, fallTransition, dashTransition));
+        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", jumpTransition, fallTransition, idleTransition, dashTransition));
         //states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
-        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", fallTransition, fallIdleTransition, fallRunTransition));
-        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", fallIdleTransition, fallRunTransition));
+        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", fallTransition, fallIdleTransition, fallRunTransition, dashTransition));
+        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", fallIdleTransition, fallRunTransition, dashTransition));
+        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", fallTransition, idleTransition, runTransition, flyingUpwardTransition));
     }
     public bool IsVariableExist(string name)
     {
@@ -108,10 +121,6 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     public void PlayAnimation(string name)
     {
         animator.CrossFade(name, 0f);
-    }
-    public void SetBoolVariableTrue(string name)
-    {
-        animator.SetBool(name, true);
     }
     public void PlayAnimation(string name, float speed)
     {

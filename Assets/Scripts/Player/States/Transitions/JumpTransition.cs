@@ -7,7 +7,7 @@ public class JumpTransition : Transition
     Field<bool> isJumping;
 
     private string boolValueName;
-    public JumpTransition(IStateMachine stateMachine, Field<bool> isJumping, string transitionAnimationName)
+    public JumpTransition(IStateMachine stateMachine, Field<bool> isJumping, Field<bool> isGrounded, string transitionAnimationName)
     {
         this.stateMachine = stateMachine;
         this.isJumping = isJumping;

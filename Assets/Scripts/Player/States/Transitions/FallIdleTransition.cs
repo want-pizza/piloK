@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class FallIdleTransition : IdleTransition
 {
     private string boolValueName;
-    public FallIdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField, string _boolValueName)
-                              : base(_stateMachine, _xVelocityField, _isGroundedField, _isInventoryOpenField) 
+    public FallIdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField, Field<bool> isDashing, string _boolValueName)
+                              : base(_stateMachine, _xVelocityField, _isGroundedField, _isInventoryOpenField, isDashing)
     {
         boolValueName = _boolValueName;
     }
@@ -19,6 +19,6 @@ public class FallIdleTransition : IdleTransition
     }
     protected override void DebugFields()
     {
-        Debug.Log($"FallIdleTransition: xVelocityField - {xVelocityField.Value}; isGroundedField - {isGroundedField.Value}");
+        //Debug.Log($"FallIdleTransition: xVelocityField - {xVelocityField.Value}; isGroundedField - {isGroundedField.Value}");
     }
 }

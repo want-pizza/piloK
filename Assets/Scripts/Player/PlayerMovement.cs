@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
     private string dashCooldownEventName = "dashTimer";
-    private bool isDashCooldown = false;
+    private Field<bool> isDashCooldown = new Field<bool>(false);
     private Field<bool> isDashing = new Field<bool>(false);
     private bool wasDashInterrupted = false;
     private Vector2 dashDirection;
@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     }
     private void DisableDashCooldown()
     {
-        isDashCooldown = false;
+        isDashCooldown.Value = false;
         if (isGrounded)
         {
             wasOnGroundAfterDash = true;
@@ -150,7 +150,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (!wasDashInterrupted)
         {
             isDashing.Value = false;
-            isDashCooldown = true;
+            isDashCooldown.Value = true;
             _velocityX.Value /= XScaling;
             _velocityY.Value /= YScaling;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);

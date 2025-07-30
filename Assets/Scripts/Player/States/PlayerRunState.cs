@@ -18,7 +18,7 @@ public class PlayerRunState : PlayerState
         base.OnEnter();
         xVelocity.OnValueChanged += OnSpeedChanged;
         SelectAnimation();
-        Debug.Log("OnEnter - PlayerRunState");
+        //Debug.Log("OnEnter - PlayerRunState");
     }
     public override void OnExit()
     {
@@ -26,7 +26,7 @@ public class PlayerRunState : PlayerState
         xVelocity.OnValueChanged -= OnSpeedChanged;
         
         //stateMachine.ChangeAnimationSpeed(1f);
-        Debug.Log("OnExit - PlayerRunState");
+        //Debug.Log("OnExit - PlayerRunState");
     }
     private void OnSpeedChanged(float _speed)
     {

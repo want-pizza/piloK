@@ -13,7 +13,7 @@ public class DashTransition : Transition
     }
     public override void OnDisable()
     {
-        throw new System.NotImplementedException();
+        isDashing.OnValueChanged -= OnIsDashingChanged;
     }
 
     public override void OnEnable()

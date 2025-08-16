@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private TriggerChecker rightWallChecker;
     [SerializeField] private TriggerChecker ceilingChecker;
     [SerializeField] private LayerMask groundLayer;
+    private Rigidbody2D rb;
 
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
@@ -96,9 +97,11 @@ public class PlayerMovement : MonoBehaviour, IMove
         TimerEventBus.Subscribe(jumpBufferEventName, DisableJumpBufferTimming);
         TimerEventBus.Subscribe(dashCooldownEventName, DisableDashCooldown);
         TimerEventBus.Subscribe(dashEventName, DisableDashing);
+
+        rb = transform.GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         HandleMovement();
     }
@@ -211,7 +214,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (isDashing)
         {
             HandleDashMovement();
-            transform.position += new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime;
+            ApplyVelocity(new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime);
             return;
         }
 
@@ -261,7 +264,13 @@ public class PlayerMovement : MonoBehaviour, IMove
             _velocityY.Value = 0;
         }
 
-        transform.position += new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime * 2;
+        ApplyVelocity(new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime * 2);
+    }
+
+    private void ApplyVelocity(Vector3 translation)
+    {
+        rb.MovePosition(transform.position + translation);
+        //transform.Translate( translation );
     }
 
     private void HandleDashMovement()

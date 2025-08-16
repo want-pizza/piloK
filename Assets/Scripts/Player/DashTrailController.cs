@@ -19,10 +19,12 @@ public class DashTrailController : MonoBehaviour
     }
     public void PlayPartickleSystem()
     {
+        Debug.Log("PlayPartickleSystem");
         UpdateUVParamsFromSprite(playerSpriteRenderer.sprite);
 
         particleMaterial.SetVector("_UVOffset", uvOffset);
         particleMaterial.SetVector("_UVScale", uvScale);
+        //particleMaterial.SetFloat("_Transparency", 1f);
         particleSystem.Play();
     }
     public void StopPartickleSystem()

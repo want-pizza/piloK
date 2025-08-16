@@ -11,7 +11,7 @@ public class SpikeColliderBySprite : MonoBehaviour
         colliders = GetComponents<BoxCollider2D>();
         if (colliders.Length == 0)
         {
-            Debug.LogWarning("BoxCollider2D не знайдено.");
+            Debug.LogWarning("BoxCollider2D not found.");
         }
     }
 

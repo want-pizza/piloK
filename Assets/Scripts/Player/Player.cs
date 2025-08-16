@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Field<bool> isDead = new Field<bool>(false);
+    public Field<bool> FieldIsDead => isDead;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log($"collision.gameObject.layer = {collision.gameObject.layer}");
+        if (collision.gameObject.layer == 8)
+        {
+            isDead.Value = true;
+        }
     }
 }

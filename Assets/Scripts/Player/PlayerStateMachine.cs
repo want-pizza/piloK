@@ -67,9 +67,9 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
+                            inventoryPresenter.IsOpen,
                             movement.FieldIsDashing,
-                            player.FieldIsDead,
-                            inventoryPresenter.IsOpen);
+                            player.FieldIsDead);
         //Transition wallSliceTrasition = new WallSlideTransition(
         //                    this,
         //                    movement.FieldIsGrounded,
@@ -112,12 +112,12 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             this,
                             player.FieldIsDead);
 
-        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", runTransition, jumpTransition, fallTransition, dashTransition, deathTransition));
-        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", jumpTransition, fallTransition, idleTransition, dashTransition, deathTransition));
+        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition));
+        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition));
         //states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
-        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", fallTransition, fallIdleTransition, fallRunTransition, dashTransition, deathTransition));
-        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", fallIdleTransition, fallRunTransition, dashTransition, deathTransition));
-        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", fallTransition, idleTransition, runTransition, flyingUpwardTransition, deathTransition));
+        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, fallTransition, fallIdleTransition, fallRunTransition, dashTransition));
+        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition));
+        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
     }
     public bool IsVariableExist(string name)

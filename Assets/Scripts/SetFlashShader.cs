@@ -40,4 +40,5 @@ public class SetFlashShader : MonoBehaviour
         mat.SetVector("_UVOffset", uvOffset);
         mat.SetVector("_UVScale", uvScale);
     }
+
 }

@@ -16,6 +16,7 @@ public class IdleTransition : Transition
         isInventoryOpenField = _isInventoryOpenField;
         this.isDashing = isDashing;
         this.isDead = isDead;
+        Debug.Log($"IdleTransition отримав FieldIsDead hash={isDead.GetHashCode()}");
     }
     public override void OnEnable()
     {
@@ -35,8 +36,14 @@ public class IdleTransition : Transition
     }
     protected override void TryTransition()
     {
-        if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField && !isDead)
+        Debug.Log($"TryIdleTransition, isDead.Value = {isDead.Value}");
+        if (xVelocityField.Value == 0f
+            && isGroundedField.Value
+            && !isInventoryOpenField.Value
+            && !isDead.Value)
+        {
             stateMachine.ChangeState<PlayerIdleState>();
+        }
     }
 
     private void OnXVelosityChanged(float velocity)
@@ -58,6 +65,7 @@ public class IdleTransition : Transition
     }
     private void OnIsDeadChanged(bool value)
     {
+        Debug.Log($"OnIsDeadChanged - dead = {value}");
         TryTransition();
     }
 }

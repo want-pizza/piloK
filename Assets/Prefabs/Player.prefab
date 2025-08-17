@@ -422,7 +422,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 1
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -5597,6 +5597,7 @@ GameObject:
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 3057922222436484671}
+  - component: {fileID: 5396600838987060530}
   - component: {fileID: 8398162290184574175}
   m_Layer: 3
   m_Name: View
@@ -5717,6 +5718,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemToPlay: {fileID: 5264411517350061766}
+--- !u!114 &5396600838987060530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560553715910160751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7003af2b6cdea1348af2c0a3fe498536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystem: {fileID: 7356404563222820784}
+  playerSpriteRenderer: {fileID: 8706406994755025844}
 --- !u!95 &8398162290184574175
 Animator:
   serializedVersion: 5
@@ -5747,7 +5762,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3682656146007441553}
-  - component: {fileID: 128214606400408511}
   - component: {fileID: 8296428187054737584}
   - component: {fileID: 7356404563222820784}
   m_Layer: 3
@@ -5772,20 +5786,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1074105391374468041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &128214606400408511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9089919103449331709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7003af2b6cdea1348af2c0a3fe498536, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particleSystem: {fileID: 0}
-  playerSpriteRenderer: {fileID: 8706406994755025844}
 --- !u!199 &8296428187054737584
 ParticleSystemRenderer:
   serializedVersion: 6

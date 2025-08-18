@@ -107,7 +107,6 @@ GameObject:
   - component: {fileID: 6362464774331032993}
   - component: {fileID: 3686637558403484563}
   - component: {fileID: 2700398928418572655}
-  - component: {fileID: 7913288964684507965}
   - component: {fileID: 1338309736127884257}
   - component: {fileID: 8628599753269972173}
   m_Layer: 3
@@ -223,7 +222,7 @@ MonoBehaviour:
   animator: {fileID: 8398162290184574175}
   movement: {fileID: 7722336147454920206}
   inventoryPresenter: {fileID: 0}
-  player: {fileID: 7913288964684507965}
+  player: {fileID: 303975678927903830}
 --- !u!114 &2700398928418572655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,18 +233,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08e7a2189716a8141b7219555181f5a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7913288964684507965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2758754546277564767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c241f31bb2cdd40bfcdf22f0359bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!61 &1338309736127884257
@@ -5604,6 +5591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6697282509430899999}
   - component: {fileID: 8706406994755025844}
+  - component: {fileID: 303975678927903830}
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 3057922222436484671}
@@ -5685,6 +5673,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &303975678927903830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560553715910160751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c241f31bb2cdd40bfcdf22f0359bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {x: 0, y: 0, z: 0}
+  irisMaterial: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
+  irisTime: 1
+  irisSpeed: 2
 --- !u!114 &5786988514693778511
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     [SerializeField] public Animator animator;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerLifeCircle player;
 
     public void ChangeState<T>() where T : IState
     {
@@ -141,5 +141,9 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     public void OnTransitionAnimationEnd()
     {
         currentState.TransitionAnimationEnded();
+    }
+    public void StartRespawnEffect()
+    {
+
     }
 }

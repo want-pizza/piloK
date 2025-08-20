@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerState
 {
+    public override bool CanOpenInventory() => true;
     public PlayerIdleState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
     {
         stateMachine = _stateMachine;

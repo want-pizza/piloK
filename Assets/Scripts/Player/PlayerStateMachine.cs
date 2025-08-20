@@ -11,7 +11,9 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     [SerializeField] public Animator animator;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
-    [SerializeField] private PlayerLifeCircle player;
+    [SerializeField] private PlayerLifeCircle lifeCircle;
+    
+    public PlayerState CurrentState { get { return currentState; } }
 
     public void ChangeState<T>() where T : IState
     {
@@ -69,7 +71,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldIsGrounded,
                             inventoryPresenter.IsOpen,
                             movement.FieldIsDashing,
-                            player.FieldIsDead);
+                            lifeCircle.FieldIsDead);
         //Transition wallSliceTrasition = new WallSlideTransition(
         //                    this,
         //                    movement.FieldIsGrounded,
@@ -97,7 +99,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldIsGrounded,
                             inventoryPresenter.IsOpen,
                             movement.FieldIsDashing,
-                            player.FieldIsDead,
+                            lifeCircle.FieldIsDead,
                             "Landing");
         Transition fallRunTransition = new FallRunTransition(
                             this,
@@ -110,7 +112,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldIsDashing);
         Transition deathTransition = new DeathTrantision(
                             this,
-                            player.FieldIsDead);
+                            lifeCircle.FieldIsDead);
 
         states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition));
         states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition));

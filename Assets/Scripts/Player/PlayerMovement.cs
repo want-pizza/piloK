@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private LayerMask groundLayer;
     private Rigidbody2D rb;
 
+    [Header("StateMachine")]
+    [SerializeField] private PlayerStateMachine stateMachine;
+
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
     private string dashCooldownEventName = "dashTimer";
@@ -211,6 +214,10 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void HandleMovement()
     {
+        if (!stateMachine.CurrentState.CanMove())
+        {
+            _inputX = 0f;
+        }
         if (isDashing)
         {
             HandleDashMovement();

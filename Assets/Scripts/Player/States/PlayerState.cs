@@ -9,6 +9,8 @@ public abstract class PlayerState : IState
     protected Transition[] transitions;
     protected string animationName;
     //protected string boolValueName;
+    public virtual bool CanMove() => true;
+    public virtual bool CanOpenInventory() => false;
 
     public virtual void OnEnter()
     {

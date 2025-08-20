@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerDeathState : PlayerState
 {
+    public override bool CanMove() => false;
     public PlayerDeathState(PlayerStateMachine stateMachine, string animationName, params Transition[] transitions)
     {
         this.stateMachine = stateMachine;

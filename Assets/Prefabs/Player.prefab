@@ -102,9 +102,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7603547560326371548}
-  - component: {fileID: 9089082588652217062}
   - component: {fileID: 7722336147454920206}
+  - component: {fileID: 9089082588652217062}
   - component: {fileID: 6362464774331032993}
+  - component: {fileID: 5811855047759398656}
   - component: {fileID: 3686637558403484563}
   - component: {fileID: 2700398928418572655}
   - component: {fileID: 1338309736127884257}
@@ -136,23 +137,6 @@ Transform:
   - {fileID: 6697282509430899999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9089082588652217062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2758754546277564767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11477111794ce7941af616db7d8c14ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundChecker: {fileID: 2618801775323015131}
-  characterFacing: {fileID: 5786988514693778511}
-  weaponHolder: {fileID: 5366973757583604973}
-  equipEventChannel: {fileID: 11400000, guid: 1a605faa127b9eb4e9396dd08d4b2e26, type: 2}
-  unequipEventChannel: {fileID: 11400000, guid: 412620dc6e0199d4386fd025f6cf42f4, type: 2}
 --- !u!114 &7722336147454920206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +174,24 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
+  stateMachine: {fileID: 3686637558403484563}
+--- !u!114 &9089082588652217062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758754546277564767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11477111794ce7941af616db7d8c14ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundChecker: {fileID: 2618801775323015131}
+  characterFacing: {fileID: 5786988514693778511}
+  weaponHolder: {fileID: 5366973757583604973}
+  equipEventChannel: {fileID: 11400000, guid: 1a605faa127b9eb4e9396dd08d4b2e26, type: 2}
+  unequipEventChannel: {fileID: 11400000, guid: 412620dc6e0199d4386fd025f6cf42f4, type: 2}
 --- !u!114 &6362464774331032993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +209,22 @@ MonoBehaviour:
   playerStats: {fileID: 2700398928418572655}
   equipEventChannel: {fileID: 11400000, guid: 1a605faa127b9eb4e9396dd08d4b2e26, type: 2}
   unequipEventChannel: {fileID: 11400000, guid: 412620dc6e0199d4386fd025f6cf42f4, type: 2}
+--- !u!114 &5811855047759398656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758754546277564767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c241f31bb2cdd40bfcdf22f0359bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {x: 0, y: 0, z: 0}
+  irisMaterial: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
+  irisTime: 1
+  irisSpeed: 2
 --- !u!114 &3686637558403484563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +240,7 @@ MonoBehaviour:
   animator: {fileID: 8398162290184574175}
   movement: {fileID: 7722336147454920206}
   inventoryPresenter: {fileID: 0}
-  player: {fileID: 303975678927903830}
+  lifeCircle: {fileID: 5811855047759398656}
 --- !u!114 &2700398928418572655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5591,11 +5609,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6697282509430899999}
   - component: {fileID: 8706406994755025844}
-  - component: {fileID: 303975678927903830}
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 3057922222436484671}
   - component: {fileID: 5396600838987060530}
+  - component: {fileID: 1995765745116391926}
   - component: {fileID: 8398162290184574175}
   m_Layer: 3
   m_Name: View
@@ -5673,22 +5691,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &303975678927903830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8560553715910160751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c241f31bb2cdd40bfcdf22f0359bc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoint: {x: 0, y: 0, z: 0}
-  irisMaterial: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
-  irisTime: 1
-  irisSpeed: 2
 --- !u!114 &5786988514693778511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5717,7 +5719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85146e66eae5e5449d20540e02beff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashMaterial: {fileID: 2100000, guid: 6f857005bd64f0e439474c719bc5eecf, type: 2}
+  flashMaterial: {fileID: 2100000, guid: e489c18177dee1b4dbc68e8d6648fa9a, type: 2}
   spriteRenderer: {fileID: 8706406994755025844}
 --- !u!114 &3057922222436484671
 MonoBehaviour:
@@ -5746,6 +5748,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 7356404563222820784}
   playerSpriteRenderer: {fileID: 8706406994755025844}
+--- !u!114 &1995765745116391926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560553715910160751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18f90c0dcbbb7c747a5e3a051943379e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 6697282509430899999}
+  material: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
+  time: 1
+  speed: 1
+  onDark:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5811855047759398656}
+        m_TargetAssemblyTypeName: PlayerLifeCircle, Assembly-CSharp
+        m_MethodName: TeleportToRespawnPoint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5811855047759398656}
+        m_TargetAssemblyTypeName: PlayerLifeCircle, Assembly-CSharp
+        m_MethodName: Respawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &8398162290184574175
 Animator:
   serializedVersion: 5

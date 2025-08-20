@@ -30,7 +30,6 @@ public class PlayerLifeCircle : MonoBehaviour
     private void OnIsDeadChanged(bool value)
     {
         Debug.Log($"{value} is dead");
-        if (value) StartRespawn();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -42,40 +41,13 @@ public class PlayerLifeCircle : MonoBehaviour
             Debug.Log("isDead = true");
         }
     }
-
-    public void StartRespawn()
+    public void TeleportToRespawnPoint()
     {
-        StartCoroutine(IrisRespawnRoutine());
-    }
-
-    public void UpdateRespawnPoint(Vector3 position)
-    {
-        respawnPoint = position;
-    }
-
-    private IEnumerator IrisRespawnRoutine()
-    {
-        irisMaterial.SetVector("_IrisCenter", transform.position);
-
-        float darkness = 0f;
-        while (darkness < 1f)
-        {
-            darkness += Time.deltaTime * irisSpeed;
-            irisMaterial.SetFloat("_Darkness", Mathf.Clamp01(darkness));
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(irisTime);
-
         transform.position = respawnPoint;
-
-        while (darkness > 0f)
-        {
-            darkness -= Time.deltaTime * irisSpeed;
-            irisMaterial.SetFloat("_Darkness", Mathf.Clamp01(darkness));
-            yield return null;
-        }
-
+    }
+    public void Respawn()
+    {
+        //Debug.Log(" isDead.Value = false;");
         isDead.Value = false;
     }
 }

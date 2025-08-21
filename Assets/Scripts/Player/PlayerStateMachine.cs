@@ -117,7 +117,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition));
         states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition));
         //states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
-        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, fallTransition, fallIdleTransition, fallRunTransition, dashTransition));
+        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, dashTransition, fallTransition, fallIdleTransition, fallRunTransition));
         states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition));
         states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));

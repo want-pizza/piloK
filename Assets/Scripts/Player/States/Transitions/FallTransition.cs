@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallTransition : Transition
+public class FallTransition : TransitionBase
 {
     Field<bool> isGrounded, isDashing;
     Field<float> velosityY;
@@ -16,12 +16,14 @@ public class FallTransition : Transition
     }
     public override void OnEnable()
     {
+        SubscribeToPause();
         isGrounded.OnValueChanged += OnIsGroundedChanged;
         velosityY.OnValueChanged += OnYVelocityChanged;
         isDashing.OnValueChanged += OnIsDashingChanged;
     }
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         isGrounded.OnValueChanged -= OnIsGroundedChanged;
         velosityY.OnValueChanged -= OnYVelocityChanged;
         isDashing.OnValueChanged -= OnIsDashingChanged;

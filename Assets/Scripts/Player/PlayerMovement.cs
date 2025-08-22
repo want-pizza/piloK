@@ -68,6 +68,8 @@ public class PlayerMovement : MonoBehaviour, IMove
     private PlayerAction _inputActions;
     private float _inputX = 0f;
 
+    private bool isPaused;
+
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
 
@@ -100,6 +102,8 @@ public class PlayerMovement : MonoBehaviour, IMove
         TimerEventBus.Subscribe(jumpBufferEventName, DisableJumpBufferTimming);
         TimerEventBus.Subscribe(dashCooldownEventName, DisableDashCooldown);
         TimerEventBus.Subscribe(dashEventName, DisableDashing);
+
+        PauseManager.OnPauseChanged += OnPausedChanged;
 
         rb = transform.GetComponent<Rigidbody2D>();
     }
@@ -214,6 +218,8 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void HandleMovement()
     {
+        if (isPaused) return;
+
         if (!stateMachine.CurrentState.CanMove())
         {
             _inputX = 0f;
@@ -357,5 +363,12 @@ public class PlayerMovement : MonoBehaviour, IMove
         TimerEventBus.Unsubscribe(jumpBufferEventName, DisableJumpBufferTimming);
         TimerEventBus.Unsubscribe(dashCooldownEventName, HandleDash);
         TimerEventBus.Unsubscribe(dashEventName, DisableDashing);
+
+        PauseManager.OnPauseChanged += OnPausedChanged;
+    }
+
+    public void OnPausedChanged(bool paused)
+    {
+        isPaused = paused;
     }
 }

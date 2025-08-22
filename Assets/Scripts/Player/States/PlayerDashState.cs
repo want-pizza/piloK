@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerDashState : PlayerState
 {
-    public PlayerDashState(PlayerStateMachine stateMachine, string animationName, params Transition[] transitions)
+    public PlayerDashState(PlayerStateMachine stateMachine, string animationName, params TransitionBase[] transitions)
     {
         this.stateMachine = stateMachine;
         this.animationName = animationName;

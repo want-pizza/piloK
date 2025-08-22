@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerFlyingUpwardState : PlayerState
 {
-    public PlayerFlyingUpwardState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
+    public PlayerFlyingUpwardState(PlayerStateMachine _stateMachine, string _animationName, params TransitionBase[] _transitions)
     {
         stateMachine = _stateMachine;
         transitions = _transitions;

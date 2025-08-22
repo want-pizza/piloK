@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleTransition : Transition
+public class IdleTransition : TransitionBase
 {
     protected IStateMachine stateMachine;
     protected Field<float> xVelocityField;
@@ -20,6 +20,7 @@ public class IdleTransition : Transition
     }
     public override void OnEnable()
     {
+        SubscribeToPause();
         xVelocityField.OnValueChanged += OnXVelosityChanged;
         isGroundedField.OnValueChanged += OnIsGroundedChanged;
         isInventoryOpenField.OnValueChanged += OnIsInventoryOpenChanged;
@@ -28,6 +29,7 @@ public class IdleTransition : Transition
     }
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         xVelocityField.OnValueChanged -= OnXVelosityChanged;
         isGroundedField.OnValueChanged -= OnIsGroundedChanged;
         isInventoryOpenField.OnValueChanged -= OnIsInventoryOpenChanged;

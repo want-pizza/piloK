@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056164d8aaad34ba4859aab5ac658691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingName: 
+  settingName: SFXVolume
   reference: {fileID: 4129578119315741987}
 --- !u!114 &4129578119315741987
 MonoBehaviour:

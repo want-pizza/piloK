@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class FlyingUpwardTransition : Transition
+public class FlyingUpwardTransition : TransitionBase
 {
     Field<bool> isGrounded, isDashing;
     Field<float> velosityY;
@@ -17,12 +17,14 @@ public class FlyingUpwardTransition : Transition
     }
     public override void OnEnable()
     {
+        SubscribeToPause();
         isGrounded.OnValueChanged += OnIsGroundedChanged;
         velosityY.OnValueChanged += OnVelosityYChanged;
         isDashing.OnValueChanged += OnIsDashingChanged;
     }
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         isGrounded.OnValueChanged -= OnIsGroundedChanged;
         velosityY.OnValueChanged -= OnVelosityYChanged;
         isDashing.OnValueChanged -= OnIsDashingChanged;

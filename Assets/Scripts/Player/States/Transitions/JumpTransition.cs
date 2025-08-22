@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpTransition : Transition
+public class JumpTransition : TransitionBase
 {
     Field<bool> isJumping;
 
@@ -15,10 +15,12 @@ public class JumpTransition : Transition
     }
     public override void OnEnable()
     {
+        SubscribeToPause();
         isJumping.OnValueChanged += OnIsJumpingChanged;
     }
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         isJumping.OnValueChanged -= OnIsJumpingChanged;
     }
 

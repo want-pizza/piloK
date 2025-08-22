@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DashTransition : Transition
+public class DashTransition : TransitionBase
 {
     private IStateMachine stateMachine;
     private Field<bool> isDashing;
@@ -13,11 +13,13 @@ public class DashTransition : Transition
     }
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         isDashing.OnValueChanged -= OnIsDashingChanged;
     }
 
     public override void OnEnable()
     {
+        SubscribeToPause();
         isDashing.OnValueChanged += OnIsDashingChanged;
     }
 

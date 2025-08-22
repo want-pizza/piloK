@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DeathTrantision : Transition
+public class DeathTrantision : TransitionBase
 {
     IStateMachine stateMachine;
     private Field<bool> isDead;

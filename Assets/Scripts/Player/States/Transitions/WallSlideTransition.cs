@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallSlideTransition : Transition
+public class WallSlideTransition : TransitionBase
 {
     IStateMachine stateMachine;
     Field<bool> isGrounded, isTouchingLeftWall, isTouchingRightWall;

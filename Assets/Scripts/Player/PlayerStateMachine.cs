@@ -60,12 +60,12 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
 
     private void CreateStatesAndTransitions()
     {
-        Transition runTransition = new RunTransition(
+        TransitionBase runTransition = new RunTransition(
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing);
-        Transition idleTransition = new IdleTransition(
+        TransitionBase idleTransition = new IdleTransition(
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
@@ -78,22 +78,22 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         //                    movement.FieldIsTouchingLeftWall,
         //                    movement.FieldIsTouchingRightWall,
         //                    movement.FieldVelocityY);
-        Transition jumpTransition = new JumpTransition(
+        TransitionBase jumpTransition = new JumpTransition(
                             this,
                             movement.FieldIsJumping,
                             movement.FieldIsGrounded,
                             "StartJumping");
-        Transition flyingUpwardTransition = new FlyingUpwardTransition(
+        TransitionBase flyingUpwardTransition = new FlyingUpwardTransition(
                             this,
                             movement.FieldIsGrounded,
                             movement.FieldVelocityY,
                             movement.FieldIsDashing);
-        Transition fallTransition = new FallTransition(
+        TransitionBase fallTransition = new FallTransition(
                             this,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing,
                             movement.FieldVelocityY);
-        Transition fallIdleTransition = new FallIdleTransition(
+        TransitionBase fallIdleTransition = new FallIdleTransition(
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
@@ -101,16 +101,16 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldIsDashing,
                             lifeCircle.FieldIsDead,
                             "Landing");
-        Transition fallRunTransition = new FallRunTransition(
+        TransitionBase fallRunTransition = new FallRunTransition(
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing,
                             "Landing");
-        Transition dashTransition = new DashTransition(
+        TransitionBase dashTransition = new DashTransition(
                             this,
                             movement.FieldIsDashing);
-        Transition deathTransition = new DeathTrantision(
+        TransitionBase deathTransition = new DeathTrantision(
                             this,
                             lifeCircle.FieldIsDead);
 

@@ -35,11 +35,10 @@ public class AudioManager : MonoBehaviour
 
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.outputAudioMixerGroup = sfxGroup;
-
-        LoadSettings();
     }
     private void Start()
     {
+        LoadSettings();
         PlayMusic(audioClip);
     }
     public void PlayMusic(AudioClip clip)
@@ -58,25 +57,22 @@ public class AudioManager : MonoBehaviour
     }
     public void SetMasterVolume(float volume)
     {
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20); // 0..1 to dB
-        PlayerPrefs.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume > 0 ? volume : 0.000001f) * 20); // 0..1 to dB
     }
 
     public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume > 0 ? volume : 0.000001f) * 20);
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume > 0 ? volume : 0.000001f) * 20);
     }
 
     public void LoadSettings()
     {
-        float master = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float master = PlayerPrefs.GetFloat("MasterVolume", 1f);
         float music = PlayerPrefs.GetFloat("MusicVolume", 0.75f);
         float sfx = PlayerPrefs.GetFloat("SFXVolume", 0.75f);
 

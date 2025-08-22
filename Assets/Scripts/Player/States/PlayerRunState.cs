@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerRunState : PlayerState
 {
     private Field<float> xVelocity;
-    public PlayerRunState(PlayerStateMachine _stateMachine, Field<float> _XVelocity, string _animationName, params Transition[] _transitions) 
+    public PlayerRunState(PlayerStateMachine _stateMachine, Field<float> _XVelocity, string _animationName, params TransitionBase[] _transitions) 
     {
         stateMachine = _stateMachine;
         transitions = _transitions;

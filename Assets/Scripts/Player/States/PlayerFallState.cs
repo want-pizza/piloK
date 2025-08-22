@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerState
 {
-    public PlayerFallState(PlayerStateMachine _stateMachine, string _animationName, params Transition[] _transitions)
+    public PlayerFallState(PlayerStateMachine _stateMachine, string _animationName, params TransitionBase[] _transitions)
     {
         stateMachine = _stateMachine;
         transitions = _transitions;

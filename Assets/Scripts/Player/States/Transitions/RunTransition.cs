@@ -1,5 +1,5 @@
 using UnityEngine;
-public class RunTransition : Transition
+public class RunTransition : TransitionBase
 {
     protected Field<float> velocityXField;
     protected Field<bool> isGroundedField;
@@ -15,6 +15,7 @@ public class RunTransition : Transition
 
     public override void OnEnable()
     {
+        SubscribeToPause();
         //Debug.Log("OnEnable");
         velocityXField.OnValueChanged += OnXVelosityChanged;
         isGroundedField.OnValueChanged += OnIsGroundedChanged;
@@ -23,6 +24,7 @@ public class RunTransition : Transition
 
     public override void OnDisable()
     {
+        UnsubscribeFromPause();
         //Debug.Log("OnDisable");
         velocityXField.OnValueChanged -= OnXVelosityChanged;
         isGroundedField.OnValueChanged -= OnIsGroundedChanged;

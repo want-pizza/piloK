@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class PlayerState : IState
 {
     protected PlayerStateMachine stateMachine;
-    protected Transition[] transitions;
+    protected TransitionBase[] transitions;
     protected string animationName;
     //protected string boolValueName;
     public virtual bool CanMove() => true;

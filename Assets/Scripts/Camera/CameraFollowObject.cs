@@ -23,7 +23,13 @@ public class CameraFollowObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = objTransform.position;
+        if(objTransform != null)
+            transform.position = objTransform.position;
+    }
+
+    public void SetObjectToFollow(Transform objTransworm)
+    {
+        this.objTransform = objTransworm;
     }
 
     public void CallTurn()

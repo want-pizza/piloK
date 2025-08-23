@@ -19,7 +19,6 @@ public class IrisPlayer : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void PlayIris(Transform target, Action onDark = null, Action onComplete = null) =>

@@ -16,7 +16,7 @@ public class IdleTransition : TransitionBase
         isInventoryOpenField = _isInventoryOpenField;
         this.isDashing = isDashing;
         this.isDead = isDead;
-        Debug.Log($"IdleTransition отримав FieldIsDead hash={isDead.GetHashCode()}");
+        //Debug.Log($"IdleTransition get FieldIsDead hash={isDead.GetHashCode()}");
     }
     public override void OnEnable()
     {
@@ -38,7 +38,8 @@ public class IdleTransition : TransitionBase
     }
     protected override void TryTransition()
     {
-        Debug.Log($"TryIdleTransition, isDead.Value = {isDead.Value}");
+        //Debug.Log($"IdleTransition, TryTransition(), velocityXField ={xVelocityField.Value}");
+        //Debug.Log($"TryIdleTransition, isDead.Value = {isDead.Value}");
         if (xVelocityField.Value == 0f
             && isGroundedField.Value
             && !isInventoryOpenField.Value
@@ -67,7 +68,7 @@ public class IdleTransition : TransitionBase
     }
     private void OnIsDeadChanged(bool value)
     {
-        Debug.Log($"OnIsDeadChanged - dead = {value}");
+        //Debug.Log($"OnIsDeadChanged - dead = {value}");
         TryTransition();
     }
 }

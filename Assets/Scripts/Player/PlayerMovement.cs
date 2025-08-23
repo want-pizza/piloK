@@ -85,11 +85,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void OnEnable()
     {
         _inputActions = InputManager.Instance.PlayerActions;
-        _inputActions.Player.Move.performed += ctx => _inputX = ctx.ReadValue<Vector2>().x;
-        _inputActions.Player.Move.canceled += ctx => _inputX = 0;
-        _inputActions.Player.Jump.started += ctx => HandleJump();
-        _inputActions.Player.Jump.canceled += ctx => ReleaseJump();
-        _inputActions.Player.Dash.started += ctx => HandleDash();
+        SubscribeMovementInputs();
 
         //GroundCheckers
         groundChecker.OnTriggeredStateChanged += OnSetIsGrounded;
@@ -115,15 +111,15 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void OnSetIsGrounded(bool triggered)
     {
         isGrounded.Value = triggered;
-        Debug.Log($"IsGrounded = {triggered}");
+        //Debug.Log($"IsGrounded = {triggered}");
         if (isGrounded)
         {
             isJumping.Value = false;
-            Debug.Log("Field isJumping = false");
+            //Debug.Log("Field isJumping = false");
 
             if (isJumpBufferTimming)
             {
-                HandleJump();
+                HandleJump(new InputAction.CallbackContext());
 
                 if(!isJumpRelease)
                     ReleaseJump();
@@ -138,12 +134,12 @@ public class PlayerMovement : MonoBehaviour, IMove
     }
     private void DisableCoyoteTime()
     {
-        Debug.Log("CoyoteJump = false");
+        //Debug.Log("CoyoteJump = false");
         isCanCoyoteJump = false;
     }
     private void DisableJumpBufferTimming()
     {
-        Debug.Log("JumpBufferTimming = false");
+        //Debug.Log("JumpBufferTimming = false");
         isJumpBufferTimming = false;
     }
     private void DisableDashCooldown()
@@ -178,12 +174,12 @@ public class PlayerMovement : MonoBehaviour, IMove
             isJumpRelease = false;
         }
     }
-    private void HandleJump()
+    private void HandleJump(InputAction.CallbackContext context)
     {
-        Debug.Log("HandleJump called");
+        //Debug.Log("HandleJump called");
         if (CanJump())
         {
-            Debug.Log("CanJump - true");
+            //Debug.Log("CanJump - true");
             float jumpForce = Mathf.Sqrt(2 * Mathf.Abs(fallGravity) * jumpHeight);
             _velocityY.Value = jumpForce;
             //Debug.Log($"Field _velocityY = {_velocityY.Value}");
@@ -237,25 +233,33 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         if (Mathf.Abs(_inputX) > 0.1f) 
         {
-
-            _velocityX.Value = Mathf.MoveTowards(
-                    _velocityX.Value,
-                    targetVelocityX,
-                    accelerationRate * Time.deltaTime
-                );
+            if (IsHittingWall(_inputX))
+            {
+                _velocityX.Value = 0;
+            }
+            else
+            {
+                _velocityX.Value = Mathf.MoveTowards(
+                        _velocityX.Value,
+                        targetVelocityX,
+                        accelerationRate * Time.deltaTime
+                    );
+            }
         }
         else
         {
-            _velocityX.Value = Mathf.MoveTowards(
-                _velocityX.Value,
-                0,
-                decelerationRate * Time.deltaTime
-            );
-        }
-
-        if (IsHittingWall(_velocityX))
-        {
-            _velocityX.Value = 0;
+            if (IsHittingWall(_inputX))
+            {
+                _velocityX.Value = 0;
+            }
+            else
+            {
+                _velocityX.Value = Mathf.MoveTowards(
+                    _velocityX.Value,
+                    0,
+                    decelerationRate * Time.deltaTime
+                );
+            }
         }
 
         if (!isGrounded)
@@ -308,7 +312,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     }
 
 
-    private void HandleDash()
+    private void HandleDash(InputAction.CallbackContext context)
     {
         //Debug.Log("Try dashing");
         if (CanDash())
@@ -319,7 +323,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             wasOnGroundAfterDash = false;
 
             Vector2 input = _inputActions.Player.Move.ReadValue<Vector2>();
-            Debug.Log($"dashInput - {input.x}; {input.y}");
+            //Debug.Log($"dashInput - {input.x}; {input.y}");
             if (input == Vector2.zero)
             {
                 dashDirection = new Vector2(transform.localScale.x, 0).normalized;
@@ -349,26 +353,43 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void OnDisable()
     {
-        _inputActions.Player.Move.performed -= ctx => _inputX = ctx.ReadValue<Vector2>().x;
-        _inputActions.Player.Move.canceled -= ctx => _inputX = 0;
-        _inputActions.Player.Jump.performed -= ctx => HandleJump();
-        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
-        _inputActions.Player.Disable();
-
+        UnsubscribeMovementInputs();
         groundChecker.OnTriggeredStateChanged -= OnSetIsGrounded;
         leftWallChecker.OnTriggeredStateChanged -= triggered => isTouchingLeftWall.Value = triggered;
         rightWallChecker.OnTriggeredStateChanged -= triggered => isTouchingRightWall.Value = triggered;
 
         TimerEventBus.Unsubscribe(coyoteEventName, DisableCoyoteTime);
         TimerEventBus.Unsubscribe(jumpBufferEventName, DisableJumpBufferTimming);
-        TimerEventBus.Unsubscribe(dashCooldownEventName, HandleDash);
+        TimerEventBus.Unsubscribe(dashCooldownEventName, DisableDashCooldown);
         TimerEventBus.Unsubscribe(dashEventName, DisableDashing);
-
-        PauseManager.OnPauseChanged += OnPausedChanged;
+        PauseManager.OnPauseChanged -= OnPausedChanged;
     }
-
+    private void SubscribeMovementInputs()
+    {
+        _inputActions.Player.Move.performed += ctx => _inputX = ctx.ReadValue<Vector2>().x;
+        _inputActions.Player.Move.canceled += ctx => _inputX = 0;
+        _inputActions.Player.Jump.started += HandleJump;
+        _inputActions.Player.Jump.canceled += ctx => ReleaseJump();
+        _inputActions.Player.Dash.started += HandleDash;
+    }
+    private void UnsubscribeMovementInputs()
+    {
+        _inputActions.Player.Move.performed -= ctx => _inputX = ctx.ReadValue<Vector2>().x;
+        _inputActions.Player.Move.canceled -= ctx => _inputX = 0;
+        _inputActions.Player.Jump.started -= HandleJump;
+        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
+        _inputActions.Player.Dash.started -= HandleDash;
+    }
     public void OnPausedChanged(bool paused)
     {
+        //Debug.Log($"PlayerMovement - OnPausedChanged({paused})");
         isPaused = paused;
+        if (paused)
+            UnsubscribeMovementInputs();
+        else SubscribeMovementInputs();
+    }
+    public void PlayLevelTransition(bool isLeft)
+    {
+        _inputX = isLeft ? -1f : 1f;
     }
 }

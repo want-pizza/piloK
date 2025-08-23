@@ -27,7 +27,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         }
         else
         {
-            //Debug.LogError($"State of type {typeof(T)} not found!");
+            Debug.LogError($"State of type {typeof(T)} not found!");
         }
     }
     public void ChangeState<T>(string boolVariableName) where T : IState

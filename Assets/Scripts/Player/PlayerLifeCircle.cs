@@ -14,7 +14,7 @@ public class PlayerLifeCircle : MonoBehaviour
     private void Awake()
     {
         isDead = new Field<bool>(false);
-        Debug.Log($"IdleTransition отримав FieldIsDead hash={isDead.GetHashCode()}");
+        //Debug.Log($"IdleTransition get FieldIsDead hash={isDead.GetHashCode()}");
     }
 
     private void OnEnable()
@@ -34,11 +34,11 @@ public class PlayerLifeCircle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"collision.gameObject.layer = {collision.gameObject.layer}");
+        //Debug.Log($"collision.gameObject.layer = {collision.gameObject.layer}");
         if (collision.gameObject.layer == 8)
         {
             isDead.Value = true;
-            Debug.Log("isDead = true");
+            //Debug.Log("isDead = true");
         }
     }
     public void TeleportToRespawnPoint()

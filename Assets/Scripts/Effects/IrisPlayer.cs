@@ -45,7 +45,7 @@ public class IrisPlayer : MonoBehaviour
         Vector2 irisCenter = new Vector2(screenPos.x, screenPos.y);
         material.SetVector("_IrisCenter", irisCenter);
 
-        float darkness = 1f;
+        float darkness = material.GetFloat("_Darkness"); ;
         while (darkness > 0f)
         {
             darkness -= Time.deltaTime * speed;

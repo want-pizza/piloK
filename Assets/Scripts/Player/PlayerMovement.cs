@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
@@ -64,6 +65,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private bool isJumpBufferTimming = false;
     private bool isJumpRelease;
     private Field<bool> isJumping = new Field<bool>(false);
+    private bool isWallJumping = false;
 
     private PlayerAction _inputActions;
     private float _inputX = 0f;
@@ -192,10 +194,12 @@ public class PlayerMovement : MonoBehaviour, IMove
             {
                 if (isTouchingLeftWall)
                 {
+                    isWallJumping = true;
                     _velocityX.Value = wallJumpForce * Mathf.Sign(transform.localScale.x);
                 }
                 else if (isTouchingRightWall)
                 {
+                    isWallJumping = true;
                     _velocityX.Value = wallJumpForce * -Mathf.Sign(transform.localScale.x);
                 }
             }
@@ -227,39 +231,22 @@ public class PlayerMovement : MonoBehaviour, IMove
             return;
         }
 
-        float targetVelocityX = _inputX * moveSpeed;
-        float accelerationRate = isGrounded ? acceleration : airAcceleration;
-        float decelerationRate = isGrounded ? groundDeceleration : 0;
+        float targetVelocityX = Mathf.Abs(_inputX) > 0.1f ? _inputX * moveSpeed : 0f;
+        float accelerationRate = targetVelocityX != 0f ? isGrounded ? acceleration : airAcceleration : isGrounded ? groundDeceleration : 0;
 
-        if (Mathf.Abs(_inputX) > 0.1f) 
+        if (IsHittingWall(_inputX) && !isWallJumping)
         {
-            if (IsHittingWall(_inputX))
-            {
-                _velocityX.Value = 0;
-            }
-            else
-            {
-                _velocityX.Value = Mathf.MoveTowards(
-                        _velocityX.Value,
-                        targetVelocityX,
-                        accelerationRate * Time.deltaTime
-                    );
-            }
+            _velocityX.Value = 0;
         }
         else
         {
-            if (IsHittingWall(_inputX))
-            {
-                _velocityX.Value = 0;
-            }
-            else
-            {
-                _velocityX.Value = Mathf.MoveTowards(
+            _velocityX.Value = Mathf.MoveTowards(
                     _velocityX.Value,
-                    0,
-                    decelerationRate * Time.deltaTime
+                    targetVelocityX,
+                    accelerationRate * Time.deltaTime
                 );
-            }
+            if (isWallJumping)
+                isWallJumping = false;
         }
 
         if (!isGrounded)

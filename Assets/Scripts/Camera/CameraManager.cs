@@ -29,7 +29,6 @@ public class CameraManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         for (int i = 0; i < _allVirtualCameras.Length; i++)
         {

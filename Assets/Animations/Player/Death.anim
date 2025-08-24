@@ -185,7 +185,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.48333332
     functionName: Play
-    data: 
+    data: death
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

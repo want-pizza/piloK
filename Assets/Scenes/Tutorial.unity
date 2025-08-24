@@ -159,7 +159,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 1925eb7b3209f694ebbb96bffbdad876, type: 3}
+  - {fileID: 2100000, guid: 9f10c88d55ed97749a92f950d41dda50, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -539,6 +539,7 @@ GameObject:
   m_Component:
   - component: {fileID: 364021533}
   - component: {fileID: 364021534}
+  - component: {fileID: 364021535}
   m_Layer: 0
   m_Name: Cameras
   m_TagString: Untagged
@@ -582,6 +583,21 @@ MonoBehaviour:
   _fallYPanTime: 0.35
   _normYPanAmount: 1
   _fallSpeedYDampingChangeThreshold: -3
+--- !u!114 &364021535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364021532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0c7a1cb328f1c4aa6f2c9dea12e48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
+  defaultIrisTime: 1
+  defaultIrisSpeed: 2
 --- !u!1001 &370405225
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1447,7 +1463,6 @@ GameObject:
   - component: {fileID: 463888936}
   - component: {fileID: 463888939}
   - component: {fileID: 463888940}
-  - component: {fileID: 463888941}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1608,21 +1623,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &463888941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463888935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c0c7a1cb328f1c4aa6f2c9dea12e48f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: de7dea72f0f719245a86bfb37e3ce592, type: 2}
-  defaultIrisTime: 1
-  defaultIrisSpeed: 2
 --- !u!114 &583752001 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3411895000281563199, guid: 8bda2b229956441329797aa7bc0d180f, type: 3}
@@ -46362,11 +46362,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7603547560326371548, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 93.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7603547560326371548, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.21
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7603547560326371548, guid: 5f6c0c862a3ede44db78b22e40704c5e, type: 3}
       propertyPath: m_LocalPosition.z

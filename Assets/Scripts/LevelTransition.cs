@@ -22,6 +22,8 @@ public class LevelTransition : MonoBehaviour
         Debug.Log($"StartLoadScene - {value}");
         if (value)
         {
+            LevelTimerManager.Instance.StopTimer();
+            LevelTimerManager.Instance.HideTimer();
             movement.OnPausedChanged(true);
             movement.PlayLevelTransition(isLeft);
             listener.PlayIris();

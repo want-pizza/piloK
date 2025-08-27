@@ -107,9 +107,39 @@ public class PlayerMovement : MonoBehaviour, IMove
         rb = transform.GetComponent<Rigidbody2D>();
     }
 
+    private void SubscribeMovementInputs()
+    {
+        _inputActions.Player.Move.performed += SetHorizontalInput;
+        _inputActions.Player.Move.canceled += ctx => _inputX = 0;   //need own method
+        _inputActions.Player.Jump.started += HandleJump;
+        _inputActions.Player.Jump.canceled += ctx => ReleaseJump(); //need own method
+        _inputActions.Player.Dash.started += HandleDash;
+
+        movementInputsUnsubscribed = false;
+    }
+    private void UnsubscribeMovementInputs()
+    {
+        //if (movementInputsUnsubscribed) return;
+
+        movementInputsUnsubscribed = true;
+
+        _inputActions.Player.Move.performed -= SetHorizontalInput;
+        _inputActions.Player.Move.canceled -= ctx => _inputX = 0;   //need own method
+        _inputX = 0;
+        _inputActions.Player.Jump.started -= HandleJump;
+        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;    //need own method
+        _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
+        _inputActions.Player.Dash.started -= HandleDash;
+    }
+
     private void FixedUpdate()
     {
         HandleMovement();
+    }
+
+    private void SetHorizontalInput(InputAction.CallbackContext context)
+    {
+        _inputX = context.ReadValue<Vector2>().x;
     }
     private void OnSetIsGrounded(bool triggered)
     {
@@ -357,26 +387,6 @@ public class PlayerMovement : MonoBehaviour, IMove
         TimerEventBus.Unsubscribe(dashEventName, DisableDashing);
         PauseManager.OnPauseChanged -= OnPausedChanged;
     }
-    private void SubscribeMovementInputs()
-    {
-        _inputActions.Player.Move.performed += ctx => _inputX = ctx.ReadValue<Vector2>().x;
-        _inputActions.Player.Move.canceled += ctx => _inputX = 0;
-        _inputActions.Player.Jump.started += HandleJump;
-        _inputActions.Player.Jump.canceled += ctx => ReleaseJump();
-        _inputActions.Player.Dash.started += HandleDash;
-
-        movementInputsUnsubscribed = false;
-    }
-    private void UnsubscribeMovementInputs()
-    {
-        movementInputsUnsubscribed = true;
-
-        _inputActions.Player.Move.performed -= ctx => _inputX = ctx.ReadValue<Vector2>().x;
-        _inputActions.Player.Move.canceled -= ctx => _inputX = 0;
-        _inputActions.Player.Jump.started -= HandleJump;
-        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
-        _inputActions.Player.Dash.started -= HandleDash;
-    }
     public void OnPausedChanged(bool paused)
     {
         //Debug.Log($"PlayerMovement - OnPausedChanged({paused})");
@@ -387,6 +397,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     }
     public void PlayLevelTransition(bool isLeft)
     {
+        UnsubscribeMovementInputs();
         _inputX = isLeft ? -1f : 1f;
     }
 }

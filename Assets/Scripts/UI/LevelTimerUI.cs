@@ -7,6 +7,7 @@ public class LevelTimerUI : MonoBehaviour
     private int minutes;
     private int seconds;
     private int milliseconds;
+
     private void OnEnable()
     {
         LevelTimerManager.Instance.isHideField.OnValueChanged += ShowTimer;

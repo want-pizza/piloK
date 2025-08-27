@@ -24,7 +24,6 @@ public class LevelTransition : MonoBehaviour
         {
             LevelTimerManager.Instance.StopTimer();
             LevelTimerManager.Instance.HideTimer();
-            movement.OnPausedChanged(true);
             movement.PlayLevelTransition(isLeft);
             listener.PlayIris();
         }

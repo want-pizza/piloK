@@ -51,10 +51,6 @@ public class SpikeColliderBySprite : MonoBehaviour
                 SetCollider(0, new Vector2(0.4f, 0f), new Vector2(0.2f, 0.7f));
                 break;
 
-            case "SpikeTiles_7": // Низ
-                SetCollider(0, new Vector2(0f, -0.4f), new Vector2(0.7f, 0.2f));
-                break;
-
             case "SpikeTiles_5": // Низ + Ліво
                 SetCollider(0, new Vector2(0f, -0.4f), new Vector2(0.7f, 0.2f));
                 SetCollider(1, new Vector2(-0.4f, 0f), new Vector2(0.2f, 0.7f));
@@ -76,8 +72,7 @@ public class SpikeColliderBySprite : MonoBehaviour
                 break;
 
             default:
-                SetCollider(0, Vector2.zero, Vector2.one);
-                Debug.LogWarning($"unnoun sprite \"{spriteName}\"");
+                SetCollider(0, new Vector2(0f, -0.4f), new Vector2(0.7f, 0.2f));
                 break;
         }
     }

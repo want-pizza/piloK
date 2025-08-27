@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private float _inputX = 0f;
 
     private bool isPaused;
+    private bool movementInputsUnsubscribed = false;
 
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
@@ -222,8 +223,13 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         if (!stateMachine.CurrentState.CanMove())
         {
-            _inputX = 0f;
+            UnsubscribeMovementInputs();
         }
+        else if (movementInputsUnsubscribed)
+        {
+            SubscribeMovementInputs();
+        }
+
         if (isDashing)
         {
             HandleDashMovement();
@@ -358,9 +364,13 @@ public class PlayerMovement : MonoBehaviour, IMove
         _inputActions.Player.Jump.started += HandleJump;
         _inputActions.Player.Jump.canceled += ctx => ReleaseJump();
         _inputActions.Player.Dash.started += HandleDash;
+
+        movementInputsUnsubscribed = false;
     }
     private void UnsubscribeMovementInputs()
     {
+        movementInputsUnsubscribed = true;
+
         _inputActions.Player.Move.performed -= ctx => _inputX = ctx.ReadValue<Vector2>().x;
         _inputActions.Player.Move.canceled -= ctx => _inputX = 0;
         _inputActions.Player.Jump.started -= HandleJump;

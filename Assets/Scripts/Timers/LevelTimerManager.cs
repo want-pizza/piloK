@@ -9,7 +9,7 @@ public class LevelTimerManager : MonoBehaviour
     private float levelTimer;
     private bool isRunning;
     private bool hasStarted;
-    private static Field<bool> isHide = new Field<bool>(false);
+    private Field<bool> isHide = new Field<bool>(true);
 
     [SerializeField] private PlayerMovement player;
 
@@ -33,7 +33,8 @@ public class LevelTimerManager : MonoBehaviour
 
         if (!hasStarted && player != null && Mathf.Abs(player.FieldVelocityX.Value) > 0.01f)
         {
-            Debug.Log("StartTimer();");
+            //Debug.Log("StartTimer();");
+            ShowTimer();
             StartTimer();
             hasStarted = true;
         }
@@ -59,8 +60,8 @@ public class LevelTimerManager : MonoBehaviour
         levelTimer = 0f;
         isRunning = false;
     }
-    public void HideTimer() { Debug.Log("HideTimer()"); isHide.Value = true; }
-    public void ShowTimer() { Debug.Log($"ShowTimer(); {isHide.Value}"); isHide.Value = false;}
+    public void HideTimer() => isHide.Value = true; 
+    public void ShowTimer() =>  isHide.Value = false;
     public float GetTimer() => levelTimer;
     private void OnDestroy()
     {

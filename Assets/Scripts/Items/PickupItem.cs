@@ -61,7 +61,7 @@ public class PickupItem : MonoBehaviour, IPickupable
             if (added)
             {
                 if (itemData.PickupSound != null)
-                    AudioSource.PlayClipAtPoint(itemData.PickupSound, transform.position);
+                    AudioManager.Instance.PlaySFX(itemData.PickupSound);
 
                 Destroy(gameObject);
             }

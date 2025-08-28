@@ -7,6 +7,7 @@ public class PauseController : MonoBehaviour
 {
     [SerializeField] private SM_Window window;
     private PlayerAction _inputActions;
+    private static bool canPause = true;
     private void Awake()
     {
         _inputActions = InputManager.Instance.PlayerActions;
@@ -21,15 +22,22 @@ public class PauseController : MonoBehaviour
     }
     public void SetPause(bool pause)
     {
+        if (!canPause) return;
+
         PauseManager.InternalSetPause(pause);
     }
-
     public void TogglePause(InputAction.CallbackContext context)
     {
+        if (!canPause) return;
+
         bool valueToSend = !PauseManager.IsPaused;
 
         window.Toggle(valueToSend);
         PauseManager.InternalSetPause(valueToSend);
+    }
+    public static void SetCanPause(bool value)
+    {
+        canPause = value;
     }
 }
 public static class PauseManager

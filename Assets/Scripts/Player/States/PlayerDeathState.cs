@@ -16,5 +16,11 @@ public class PlayerDeathState : PlayerState
     {
         base.OnEnter();
         stateMachine.PlayAnimation(animationName);
+        PauseController.SetCanPause(false);
+    }
+    public override void OnExit()
+    {
+        base.OnExit();
+        PauseController.SetCanPause(true);
     }
 }

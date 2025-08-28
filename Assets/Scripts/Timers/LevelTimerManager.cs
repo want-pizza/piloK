@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class LevelTimerManager : MonoBehaviour
+public class LevelTimerManager : MonoBehaviour, ICanBePaused
 {
     public static LevelTimerManager Instance;
 
@@ -27,6 +27,17 @@ public class LevelTimerManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    private void OnEnable()
+    {
+        PauseManager.OnPauseChanged += OnPausedChanged;
+    }
+
+    private void OnDisable()
+    {
+        PauseManager.OnPauseChanged -= OnPausedChanged;
+    }
+
 
     private void Update()
     {
@@ -62,9 +73,18 @@ public class LevelTimerManager : MonoBehaviour
     }
     public void HideTimer() => isHide.Value = true; 
     public void ShowTimer() =>  isHide.Value = false;
-    public float GetTimer() => levelTimer;
+    public float GetTimer => levelTimer;
     private void OnDestroy()
     {
         Debug.Log("LevelTimerManager destroyed");
     }
+
+    public void OnPausedChanged(bool paused)
+    {
+        if (paused)
+            StopTimer();
+        else if (hasStarted)
+            StartTimer();
+    }
+
 }

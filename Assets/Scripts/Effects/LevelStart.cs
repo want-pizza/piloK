@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IrisAutoPlay : MonoBehaviour
+public class LevelStart : MonoBehaviour
 {
     [SerializeField] private IrisListener irisListener;
 
@@ -10,5 +10,6 @@ public class IrisAutoPlay : MonoBehaviour
         {
             irisListener.PlayIris();
         }
+        PauseController.SetCanPause(true);
     }
 }

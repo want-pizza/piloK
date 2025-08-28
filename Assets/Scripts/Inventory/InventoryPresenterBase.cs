@@ -193,6 +193,11 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
         return success;
     }
+    public virtual bool IsItemInInventory(BaseItemObject baseItem)
+    {
+        return inventory.IsEquipped(baseItem);
+    }
+
     protected virtual List<InteractionHint> GetInteractionHintsForSlot(int slotIndex)
     {
         var slot = inventory.InventorySlots[slotIndex];

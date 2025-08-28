@@ -72,7 +72,6 @@ public class PickupItem : MonoBehaviour, IPickupable
         }
     }
 
-
     public void OnPickup(PlayerInventoryPresenter inventory)
     {
         inventory.TryPickupItem(itemData, amount);

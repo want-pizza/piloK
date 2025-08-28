@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private float _inputX = 0f;
 
     private bool isPaused;
+    private bool isEndOfLevel;
     private bool movementInputsUnsubscribed = false;
 
     public float XVelocity { get => _velocityX; }
@@ -110,25 +111,26 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void SubscribeMovementInputs()
     {
         _inputActions.Player.Move.performed += SetHorizontalInput;
-        _inputActions.Player.Move.canceled += ctx => _inputX = 0;   //need own method
+        _inputActions.Player.Move.canceled += InputCanceled;
         _inputActions.Player.Jump.started += HandleJump;
-        _inputActions.Player.Jump.canceled += ctx => ReleaseJump(); //need own method
+        _inputActions.Player.Jump.canceled += ReleaseJump;
         _inputActions.Player.Dash.started += HandleDash;
 
         movementInputsUnsubscribed = false;
     }
+
+    private void InputCanceled(InputAction.CallbackContext context) => _inputX = 0;
+
     private void UnsubscribeMovementInputs()
     {
-        //if (movementInputsUnsubscribed) return;
+        if (movementInputsUnsubscribed) return;
 
         movementInputsUnsubscribed = true;
 
         _inputActions.Player.Move.performed -= SetHorizontalInput;
-        _inputActions.Player.Move.canceled -= ctx => _inputX = 0;   //need own method
-        _inputX = 0;
+        _inputActions.Player.Move.canceled -= InputCanceled;
         _inputActions.Player.Jump.started -= HandleJump;
-        _inputActions.Player.Jump.canceled -= ctx => _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;    //need own method
-        _velocityY.Value *= _velocityY > 0 ? 0.5f : 1f;
+        _inputActions.Player.Jump.canceled -= ReleaseJump;
         _inputActions.Player.Dash.started -= HandleDash;
     }
 
@@ -155,7 +157,7 @@ public class PlayerMovement : MonoBehaviour, IMove
                 HandleJump(new InputAction.CallbackContext());
 
                 if(!isJumpRelease)
-                    ReleaseJump();
+                    ReleaseJump(new InputAction.CallbackContext());
             }
             if (!isDashing)
             {
@@ -195,7 +197,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
         }
     }
-    public void ReleaseJump()
+    public void ReleaseJump(InputAction.CallbackContext context)
     {
         if (_velocityY > 0)
         {
@@ -255,7 +257,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         {
             UnsubscribeMovementInputs();
         }
-        else if (movementInputsUnsubscribed)
+        else if (movementInputsUnsubscribed && !isEndOfLevel)
         {
             SubscribeMovementInputs();
         }
@@ -399,5 +401,6 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         UnsubscribeMovementInputs();
         _inputX = isLeft ? -1f : 1f;
+        isEndOfLevel = true;
     }
 }

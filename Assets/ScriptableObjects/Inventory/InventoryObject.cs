@@ -92,6 +92,19 @@ public class InventoryObject : ScriptableObject
     {
         return InventorySlots[selectedIndex].IsEquipped;
     }
+
+    public bool IsEquipped(BaseItemObject baseItem)
+    {
+        foreach (var slot in InventorySlots)
+        {
+            Debug.Log($"{slot.Item?.DisplayName} = {baseItem.DisplayName}");
+            if( slot.Item == baseItem)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 [System.Serializable]

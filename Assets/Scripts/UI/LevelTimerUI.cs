@@ -4,9 +4,6 @@ using UnityEngine;
 public class LevelTimerUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
-    private int minutes;
-    private int seconds;
-    private int milliseconds;
 
     private void OnEnable()
     {
@@ -19,16 +16,27 @@ public class LevelTimerUI : MonoBehaviour
     }
     private void Update()
     {
-        float time = LevelTimerManager.Instance.GetTimer();
+        timerText.text = ConvertToStringWithMileseconds(LevelTimerManager.Instance.GetTimer); 
+    }
 
-        minutes = Mathf.FloorToInt(time / 60f);
+    public static string ConvertToStringWithMileseconds(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
 
-        seconds = Mathf.FloorToInt(time % 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
 
-        milliseconds = Mathf.FloorToInt((time * 100f) % 100f);
+        int milliseconds = Mathf.FloorToInt((time * 100f) % 100f);
 
-        timerText.text = $"{minutes:00}:{seconds:00}.{milliseconds:00}";
+        return $"{minutes:00}:{seconds:00}.{milliseconds:00}";
+    }
 
+    public static string ConvertToString(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+
+        int seconds = Mathf.FloorToInt(time % 60f);
+
+        return $"{minutes:00}:{seconds:00}";
     }
 
     public void ShowTimer(bool value)

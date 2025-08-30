@@ -5,7 +5,7 @@ using TMPro;
 [System.Serializable]
 public class StarEntry
 {
-    public int id;
+    public string name;
     public GameObject starObject;
 }
 
@@ -13,27 +13,27 @@ public class StarSelector : MonoBehaviour
 {
     [SerializeField] private List<StarEntry> starEntries = new List<StarEntry>();
 
-    private Dictionary<int, GameObject> stars;
+    private Dictionary<string, GameObject> stars;
 
     private void Awake()
     {
-        stars = new Dictionary<int, GameObject>();
+        stars = new Dictionary<string, GameObject>();
         foreach (var entry in starEntries)
         {
-            if (!stars.ContainsKey(entry.id))
-                stars.Add(entry.id, entry.starObject);
+            if (!stars.ContainsKey(entry.name))
+                stars.Add(entry.name, entry.starObject);
         }
     }
 
-    public void SetStar(int id, bool isActive, string label, Color textColor)
+    public void SetStar(string name, bool isActive, string label, Color textColor)
     {
-        if (!stars.ContainsKey(id))
+        if (!stars.ContainsKey(name))
         {
-            Debug.LogWarning($"Star with id {id} not found!");
+            Debug.LogWarning($"Star with id {name} not found!");
             return;
         }
 
-        var star = stars[id];
+        var star = stars[name];
 
         star.GetComponent<Animator>().SetBool("isActive", isActive);
 

@@ -9,13 +9,13 @@ public class CharacterFacing : MonoBehaviour
     [SerializeField] private CameraFollowObject cameraFollowObject;
     private IMove move;
     public bool IsFacingRight { get; private set; } = true;
-    public bool isFasingRight;
+    private bool isFañingRight;
     private float fallSpeedYDampingChangeThreshold;
 
     public void Awake()
     {
         move = rotate.parent.GetComponent<IMove>();
-        isFasingRight = IsFacingRight;
+        isFañingRight = IsFacingRight;
         fallSpeedYDampingChangeThreshold = CameraManager.Instance._fallSpeedYDampingChangeThreshold;
     }
     public void UpdateDirection()
@@ -23,7 +23,7 @@ public class CharacterFacing : MonoBehaviour
         if (move.XVelocity > 0.01f && !IsFacingRight)
         {
             IsFacingRight = true;
-            isFasingRight = IsFacingRight;
+            isFañingRight = IsFacingRight;
             rotate.eulerAngles = Vector3.zero;
             cameraFollowObject.CallTurn();
         }

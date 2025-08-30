@@ -5090,6 +5090,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   stateMachine: {fileID: 3686637558403484563}
+  characterFacing: {fileID: 5786988514693778511}
 --- !u!114 &9089082588652217062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5154,6 +5155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8398162290184574175}
   movement: {fileID: 7722336147454920206}
+  dashTrailController: {fileID: 5396600838987060530}
   inventoryPresenter: {fileID: 0}
   lifeCircle: {fileID: 5811855047759398656}
 --- !u!114 &2700398928418572655
@@ -15444,8 +15446,8 @@ GameObject:
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 5396600838987060530}
-  - component: {fileID: 1995765745116391926}
   - component: {fileID: 7903485292668822126}
+  - component: {fileID: 1995765745116391926}
   - component: {fileID: 8398162290184574175}
   m_Layer: 3
   m_Name: View
@@ -15538,7 +15540,6 @@ MonoBehaviour:
   rotate: {fileID: 6697282509430899999}
   isCameraFollow: 1
   cameraFollowObject: {fileID: 0}
-  isFasingRight: 0
 --- !u!114 &1229790909902120317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15567,6 +15568,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 7356404563222820784}
   playerSpriteRenderer: {fileID: 8706406994755025844}
+  characterFacing: {fileID: 5786988514693778511}
+--- !u!114 &7903485292668822126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560553715910160751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ccb67c9a1d136479085607145c9a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles:
+  - key: death
+    particle: {fileID: 5264411517350061766}
+  - key: dust
+    particle: {fileID: 6353374874813805893}
+  - key: step
+    particle: {fileID: 3269598856912698061}
 --- !u!114 &1995765745116391926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15613,25 +15634,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7903485292668822126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8560553715910160751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ccb67c9a1d136479085607145c9a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particles:
-  - key: death
-    particle: {fileID: 5264411517350061766}
-  - key: dust
-    particle: {fileID: 6353374874813805893}
-  - key: step
-    particle: {fileID: 3269598856912698061}
 --- !u!95 &8398162290184574175
 Animator:
   serializedVersion: 5
@@ -15843,7 +15845,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2

@@ -6,18 +6,20 @@ public class DashTrailController : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
+    [SerializeField] private CharacterFacing characterFacing;
 
     private Vector2 uvOffset;
     private Vector2 uvScale;
 
+    private ParticleSystemRenderer psRenderer;
     private Material particleMaterial;
 
     void Start()
     {
-        var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
-        particleMaterial = renderer.material;
+        psRenderer = particleSystem.GetComponent<ParticleSystemRenderer>();
+        particleMaterial = psRenderer.material;
     }
-    public void PlayPartickleSystem()
+    public void PlayParticleSystem()
     {
         Debug.Log("PlayPartickleSystem");
         UpdateUVParamsFromSprite(playerSpriteRenderer.sprite);
@@ -25,9 +27,12 @@ public class DashTrailController : MonoBehaviour
         particleMaterial.SetVector("_UVOffset", uvOffset);
         particleMaterial.SetVector("_UVScale", uvScale);
         //particleMaterial.SetFloat("_Transparency", 1f);
+
+        psRenderer.flip = new Vector3(characterFacing.IsFacingRight ? 0f : 1f, 0f, 0f);
+
         particleSystem.Play();
     }
-    public void StopPartickleSystem()
+    public void StopParticleSystem()
     {
         Debug.Log("StopPartickleSystem");
         particleSystem.Stop();

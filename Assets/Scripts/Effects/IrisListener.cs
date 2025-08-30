@@ -13,6 +13,7 @@ public class IrisListener : MonoBehaviour
     [SerializeField] private UnityEvent onDark;
     [SerializeField] private UnityEvent onComplete;
 
+    public Transform Target { get { return target; } set { target = value; } }
     public void PlayIris()
     {
         IrisPlayer.Instance.PlayIris(target,

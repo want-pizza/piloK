@@ -33,7 +33,7 @@ public class RunTransition : TransitionBase
 
     protected override void TryTransition()
     {
-        Debug.Log($"RunTransition, TryTransition(): velocityXField ={velocityXField.Value}; isGroundedField = {isGroundedField.Value}");
+        //Debug.Log($"RunTransition, TryTransition(): velocityXField ={velocityXField.Value}; isGroundedField = {isGroundedField.Value}");
         if (Mathf.Abs(velocityXField) >= 0.05f && isGroundedField && !isDashingField)
             stateMachine.ChangeState<PlayerRunState>();
     }

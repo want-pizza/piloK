@@ -42,8 +42,9 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private LayerMask groundLayer;
     private Rigidbody2D rb;
 
-    [Header("StateMachine")]
+    [Header("Other")]
     [SerializeField] private PlayerStateMachine stateMachine;
+    [SerializeField] private CharacterFacing characterFacing;
 
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
@@ -195,6 +196,9 @@ public class PlayerMovement : MonoBehaviour, IMove
             _velocityX.Value /= XScaling;
             _velocityY.Value /= YScaling;
             TimerManager.Instance.AddTimer(dashCooldownTime, dashCooldownEventName);
+
+            if(isGrounded)
+                wasOnGroundAfterDash = true;
         }
     }
     public void ReleaseJump(InputAction.CallbackContext context)
@@ -255,6 +259,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
         if (!stateMachine.CurrentState.CanMove())
         {
+            _inputX = 0f;
             UnsubscribeMovementInputs();
         }
         else if (movementInputsUnsubscribed && !isEndOfLevel)
@@ -351,7 +356,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             //Debug.Log($"dashInput - {input.x}; {input.y}");
             if (input == Vector2.zero)
             {
-                dashDirection = new Vector2(transform.localScale.x, 0).normalized;
+                dashDirection = characterFacing.IsFacingRight ? Vector2.right : Vector2.left;
             }
             else
             {

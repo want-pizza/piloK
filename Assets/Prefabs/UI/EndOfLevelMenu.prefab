@@ -511,6 +511,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8820209144200916250, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
   m_PrefabInstance: {fileID: 1374974771818976623}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7598497505832843386 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8820209144200916245, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+  m_PrefabInstance: {fileID: 1374974771818976623}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3326146529511041756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -624,6 +635,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2277100318859685135, guid: 660eab6c466ca4a36933ff61c0528595, type: 3}
       insertIndex: 1
+      addedObject: {fileID: 6861296326220644001}
+    - targetCorrespondingSourceObject: {fileID: 2277100318859685135, guid: 660eab6c466ca4a36933ff61c0528595, type: 3}
+      insertIndex: 2
       addedObject: {fileID: 4635849445103807130}
   m_SourcePrefab: {fileID: 100100000, guid: 660eab6c466ca4a36933ff61c0528595, type: 3}
 --- !u!1 &3580706992251471827 stripped
@@ -631,6 +645,25 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2277100318859685135, guid: 660eab6c466ca4a36933ff61c0528595, type: 3}
   m_PrefabInstance: {fileID: 3326146529511041756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6861296326220644001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3580706992251471827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd8632d9fe3ebf4cb282c59b269e0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonEntries:
+  - name: MainMenu
+    button: {fileID: 2968997933836548104}
+  - name: Restart
+    button: {fileID: 821935902664734419}
+  - name: NextLevel
+    button: {fileID: 7598497505832843386}
 --- !u!114 &4635849445103807130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,11 +677,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starEntries:
-  - id: 0
+  - name: Level
     starObject: {fileID: 453533448485706727}
-  - id: 1
+  - name: Secret
     starObject: {fileID: 5051224251813242787}
-  - id: 2
+  - name: Time
     starObject: {fileID: 152921218045031377}
 --- !u!224 &3580706992251471831 stripped
 RectTransform:
@@ -1061,6 +1094,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8820209144200916250, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
   m_PrefabInstance: {fileID: 6004515049359365405}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2968997933836548104 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8820209144200916245, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+  m_PrefabInstance: {fileID: 6004515049359365405}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6004650021558663481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1405,6 +1449,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+--- !u!114 &821935902664734419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8820209144200916245, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+  m_PrefabInstance: {fileID: 8146931622470998982}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &821935902664734428 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8820209144200916250, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}

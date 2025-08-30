@@ -31,7 +31,7 @@ public class FlyingUpwardTransition : TransitionBase
     }
     protected override void TryTransition()
     {
-        if (!isGrounded && velosityY > 0.1f)
+        if (!isGrounded && velosityY > 0.1f && !isDashing)
             stateMachine.ChangeState<PlayerFlyingUpwardState>();
     }
     private void OnIsGroundedChanged(bool isGrounded)

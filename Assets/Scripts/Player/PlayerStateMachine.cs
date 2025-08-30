@@ -10,6 +10,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     private Dictionary<Type, IState> states= new Dictionary<Type, IState>();
     [SerializeField] public Animator animator;
     [SerializeField] private PlayerMovement movement;
+    [SerializeField] private DashTrailController dashTrailController;
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
     [SerializeField] private PlayerLifeCircle lifeCircle;
     
@@ -119,7 +120,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         //states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
         states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, dashTransition, fallTransition, fallIdleTransition, fallRunTransition));
         states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition));
-        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
+        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", dashTrailController.StopParticleSystem, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
     }
     public bool IsVariableExist(string name)

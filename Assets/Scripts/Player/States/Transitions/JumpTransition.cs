@@ -6,12 +6,12 @@ public class JumpTransition : TransitionBase
 {
     Field<bool> isJumping;
 
-    private string boolValueName;
+    private string animationTransition;
     public JumpTransition(IStateMachine stateMachine, Field<bool> isJumping, Field<bool> isGrounded, string transitionAnimationName)
     {
         this.stateMachine = stateMachine;
         this.isJumping = isJumping;
-        this.boolValueName = transitionAnimationName;
+        this.animationTransition = transitionAnimationName;
     }
     public override void OnEnable()
     {
@@ -28,7 +28,7 @@ public class JumpTransition : TransitionBase
     {
         DebugFields();
         if (isJumping)
-            stateMachine.ChangeState<PlayerFlyingUpwardState>(boolValueName);
+            stateMachine.ChangeState<PlayerFlyingUpwardState>(animationTransition);
     }
     private void OnIsJumpingChanged(bool isJumping)
     {

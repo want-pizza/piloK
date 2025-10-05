@@ -4,11 +4,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerWeaponController : MonoBehaviour, IWeaponController
 {
+    [Header("One weapon settings")]
+    [SerializeField] private string[] attackAnimations;
+    [SerializeField] private float attackSpeed = 1f;
+    [SerializeField] private float damage = 10f;
+
+    private int attackIndex = 0;
+
     [SerializeField] private TriggerChecker groundChecker;
     [SerializeField] private CharacterFacing characterFacing;
 
     private PlayerAction inputActions;
 
+    [Header("Maybe will inplement later")]
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
     [SerializeField] private InventoryEquipEventChannelSO unequipEventChannel;
@@ -34,7 +42,33 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
                 currentWeaponBehavior.Attack(lookDirection);
             }
     }
+    private Vector2 GetAttackDirection()
+    {
+        Vector2 moveInput = inputActions.Player.Move.ReadValue<Vector2>();
+        Vector2 baseDir = characterFacing.IsFacingRight == true ? Vector2.right: Vector2.left;
 
+        if (moveInput.y > 0.5f)
+            return Vector2.up;
+        if (moveInput.y < -0.5f && !isGrounded())
+            return Vector2.down;
+
+        return baseDir;
+    }
+    public string GetNextAttackAnimation()
+    {
+        if (attackAnimations.Length == 0)
+            return "DefaultAttack";
+
+        string anim = attackAnimations[attackIndex];
+        attackIndex = (attackIndex + 1) % attackAnimations.Length;
+        return anim;
+    }
+    public float GetAttackSpeed() => attackSpeed;
+    public float GetDamage() => damage;
+    private bool isGrounded()
+    {
+        return groundChecker.IsTriggered;
+    }
     public void EquipWeapon(BaseItemObject weaponItem)
     {
         Debug.Log($"weaponItem equiped = {weaponItem.name}");
@@ -56,24 +90,6 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
         Destroy(currentWeaponBehavior.gameObject);
         //can add sound, play animation itp
     }
-    private Vector2 GetAttackDirection()
-    {
-        Vector2 moveInput = inputActions.Player.Move.ReadValue<Vector2>();
-        Vector2 baseDir = characterFacing.IsFacingRight == true ? Vector2.right: Vector2.left;
-
-        if (moveInput.y > 0.5f)
-            return Vector2.up;
-        if (moveInput.y < -0.5f && !isGrounded())
-            return Vector2.down;
-
-        return baseDir;
-    }
-
-    private bool isGrounded()
-    {
-        return groundChecker.IsTriggered;
-    }
-
     private void OnDisable()
     {
         inputActions.Player.Attack.started -= OnAttackPerformed;

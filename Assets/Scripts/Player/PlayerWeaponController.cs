@@ -16,7 +16,7 @@ public class PlayerWeaponController : MonoBehaviour, IWeaponController
 
     private PlayerAction inputActions;
 
-    [Header("Maybe will inplement later")]
+    [Header("Maybe will inplement later")] //no
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
     [SerializeField] private InventoryEquipEventChannelSO unequipEventChannel;

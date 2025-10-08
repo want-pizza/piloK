@@ -5103,6 +5103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11477111794ce7941af616db7d8c14ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackAnimations:
+  - SwordSwing1
+  - SwordSwing2
+  attackSpeed: 1
+  damage: 10
   groundChecker: {fileID: 2618801775323015131}
   characterFacing: {fileID: 5786988514693778511}
   weaponHolder: {fileID: 5366973757583604973}

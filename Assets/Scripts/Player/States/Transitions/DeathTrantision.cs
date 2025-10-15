@@ -4,6 +4,7 @@ public class DeathTrantision : TransitionBase
 {
     IStateMachine stateMachine;
     private Field<bool> isDead;
+    private bool isEnable = false;
 
     public DeathTrantision(IStateMachine stateMachine, Field<bool> isDead)
     {
@@ -14,10 +15,12 @@ public class DeathTrantision : TransitionBase
     public override void OnEnable()
     {
         isDead.OnValueChanged += OnIsDeadChanged;
+        isEnable = true;
     }
     public override void OnDisable()
     {
         isDead.OnValueChanged -= OnIsDeadChanged;
+        isEnable = false;
     }
 
     protected override void TryTransition()

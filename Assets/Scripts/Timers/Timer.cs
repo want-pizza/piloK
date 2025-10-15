@@ -15,7 +15,7 @@ public class Timer
 
         if (timeLeft <= 0)
         {
-            TimerEventBus.Publish(eventName);
+            EventBus.Publish(eventName);
             return true;
         }
         return false;

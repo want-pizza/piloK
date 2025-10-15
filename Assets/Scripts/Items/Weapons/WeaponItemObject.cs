@@ -4,5 +4,5 @@ using UnityEngine;
 public class WeaponItemObject : ItemStatData
 {
     public GameObject weaponBehaviorPrefab;
-    public AnimationClip[] attackAnimations;
+    public string[] attackAnimations;
 }

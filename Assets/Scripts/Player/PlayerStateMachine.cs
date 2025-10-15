@@ -6,24 +6,24 @@ using UnityEngine.UIElements;
 
 public class PlayerStateMachine : MonoBehaviour, IStateMachine
 {
-    private PlayerState currentState;
+    private Field<PlayerState> currentState = new Field<PlayerState>();
     private Dictionary<Type, IState> states= new Dictionary<Type, IState>();
     [SerializeField] public Animator animator;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private DashTrailController dashTrailController;
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
     [SerializeField] private PlayerLifeCircle lifeCircle;
-    
-    public PlayerState CurrentState { get { return currentState; } }
+    [SerializeField] private PlayerCombat playerCombat;
+    public Field<PlayerState> CurrentState => currentState;
 
     public void ChangeState<T>() where T : IState
     {
-        currentState.OnExit();
+        currentState.Value.OnExit();
 
         if (states.TryGetValue(typeof(T), out IState newState))
         {
-            currentState = (PlayerState)newState;
-            currentState.OnEnter();
+            currentState.Value = (PlayerState)newState;
+            currentState.Value.OnEnter();
             Debug.Log($"current state - {typeof(T)}");
         }
         else
@@ -33,12 +33,12 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     }
     public void ChangeState<T>(string boolVariableName) where T : IState
     {
-        currentState.OnExit();
+        currentState.Value.OnExit();
 
         if (states.TryGetValue(typeof(T), out IState newState))
         {
-            currentState = (PlayerState)newState;
-            currentState.OnEnter(boolVariableName);
+            currentState.Value = (PlayerState)newState;
+            currentState.Value.OnEnter(boolVariableName);
             Debug.Log($"current state - {typeof(T)}");
         }
         else
@@ -55,8 +55,8 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
 
     private void EnterFirstState()
     {
-        currentState = (PlayerState)states[typeof(PlayerIdleState)];
-        currentState.OnEnter();
+        currentState.Value = (PlayerState)states[typeof(PlayerIdleState)];
+        currentState.Value.OnEnter();
     }
 
     private void CreateStatesAndTransitions()
@@ -114,13 +114,17 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         TransitionBase deathTransition = new DeathTrantision(
                             this,
                             lifeCircle.FieldIsDead);
+        TransitionBase attackTransition = new AttackTransition(
+                            this,
+                            playerCombat.IsAttacking);
 
-        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
-        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition));
+        states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition, attackTransition));
+        states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition, attackTransition));
         //states.Add(typeof(PlayerWallSlideState), new PlayerWallSlideState(this, "WallSlide", idleTransition));
-        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, dashTransition, fallTransition, fallIdleTransition, fallRunTransition));
-        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition));
-        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", dashTrailController.StopParticleSystem, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
+        states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, dashTransition, fallTransition, fallIdleTransition, fallRunTransition, attackTransition));
+        states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition, attackTransition));
+        states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", dashTrailController.StopParticleSystem, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition, attackTransition));
+        states.Add(typeof(PlayerAttackState), new PlayerAttackState(this, playerCombat.CurrentAttackAnim, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
     }
     public bool IsVariableExist(string name)
@@ -143,7 +147,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
     }
     public void OnTransitionAnimationEnd()
     {
-        currentState.TransitionAnimationEnded();
+        currentState.Value.TransitionAnimationEnded();
     }
     public void StartRespawnEffect()
     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Rock : WeaponBehavior
 {
     public override void Equip(GameObject player)

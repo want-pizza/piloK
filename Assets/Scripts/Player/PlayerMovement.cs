@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private float dashTime = 0.2f;
     [SerializeField] private float XScaling = 2f;
     [SerializeField] private float YScaling = 10f;
+    [SerializeField] private CharacterFacing characterFacing;
 
     [Header("Collision")]
     [SerializeField] private TriggerChecker groundChecker;
@@ -41,10 +42,6 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private TriggerChecker ceilingChecker;
     [SerializeField] private LayerMask groundLayer;
     private Rigidbody2D rb;
-
-    [Header("Other")]
-    [SerializeField] private PlayerStateMachine stateMachine;
-    [SerializeField] private CharacterFacing characterFacing;
 
     private bool wasOnGroundAfterDash = true;
     private string dashEventName = "dashEndTimer";
@@ -70,6 +67,8 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private PlayerAction _inputActions;
     private float _inputX = 0f;
+
+    private Field<PlayerState> currentState;
 
     private bool isPaused;
     private bool isEndOfLevel;
@@ -99,18 +98,21 @@ public class PlayerMovement : MonoBehaviour, IMove
         ceilingChecker.OnTriggeredStateChanged += triggered => isTouchingCeiling = triggered;
 
         //EventBus
-        TimerEventBus.Subscribe(coyoteEventName, DisableCoyoteTime);
-        TimerEventBus.Subscribe(jumpBufferEventName, DisableJumpBufferTimming);
-        TimerEventBus.Subscribe(dashCooldownEventName, DisableDashCooldown);
-        TimerEventBus.Subscribe(dashEventName, DisableDashing);
+        EventBus.Subscribe(coyoteEventName, DisableCoyoteTime);
+        EventBus.Subscribe(jumpBufferEventName, DisableJumpBufferTimming);
+        EventBus.Subscribe(dashCooldownEventName, DisableDashCooldown);
+        EventBus.Subscribe(dashEventName, DisableDashing);
 
         PauseManager.OnPauseChanged += OnPausedChanged;
 
         rb = transform.GetComponent<Rigidbody2D>();
+        currentState = transform.GetComponent<PlayerStateMachine>().CurrentState;
     }
 
     private void SubscribeMovementInputs()
     {
+        Debug.Log("subscribe");
+
         _inputActions.Player.Move.performed += SetHorizontalInput;
         _inputActions.Player.Move.canceled += InputCanceled;
         _inputActions.Player.Jump.started += HandleJump;
@@ -124,6 +126,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void UnsubscribeMovementInputs()
     {
+        Debug.Log("unsubscribe");
         if (movementInputsUnsubscribed) return;
 
         movementInputsUnsubscribed = true;
@@ -257,8 +260,9 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         if (isPaused) return;
 
-        if (!stateMachine.CurrentState.CanMove())
+        if (!currentState.Value.CanMove())
         {
+            //Debug.Log($"currentState.Value = {currentState.Value.ToString()}");
             _inputX = 0f;
             UnsubscribeMovementInputs();
         }
@@ -317,7 +321,6 @@ public class PlayerMovement : MonoBehaviour, IMove
     private void ApplyVelocity(Vector3 translation)
     {
         rb.MovePosition(transform.position + translation);
-        //transform.Translate( translation );
     }
 
     private void HandleDashMovement()
@@ -388,10 +391,10 @@ public class PlayerMovement : MonoBehaviour, IMove
         leftWallChecker.OnTriggeredStateChanged -= triggered => isTouchingLeftWall.Value = triggered;
         rightWallChecker.OnTriggeredStateChanged -= triggered => isTouchingRightWall.Value = triggered;
 
-        TimerEventBus.Unsubscribe(coyoteEventName, DisableCoyoteTime);
-        TimerEventBus.Unsubscribe(jumpBufferEventName, DisableJumpBufferTimming);
-        TimerEventBus.Unsubscribe(dashCooldownEventName, DisableDashCooldown);
-        TimerEventBus.Unsubscribe(dashEventName, DisableDashing);
+        EventBus.Unsubscribe(coyoteEventName, DisableCoyoteTime);
+        EventBus.Unsubscribe(jumpBufferEventName, DisableJumpBufferTimming);
+        EventBus.Unsubscribe(dashCooldownEventName, DisableDashCooldown);
+        EventBus.Unsubscribe(dashEventName, DisableDashing);
         PauseManager.OnPauseChanged -= OnPausedChanged;
     }
     public void OnPausedChanged(bool paused)

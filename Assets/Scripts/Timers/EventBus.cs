@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public static class TimerEventBus
+public static class EventBus
 {
     private static Dictionary<string, Action> eventListeners = new Dictionary<string, Action>();
 

@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "Events/AttackEventChannel")]
+[CreateAssetMenu(menuName = "Events/Attack Event Channel")]
 public class AttackEventChannel : ScriptableObject
 {
-    public UnityAction<int> OnAttackTriggered;
+    public UnityAction<string> OnAttackEvent;
 
-    public void RaiseEvent(int comboIndex)
+    public void RaiseEvent(string eventName)
     {
-        OnAttackTriggered?.Invoke(comboIndex);
+        OnAttackEvent?.Invoke(eventName);
     }
 }

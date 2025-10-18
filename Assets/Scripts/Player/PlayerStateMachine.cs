@@ -117,6 +117,9 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         TransitionBase attackTransition = new AttackTransition(
                             this,
                             playerCombat.IsAttacking);
+        TransitionBase attackExitTransition = new AttackExitTransition(
+                            this,
+                            playerCombat.IsAttacking);
 
         states.Add(typeof(PlayerIdleState), new PlayerIdleState(this, "Idle", deathTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition, attackTransition));
         states.Add(typeof(PlayerRunState), new PlayerRunState(this, movement.FieldVelocityX, "Run", deathTransition, jumpTransition, fallTransition, idleTransition, dashTransition, attackTransition));
@@ -124,8 +127,10 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         states.Add(typeof(PlayerFlyingUpwardState), new PlayerFlyingUpwardState(this, "FlyingUpward", deathTransition, dashTransition, fallTransition, fallIdleTransition, fallRunTransition, attackTransition));
         states.Add(typeof(PlayerFallState), new PlayerFallState(this, "Falling", deathTransition, fallIdleTransition, fallRunTransition, dashTransition, attackTransition));
         states.Add(typeof(PlayerDashState), new PlayerDashState(this, "Dash", dashTrailController.StopParticleSystem, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition, attackTransition));
-        states.Add(typeof(PlayerAttackState), new PlayerAttackState(this, playerCombat.CurrentAttackAnim, deathTransition, fallTransition, idleTransition, runTransition, flyingUpwardTransition));
+        states.Add(typeof(PlayerAttackState), new PlayerAttackState(this, playerCombat.CurrentAttackAnim, deathTransition, attackExitTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
+
+        states.Add(typeof(PlayerAnyState), new PlayerAnyState(this, deathTransition, attackTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
     }
     public bool IsVariableExist(string name)
     {

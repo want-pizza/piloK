@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackTransition : TransitionBase
+public class AttackExitTransition : TransitionBase
 {
     private Field<bool> isAttacking;
 
-    public AttackTransition(IStateMachine stateMachine, Field<bool> isAttacking)
+    public AttackExitTransition(IStateMachine stateMachine, Field<bool> isAttacking)
     {
         this.stateMachine = stateMachine;
         this.isAttacking = isAttacking;
@@ -23,8 +23,8 @@ public class AttackTransition : TransitionBase
 
     protected override void TryTransition()
     {
-        if(isAttacking.Value)
-            stateMachine.ChangeState<PlayerAttackState>();
+        if (!isAttacking.Value)
+            stateMachine.ChangeState<PlayerAnyState>();
     }
 
     private void OnIsAttackingChanged(bool value)

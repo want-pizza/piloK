@@ -13,13 +13,8 @@ public class PlayerAttackState : PlayerState
 
     public override void OnEnter()
     {
-        foreach (var transition in this.transitions) 
-        {
-            if(transition is DeathTrantision)
-            {
-                transition.OnEnable();
-            }
-        }
+        base.OnEnter();
+
         Debug.Log($"animationName = {currentAttackAnim.Value}");
         animationName = currentAttackAnim.Value;
         SelectAnimation();

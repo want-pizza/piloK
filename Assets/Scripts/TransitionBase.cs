@@ -5,7 +5,7 @@ public abstract class TransitionBase: ICanBePaused
 {
     private bool isPaused = false;
     protected IStateMachine stateMachine;
-    public abstract void OnEnable();
+    public virtual void OnEnable() => TryTransition();
     public abstract void OnDisable();
     protected abstract void TryTransition();
     protected virtual void DebugFields() { }

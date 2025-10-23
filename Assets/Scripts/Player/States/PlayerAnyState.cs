@@ -5,4 +5,8 @@ public class PlayerAnyState : PlayerState
         this.stateMachine = machine;
         this.transitions = transitions;
     }
+    public override void OnEnter()
+    {
+        base.OnEnter();
+    }
 }

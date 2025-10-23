@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08838fa9baff0e94fbf0cdd9e47f5b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackEventChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
   weaponController: {fileID: 3721851538808890121}
   facing: {fileID: 5786988514693778511}
   comboResetTime: 0.4
@@ -115,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ee0314b2745f64983def335211f475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
   hitboxPrefab: {fileID: 6841169715495415741, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
   attackOrigin: {fileID: 1597005390721957803}
   hitboxDistance: 0.8
@@ -15534,6 +15536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6697282509430899999}
   - component: {fileID: 8706406994755025844}
+  - component: {fileID: 1328784189482538594}
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 5396600838987060530}
@@ -15616,6 +15619,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1328784189482538594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560553715910160751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cf453fd80b96c4fa5a0b6cfea0a59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
 --- !u!114 &5786988514693778511
 MonoBehaviour:
   m_ObjectHideFlags: 0

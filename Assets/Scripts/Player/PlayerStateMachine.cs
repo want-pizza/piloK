@@ -130,7 +130,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         states.Add(typeof(PlayerAttackState), new PlayerAttackState(this, playerCombat.CurrentAttackAnim, deathTransition, attackExitTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
 
-        states.Add(typeof(PlayerAnyState), new PlayerAnyState(this, deathTransition, attackTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
+        states.Add(typeof(PlayerAnyState), new PlayerAnyState(this, deathTransition, idleTransition, attackTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
     }
     public bool IsVariableExist(string name)
     {

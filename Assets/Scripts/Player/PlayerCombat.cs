@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private AttackEventChannel attackEventChannel;
     [SerializeField] private WeaponController weaponController;
 
     [SerializeField] private CharacterFacing facing;
@@ -32,12 +34,19 @@ public class PlayerCombat : MonoBehaviour
     {
         playerActions.Attack.performed += OnAttackPerformed;
         EventBus.Subscribe("AttackCooldownEnd", OnCooldownEnd);
+        attackEventChannel.OnAttackEnded += OnAttackEnded;
     }
 
     private void OnDisable()
     {
         playerActions.Attack.performed -= OnAttackPerformed;
         EventBus.Unsubscribe("AttackCooldownEnd", OnCooldownEnd);
+        attackEventChannel.OnAttackEnded -= OnAttackEnded;
+    }
+
+    private void OnAttackEnded()
+    {
+        isAttacking.Value = false;
     }
 
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
@@ -73,8 +82,6 @@ public class PlayerCombat : MonoBehaviour
 
         isCooldown = true;
         TimerManager.Instance.AddTimer(attackCooldown, "AttackCooldownEnd");
-
-        weaponController.TryAttack(dir, comboStep);
     }
 
     private void OnCooldownEnd()

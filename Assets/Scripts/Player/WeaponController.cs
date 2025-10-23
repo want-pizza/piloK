@@ -3,6 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class WeaponController : MonoBehaviour
 {
+    [SerializeField] private AttackEventChannel attackChannel;
+
+    private void OnEnable()
+    {
+        attackChannel.OnSwingStart += OnSwingStartReceived;
+        attackChannel.OnSwingEnd += DestroyHitBox;
+    }
+
+    private void OnDisable()
+    {
+        attackChannel.OnSwingStart -= OnSwingStartReceived;
+        attackChannel.OnSwingEnd -= DestroyHitBox;
+    }
+
     [Header("Hitbox")]
     [SerializeField] private GameObject hitboxPrefab;
     [SerializeField] private Transform attackOrigin;
@@ -12,35 +26,26 @@ public class WeaponController : MonoBehaviour
     private Animator animator;
     private Vector2 lastDir = Vector2.right;
 
+    private GameObject hitbox;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
-    public void TryAttack(Vector2 dir, int comboStep)
+    public void OnSwingStartReceived(string name)
     {
-        lastDir = dir;
-        string trigger = DirectionToAnim(dir, comboStep);
-        //animator.SetTrigger(trigger);
+        animator.Play(name);
+        SpawnHitbox();
     }
-
-    // Animation Event
     public void SpawnHitbox()
     {
         Vector3 pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
         float angle = Mathf.Atan2(lastDir.y, lastDir.x) * Mathf.Rad2Deg;
-        var hitbox = Instantiate(hitboxPrefab, pos, Quaternion.Euler(0f, 0f, angle));
-        Destroy(hitbox, hitboxLifetime);
+        hitbox = Instantiate(hitboxPrefab, pos, Quaternion.Euler(0f, 0f, angle));
     }
-
-    private string DirectionToAnim(Vector2 dir, int comboStep)
+    public void DestroyHitBox()
     {
-        string comboSuffix = comboStep > 1 ? "2" : "1";
-
-        if (Vector2.Dot(dir, Vector2.up) > 0.7f) return $"Attack_Up";
-        if (Vector2.Dot(dir, Vector2.down) > 0.7f) return $"Attack_Down";
-        if (Vector2.Dot(dir, Vector2.right) > 0.7f) return $"Attack_Right{comboSuffix}";
-        if (Vector2.Dot(dir, Vector2.left) > 0.7f) return $"Attack_Left{comboSuffix}";
-        return $"Attack_Right{comboSuffix}";
+        Destroy(hitbox);
     }
 }

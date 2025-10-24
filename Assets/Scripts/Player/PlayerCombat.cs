@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : MonoBehaviour, ICanBePaused
 {
     [Header("References")]
     [SerializeField] private AttackEventChannel attackEventChannel;
@@ -19,11 +19,13 @@ public class PlayerCombat : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float comboResetTime = 0.5f;
-    [SerializeField] private float attackCooldown = 0.25f;
+    [SerializeField] private float attackCooldown = 0.3f;
 
-    private int comboStep = 0;
+    private int comboStep = 1;
     private float lastAttackTime;
     private bool isCooldown = false;
+
+    private bool isPaused = false;
 
     private void Awake()
     {
@@ -64,19 +66,12 @@ public class PlayerCombat : MonoBehaviour
 
     private bool CanAttack() 
     {
-        return !isAttacking && !isCooldown;
+        return !isAttacking && !isCooldown && !isPaused;
     }
 
     private void StartAttack(Vector2 dir)
     {
-        if (Time.time - lastAttackTime > comboResetTime)
-            comboStep = 1;
-        else
-            comboStep = Mathf.Min(comboStep + 1, 2);
-
-        lastAttackTime = Time.time;
-
-        string animName = $"SwordSwing{comboStep}";
+        string animName = $"SwordSwing{CalculateCombo()}";
         currentAttackAnim.Value = animName;
         isAttacking.Value = true;
 
@@ -86,6 +81,23 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnCooldownEnd()
     {
+        lastAttackTime = Time.time;
+
         isCooldown = false;
+        
+        //need fix
+        //isAttacking.Value = false;
+    }
+    private int CalculateCombo()
+    {
+        if (Time.time - lastAttackTime > comboResetTime)
+            return comboStep = 1;
+        else
+            return comboStep = comboStep % 2 + 1;
+    }
+
+    public void OnPausedChanged(bool paused)
+    {
+        isPaused = paused;
     }
 }

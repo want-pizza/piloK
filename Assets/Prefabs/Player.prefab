@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 570419344721115180}
   - component: {fileID: 4726670507471356806}
   - component: {fileID: 3721851538808890121}
+  - component: {fileID: 8907787059757408537}
   - component: {fileID: 596276092713345266}
   m_Layer: 3
   m_Name: WeaponController
@@ -29,11 +30,12 @@ Transform:
   m_GameObject: {fileID: 13093803014478715}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6, y: -0.100000024, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6697282509430899999}
+  m_Children:
+  - {fileID: 9205683683113003729}
+  m_Father: {fileID: 7603547560326371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &570419344721115180
 SpriteRenderer:
@@ -102,8 +104,8 @@ MonoBehaviour:
   attackEventChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
   weaponController: {fileID: 3721851538808890121}
   facing: {fileID: 5786988514693778511}
-  comboResetTime: 0.4
-  attackCooldown: 0.25
+  comboResetTime: 0.2
+  attackCooldown: 0.3
 --- !u!114 &3721851538808890121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,10 +119,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
+  characterFacing: {fileID: 5786988514693778511}
   hitboxPrefab: {fileID: 6841169715495415741, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
-  attackOrigin: {fileID: 1597005390721957803}
-  hitboxDistance: 0.8
+  attackOrigin: {fileID: 9205683683113003729}
+  hitboxDistance: 1.5
   hitboxLifetime: 0.15
+--- !u!114 &8907787059757408537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13093803014478715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74a7de920b780a458b1ecb1ffc19e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 3a30abc304276154980ef81b050e4b67, type: 3}
+  - {fileID: 8300000, guid: 803f39ef272e1b14b92e34709a5498e1, type: 3}
+  eventChannel: {fileID: 11400000, guid: 9656369abdc210f41a2526ec19b8ba34, type: 2}
 --- !u!95 &596276092713345266
 Animator:
   serializedVersion: 5
@@ -235,6 +254,37 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!1 &1116498693129940567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9205683683113003729}
+  m_Layer: 3
+  m_Name: AttackOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9205683683113003729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116498693129940567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.29, y: -0.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1597005390721957803}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2593425983085621083
 GameObject:
   m_ObjectHideFlags: 0
@@ -5191,6 +5241,7 @@ Transform:
   - {fileID: 3385131912563439921}
   - {fileID: 2362254328206293081}
   - {fileID: 6697282509430899999}
+  - {fileID: 1597005390721957803}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7722336147454920206
@@ -15564,7 +15615,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1074105391374468041}
-  - {fileID: 1597005390721957803}
   m_Father: {fileID: 7603547560326371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8706406994755025844

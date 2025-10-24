@@ -1,9 +1,11 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(Animator))]
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] private AttackEventChannel attackChannel;
+    [SerializeField] private CharacterFacing characterFacing;
 
     private void OnEnable()
     {
@@ -20,7 +22,7 @@ public class WeaponController : MonoBehaviour
     [Header("Hitbox")]
     [SerializeField] private GameObject hitboxPrefab;
     [SerializeField] private Transform attackOrigin;
-    [SerializeField] private float hitboxDistance = 0.8f;
+    [SerializeField] private float hitboxDistance = 1.5f;
     [SerializeField] private float hitboxLifetime = 0.15f;
 
     private Animator animator;
@@ -35,14 +37,38 @@ public class WeaponController : MonoBehaviour
 
     public void OnSwingStartReceived(string name)
     {
+        if (characterFacing.IsFacingRight)
+        {
+            transform.rotation = Quaternion.identity;
+            lastDir = Vector2.right;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 180f, 0);
+            lastDir = Vector2.left;
+        }
         animator.Play(name);
-        SpawnHitbox();
+        
+        SpawnHitbox(name);
     }
-    public void SpawnHitbox()
+    private void SpawnHitbox(string name)
     {
-        Vector3 pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
-        float angle = Mathf.Atan2(lastDir.y, lastDir.x) * Mathf.Rad2Deg;
-        hitbox = Instantiate(hitboxPrefab, pos, Quaternion.Euler(0f, 0f, angle));
+        Vector3 pos = Vector3.zero;
+
+        if (name == "SwingUp")
+        {
+            pos = attackOrigin.position + Vector3.up * hitboxDistance;
+        }
+        else if (name == "SwingDown")
+        {
+            pos = attackOrigin.position + Vector3.down * hitboxDistance;
+        }
+        else
+        {
+           pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
+            
+        }
+        hitbox = Instantiate(hitboxPrefab, pos, Quaternion.identity);
     }
     public void DestroyHitBox()
     {

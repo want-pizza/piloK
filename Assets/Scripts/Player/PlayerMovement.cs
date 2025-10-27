@@ -65,6 +65,10 @@ public class PlayerMovement : MonoBehaviour, IMove
     private Field<bool> isJumping = new Field<bool>(false);
     private bool isWallJumping = false;
 
+    private string efficiencyEventName = "efficitcy";
+    private bool isEfficiency = false;
+    private float efficiencyTime = 0.15f;
+
     private PlayerAction _inputActions;
     private float _inputX = 0f;
 
@@ -73,6 +77,8 @@ public class PlayerMovement : MonoBehaviour, IMove
     private bool isPaused;
     private bool isEndOfLevel;
     private bool movementInputsUnsubscribed = false;
+    private Vector3 efficiencyDirection;
+    private float efficiencyPower;
 
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
@@ -102,6 +108,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         EventBus.Subscribe(jumpBufferEventName, DisableJumpBufferTimming);
         EventBus.Subscribe(dashCooldownEventName, DisableDashCooldown);
         EventBus.Subscribe(dashEventName, DisableDashing);
+        EventBus.Subscribe(efficiencyEventName, DisableEfficiencyVelocity);
 
         PauseManager.OnPauseChanged += OnPausedChanged;
 
@@ -271,6 +278,13 @@ public class PlayerMovement : MonoBehaviour, IMove
             SubscribeMovementInputs();
         }
 
+        if (isEfficiency)
+        {
+            CalculateVelocityY();
+            ApplyVelocity(new Vector3(efficiencyDirection.x * efficiencyPower, efficiencyDirection.y * efficiencyPower + _velocityY)  * Time.deltaTime);
+            return;
+        }
+
         if (isDashing)
         {
             HandleDashMovement();
@@ -296,6 +310,12 @@ public class PlayerMovement : MonoBehaviour, IMove
                 isWallJumping = false;
         }
 
+        CalculateVelocityY();
+        ApplyVelocity(new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime * 2);
+    }
+
+    private void CalculateVelocityY()
+    {
         if (!isGrounded)
         {
             _velocityY.Value = Mathf.MoveTowards(
@@ -314,8 +334,6 @@ public class PlayerMovement : MonoBehaviour, IMove
         {
             _velocityY.Value = 0;
         }
-
-        ApplyVelocity(new Vector3(_velocityX, _velocityY, 0) * Time.deltaTime * 2);
     }
 
     private void ApplyVelocity(Vector3 translation)
@@ -382,6 +400,23 @@ public class PlayerMovement : MonoBehaviour, IMove
             return true;
 
         return false;
+    }
+
+    public void TakeEfficiency(Vector2 direction, float power)
+    {
+        if (direction == Vector2.down)
+            rb.velocity = Vector3.zero;
+
+        TimerManager.Instance.AddTimer(efficiencyTime, efficiencyEventName);
+        efficiencyDirection = -direction;
+        efficiencyPower = power;
+        isEfficiency = true;
+    }
+    private void DisableEfficiencyVelocity()
+    {
+        isEfficiency = false;
+        _velocityX.Value /= XScaling;
+        _velocityY.Value /= YScaling;
     }
 
     private void OnDisable()

@@ -27,6 +27,7 @@ public class WeaponController : MonoBehaviour
 
     private Animator animator;
     private Vector2 lastDir = Vector2.right;
+    public Vector2 LastDir => lastDir;
 
     private GameObject hitbox;
 
@@ -57,18 +58,21 @@ public class WeaponController : MonoBehaviour
 
         if (name == "SwingUp")
         {
+            lastDir = Vector2.up;
             pos = attackOrigin.position + Vector3.up * hitboxDistance;
         }
         else if (name == "SwingDown")
         {
+            lastDir = Vector2.down;
             pos = attackOrigin.position + Vector3.down * hitboxDistance;
         }
         else
         {
-           pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
-            
+            pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
+
         }
         hitbox = Instantiate(hitboxPrefab, pos, Quaternion.identity);
+        hitbox.GetComponent<HitHandler>().Init(this);
     }
     public void DestroyHitBox()
     {

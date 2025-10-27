@@ -7,16 +7,28 @@ public class CharacterFacing : MonoBehaviour
     [SerializeField] Transform rotate;
     [SerializeField] private bool isCameraFollow = false;
     [SerializeField] private CameraFollowObject cameraFollowObject;
+    [SerializeField] private AttackEventChannel eventChannel;
     private IMove move;
     public bool IsFacingRight { get; private set; } = true;
     private bool isFañingRight;
     private float fallSpeedYDampingChangeThreshold;
+    private bool blockFacing = false;
 
     public void Awake()
     {
         move = rotate.parent.GetComponent<IMove>();
         isFañingRight = IsFacingRight;
         fallSpeedYDampingChangeThreshold = CameraManager.Instance._fallSpeedYDampingChangeThreshold;
+    }
+    private void OnEnable()
+    {
+        eventChannel.OnAttackTriggered += TurnOnBlockFacing;
+        eventChannel.OnAttackEnded += TurnOffBlockFacing;
+    }
+    private void OnDisable()
+    {
+        eventChannel.OnAttackTriggered -= TurnOnBlockFacing;
+        eventChannel.OnAttackEnded -= TurnOffBlockFacing;
     }
     public void UpdateDirection()
     {
@@ -40,7 +52,8 @@ public class CharacterFacing : MonoBehaviour
         if (isCameraFollow)
         {
             UpdateYCameraDamping();
-            UpdateDirection();
+            if (!blockFacing)
+                UpdateDirection();
         }
 
     }
@@ -63,5 +76,15 @@ public class CharacterFacing : MonoBehaviour
             CameraManager.Instance.LerpedFromPlayerFalling = false;
             CameraManager.Instance.LerpYDamping(false);
         }
+    }
+
+    private void TurnOnBlockFacing()
+    {
+        Debug.Log("TurnOnBlockFacing");
+        blockFacing = true;
+    }
+    private void TurnOffBlockFacing()
+    {
+        blockFacing = false;
     }
 }

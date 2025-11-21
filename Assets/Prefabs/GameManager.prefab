@@ -157,6 +157,7 @@ MonoBehaviour:
   musicGroup: {fileID: -6954739390745750242, guid: b259d8e91a22f50449d7ea9d7232f2ed, type: 2}
   sfxGroup: {fileID: -6500790669223334841, guid: b259d8e91a22f50449d7ea9d7232f2ed, type: 2}
   audioClip: {fileID: 8300000, guid: 0822f99f752c57f459a5c9e2d5e7b6af, type: 3}
+  sfxPoolSize: 10
 --- !u!114 &5265990308256581986
 MonoBehaviour:
   m_ObjectHideFlags: 0

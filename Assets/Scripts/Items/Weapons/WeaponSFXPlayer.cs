@@ -25,6 +25,7 @@ public class WeaponSFXPlayer : MonoBehaviour
             if(clip.name == name)
             {
                 AudioManager.Instance.PlaySFX(clip);
+                Debug.Log("sfx playing");
                 break;
             }
         }

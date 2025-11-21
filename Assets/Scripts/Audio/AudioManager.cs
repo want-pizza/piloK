@@ -18,8 +18,15 @@ public class AudioManager : MonoBehaviour, ICanBePaused
     [Header("TestBackgroundMusic")]
     [SerializeField] private AudioClip audioClip;
 
-    private AudioSource musicSource;
+    [Header("AudioSourcePoolSize")]
+    [SerializeField] private int sfxPoolSize = 20;
+
+    private AudioSource[] sfxPool;
+    private int poolIndex = 0;
+
     private List<AudioSource> activeSFX = new List<AudioSource>();
+
+    private AudioSource musicSource;
 
     private bool isPaused = false;
 
@@ -49,7 +56,22 @@ public class AudioManager : MonoBehaviour, ICanBePaused
     private void Start()
     {
         LoadSettings();
+        CreatePositionalPool();
         PlayMusic(audioClip);
+    }
+
+    private void CreatePositionalPool()
+    {
+        sfxPool = new AudioSource[sfxPoolSize];
+        for (int i = 0; i < sfxPoolSize; i++)
+        {
+            AudioSource src = gameObject.AddComponent<AudioSource>();
+            src.playOnAwake = false;
+            src.spatialBlend = 0f;
+            src.outputAudioMixerGroup = sfxGroup;
+
+            sfxPool[i] = src;
+        }
     }
 
     public void SetMasterVolume(float volume)
@@ -75,33 +97,43 @@ public class AudioManager : MonoBehaviour, ICanBePaused
     }
     public void StopMusic() => musicSource.Stop();
 
-    public void PlaySFX(AudioClip clip, Vector3? position = null, float volume = 1f)
+    public void PlaySFX(AudioClip clip, Vector3? pos = null, float volume = 1f)
     {
         if (clip == null) return;
 
-        GameObject go = new GameObject("SFX_" + clip.name);
-        if (position.HasValue)
-            go.transform.position = position.Value;
-        else
-            go.transform.parent = transform;
+        poolIndex = (poolIndex + 1) % sfxPool.Length;
+        AudioSource src = sfxPool[poolIndex];
 
-        AudioSource source = go.AddComponent<AudioSource>();
-        source.outputAudioMixerGroup = sfxGroup;
-        source.clip = clip;
-        source.volume = volume;
-        source.spatialBlend = position.HasValue ? 1f : 0f;
-        source.Play();
+        // setup
+        src.spatialBlend = pos.HasValue ? 1f : 0f;
+        if (pos.HasValue)
+            src.transform.position = pos.Value;
 
-        activeSFX.Add(source);
+        src.volume = volume;
 
-        StartCoroutine(DestroyAfterPlaying(source));
+        // track active sounds
+        activeSFX.Add(src);
+
+        // play
+        src.PlayOneShot(clip);
+
+        // stop tracking when finished
+        StartCoroutine(TrackSFX(src, clip.length));
     }
 
-    private IEnumerator DestroyAfterPlaying(AudioSource source)
+    private IEnumerator TrackSFX(AudioSource src, float duration)
     {
-        yield return new WaitUntil(() => !source.isPlaying && !isPaused);
-        Debug.Log("DestroyAfterPlaying");
-        Destroy(source.gameObject);
+        float timer = 0f;
+
+        while (timer < duration || isPaused)
+        {
+            if (!isPaused)
+                timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+        activeSFX.Remove(src);
     }
 
     public void PauseSFX()

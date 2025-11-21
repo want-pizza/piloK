@@ -37,14 +37,14 @@ public class CharacterFacing : MonoBehaviour
             IsFacingRight = true;
             isFañingRight = IsFacingRight;
             rotate.eulerAngles = Vector3.zero;
-            cameraFollowObject.CallTurn();
+            cameraFollowObject?.CallTurn();
         }
         else if (move.XVelocity < -0.01f && IsFacingRight)
         {
             IsFacingRight = false;
             IsFacingRight = IsFacingRight;
             rotate.eulerAngles = new Vector3(0, 180, 0);
-            cameraFollowObject.CallTurn();
+            cameraFollowObject?.CallTurn();
         }
     }
     private void FixedUpdate()

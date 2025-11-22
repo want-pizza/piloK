@@ -5,9 +5,10 @@ public class Slime : MonoBehaviour, IMove
     private SlimeState state = SlimeState.Idle;
     public SlimeState State => state;
 
-    public float XVelocity => rb.velocity.x;
+    private float xVelocity, yVelocity;
+    public float XVelocity => xVelocity;
 
-    public float YVelocity => rb.velocity.y;
+    public float YVelocity => yVelocity;
 
     [Header("References")]
     [SerializeField] private Transform player;
@@ -102,6 +103,7 @@ public class Slime : MonoBehaviour, IMove
 
     void PatrolLogic()
     {
+        UpdateXYVelocity();
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist < detectRange)
         {
@@ -129,6 +131,7 @@ public class Slime : MonoBehaviour, IMove
 
     void ChasingLogic()
     {
+        UpdateXYVelocity();
         float dist = Vector2.Distance(transform.position, player.position);
 
         if (dist < attackZone.radius)
@@ -157,6 +160,7 @@ public class Slime : MonoBehaviour, IMove
 
     void CooldownLogic()
     {
+        UpdateXYVelocity();
         jumpTimer -= Time.deltaTime;
         if (jumpTimer <= 0f)
         {
@@ -174,6 +178,7 @@ public class Slime : MonoBehaviour, IMove
 
     public void OnSuccessfulHit()
     {
+        UpdateXYVelocity();
         // При попаданні слайм переходить у cooldown
         state = SlimeState.Cooldown;
         jumpTimer = 0.4f;
@@ -183,6 +188,7 @@ public class Slime : MonoBehaviour, IMove
 
     void TryJumpInDirection(int dir)
     {
+        UpdateXYVelocity();
         Debug.Log($"jump; isGrounded ={isGrounded}");
         if (isGrounded) 
             rb.AddForce(new Vector2(dir * jumpHorizontalSpeed, jumpVerticalSpeed), ForceMode2D.Impulse);
@@ -190,6 +196,7 @@ public class Slime : MonoBehaviour, IMove
 
     void TryJumpTowardPlayer()
     {
+        UpdateXYVelocity();
         Debug.Log("jump to player");
         if (!isGrounded)
             return;
@@ -238,6 +245,12 @@ public class Slime : MonoBehaviour, IMove
         return true; // всю траєкторію тримає над землею стрибаємо
     }
 
+    void UpdateXYVelocity()
+    {
+        //Debug.Log($"Update velocity({XVelocity}; {YVelocity})");
+        xVelocity = rb.velocity.x;
+        yVelocity = rb.velocity.y;
+    }
 
     public void TakeEfficiency(Vector2 direction, float power)
     {

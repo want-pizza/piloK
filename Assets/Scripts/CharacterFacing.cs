@@ -52,9 +52,9 @@ public class CharacterFacing : MonoBehaviour
         if (isCameraFollow)
         {
             UpdateYCameraDamping();
-            if (!blockFacing)
-                UpdateDirection();
         }
+        if (!blockFacing)
+            UpdateDirection();
 
     }
 

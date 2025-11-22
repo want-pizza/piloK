@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public class SlimeDamageable : Damageable
 {
     private void Start()
@@ -16,7 +18,8 @@ public class SlimeDamageable : Damageable
 
     protected override void Die(DamageInfo info)
     {
-        base.Die(info);
+        Debug.WriteLine("Slime is dead");
+        //base.Die(info);
         // наприклад, граємо death animation/розділення на два
     }
 }

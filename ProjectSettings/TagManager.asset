@@ -17,10 +17,10 @@ TagManager:
   - Spike
   - LevelTransition
   - Swing
-  - 
-  - 
-  - 
-  - 
+  - EnemyDamageTaker
+  - Body
+  - Enemy
+  - CauseDamage
   - 
   - 
   - 

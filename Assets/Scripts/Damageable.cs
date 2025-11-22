@@ -32,6 +32,7 @@ public class Damageable : MonoBehaviour, IDamageable
     // --- Основний публічний метод для виклику ззовні ---
     public virtual DamageResult TakeDamage(DamageInfo info)
     {
+        Debug.Log("TakeDamage");
         DamageResult result = CalculateAndApplyDamage(info);
         // викликаємо подію для звуків/партиклів/логіки
         OnDamagedEvent?.Invoke(info, result);
@@ -45,6 +46,7 @@ public class Damageable : MonoBehaviour, IDamageable
     // --- Розрахунок: можна перевизначити в підкласі ---
     protected virtual DamageResult CalculateAndApplyDamage(DamageInfo info)
     {
+        Debug.Log("CalculateAndApplyDamage");
         int baseAmount = Mathf.Max(0, info.Amount);
 
         // 1) базова редукція від типу (резисти як 0..1)
@@ -68,6 +70,7 @@ public class Damageable : MonoBehaviour, IDamageable
 
         // застосувати
         currentHP -= final;
+        currentHP = 0;
         bool isDead = currentHP <= 0;
 
         DamageResult res = new DamageResult

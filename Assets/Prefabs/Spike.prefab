@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -5971452004498198878}
   - component: {fileID: 2762924588816578404}
   - component: {fileID: 2435913667789543666}
+  - component: {fileID: -6753477236448718796}
   - component: {fileID: 2784031991375080641}
   m_Layer: 8
   m_Name: Spike
@@ -158,6 +159,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 9a923be26c462b74081d50eafcb56ddb, type: 3}
+--- !u!114 &-6753477236448718796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778734040759912600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17ccbcdbc997ec42b927b3797e126ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 9999
+  damageType: 0
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 2056
+  continuous: 0
+  hitInterval: 1
 --- !u!61 &2784031991375080641
 BoxCollider2D:
   m_ObjectHideFlags: 0

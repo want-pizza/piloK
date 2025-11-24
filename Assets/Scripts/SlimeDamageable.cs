@@ -1,7 +1,9 @@
-using System.Diagnostics;
+using UnityEngine;
+using Unity.VisualScripting;
 
 public class SlimeDamageable : Damageable
 {
+    [SerializeField] private string deathKey = "Death";
     private void Start()
     {
         // свої резисти: наприклад слиз вразливий до fire
@@ -18,8 +20,9 @@ public class SlimeDamageable : Damageable
 
     protected override void Die(DamageInfo info)
     {
-        Debug.WriteLine("Slime is dead");
-        //base.Die(info);
-        // наприклад, граємо death animation/розділення на два
+        Debug.Log("Slime is dead");
+        FXManager.Instance.Play(deathKey, transform.position, Quaternion.identity);
+
+        base.Die(info);
     }
 }

@@ -15591,7 +15591,7 @@ GameObject:
   - component: {fileID: 5786988514693778511}
   - component: {fileID: 1229790909902120317}
   - component: {fileID: 5396600838987060530}
-  - component: {fileID: 7903485292668822126}
+  - component: {fileID: 9079253247984168252}
   - component: {fileID: 1995765745116391926}
   - component: {fileID: 8398162290184574175}
   m_Layer: 3
@@ -15727,7 +15727,7 @@ MonoBehaviour:
   particleSystem: {fileID: 7356404563222820784}
   playerSpriteRenderer: {fileID: 8706406994755025844}
   characterFacing: {fileID: 5786988514693778511}
---- !u!114 &7903485292668822126
+--- !u!114 &9079253247984168252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15736,10 +15736,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8560553715910160751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ccb67c9a1d136479085607145c9a79, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f20bf212ae2b404eb02e99fd488b253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   particles:
+  - key: dash
+    particle: {fileID: 7356404563222820784}
   - key: death
     particle: {fileID: 5264411517350061766}
   - key: dust

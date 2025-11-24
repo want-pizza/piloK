@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 3274669523396370597}
   - component: {fileID: 574665068080490003}
   - component: {fileID: 7920215532763920067}
+  - component: {fileID: 1303235071235787641}
   - component: {fileID: 5265990308256581986}
   - component: {fileID: 4645155043575908147}
   m_Layer: 3
@@ -158,6 +159,21 @@ MonoBehaviour:
   sfxGroup: {fileID: -6500790669223334841, guid: b259d8e91a22f50449d7ea9d7232f2ed, type: 2}
   audioClip: {fileID: 8300000, guid: 0822f99f752c57f459a5c9e2d5e7b6af, type: 3}
   sfxPoolSize: 10
+--- !u!114 &1303235071235787641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8916316378402986916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48d14398525a464f8d016db2bd12844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fxList:
+  - key: GreenSlimeDeath
+    prefab: {fileID: 8398608609298916684, guid: 27596c7fda8b7f9438da3cf4999de915, type: 3}
 --- !u!114 &5265990308256581986
 MonoBehaviour:
   m_ObjectHideFlags: 0

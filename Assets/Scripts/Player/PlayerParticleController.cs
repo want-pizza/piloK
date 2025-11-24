@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleController : MonoBehaviour
+public class PlayerParticleController : MonoBehaviour
 {
     [System.Serializable]
     public class ParticleEntry

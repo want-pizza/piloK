@@ -88,6 +88,6 @@ public class Damageable : MonoBehaviour, IDamageable
     {
         OnDeathEvent?.Invoke();
         // за замовчуванн€м Ч просто вимикаЇмо об'Їкт (переопред≥л€й в класах)
-        gameObject.SetActive(false);
+        transform.parent.gameObject.SetActive(false);
     }
 }

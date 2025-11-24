@@ -9,6 +9,7 @@ public class PlayerAttackState : PlayerState
         this.stateMachine = machine;
         this.currentAttackAnim = currentAttackAnim;
         this.transitions = transitions;
+        Debug.Log($" {this.GetType()};");
     }
 
     public override void OnEnter()

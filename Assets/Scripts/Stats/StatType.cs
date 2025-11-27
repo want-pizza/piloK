@@ -2,5 +2,7 @@ public enum StatType
 {
     MaxHealth,
     Damage,
-    IsImmortal
+    IsImmortal,
+    CurrentHealth,
+    ResistTime
 }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b21bb83ca8bb143bc86259eeb42770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitSound: {fileID: 8300000, guid: d28544cf027a8e74cbcc11e2ccc8b83d, type: 3}
+  hitSound: {fileID: 8300000, guid: e45abe09c43493a4bb7f4a003d09c508, type: 3}
   soundCooldown: 0.1
 --- !u!198 &8398608609298916684
 ParticleSystem:

@@ -5,6 +5,9 @@ public class DamageSource : MonoBehaviour
     [Header("Damage Settings")]
     [SerializeField] private int baseDamage = 10;
     [SerializeField] private DamageType damageType = DamageType.Physical;
+    [SerializeField] private float critChance = 15f;
+    [SerializeField] private float critMultiply = 3f;
+    [SerializeField] private float discardingForce = 2f;
 
     [Tooltip("Who can this object harm?")]
     [SerializeField] private LayerMask targetLayers;
@@ -36,28 +39,28 @@ public class DamageSource : MonoBehaviour
 
         if (!layerAllowed)
         {
-            Debug.Log($"Layer not allowed: {LayerMask.LayerToName(other.gameObject.layer)} on {other.name}");
+            //Debug.Log($"Layer not allowed: {LayerMask.LayerToName(other.gameObject.layer)} on {other.name}");
             return;
         }
 
-        var comps = other.GetComponents<MonoBehaviour>();
-        foreach (var c in comps)
-        {
-            Debug.Log($"Component: {c.GetType().FullName}");
-        }
+        //var comps = other.GetComponents<MonoBehaviour>();
+        //foreach (var c in comps)
+        //{
+        //    Debug.Log($"Component: {c.GetType().FullName}");
+        //}
 
         IDamageable target = other.gameObject.GetComponent<IDamageable>();
-        Debug.Log($"target = {target.ToString()}");
+        //Debug.Log($"target = {target.ToString()}");
         if (target == null) return;
 
-        Debug.Log("bruh");
         DamageInfo info = new DamageInfo
         {
             Amount = baseDamage,
             Type = damageType,
             Attacker = gameObject,
             HitPoint = other.ClosestPoint(transform.position),
-            IsCritical = false
+            IsCritical = false,
+            KnockBackForce = discardingForce
         };
 
         target.TakeDamage(info);

@@ -5,12 +5,9 @@ using UnityEngine;
 public class Damageable : MonoBehaviour, IDamageable
 {
     [Header("Base Stats")]
-    public int maxHP = 100;
-    public int currentHP = 100;
+    public float maxHP = 100;
+    public float currentHP = 100;
 
-    [Header("Defenses")]
-    [Tooltip("Simple armor value for Physical")]
-    public float armor = 10f; // числова броня -> впливає на physical
     [Tooltip("Resistance per damage type (0..1 meaning % reduction)")]
     public Dictionary<DamageType, float> resistances = new Dictionary<DamageType, float>()
     {
@@ -20,7 +17,6 @@ public class Damageable : MonoBehaviour, IDamageable
         { DamageType.Poison, 0f }
     };
 
-    // Подія, яку можна підписати: гра звуків/частинок/UI
     public event Action<DamageInfo, DamageResult> OnDamagedEvent;
     public event Action OnDeathEvent;
 
@@ -29,12 +25,11 @@ public class Damageable : MonoBehaviour, IDamageable
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
     }
 
-    // --- Основний публічний метод для виклику ззовні ---
     public virtual DamageResult TakeDamage(DamageInfo info)
     {
         Debug.Log("TakeDamage");
         DamageResult result = CalculateAndApplyDamage(info);
-        // викликаємо подію для звуків/партиклів/логіки
+
         OnDamagedEvent?.Invoke(info, result);
 
         if (result.IsFatal)
@@ -43,39 +38,33 @@ public class Damageable : MonoBehaviour, IDamageable
         return result;
     }
 
-    // --- Розрахунок: можна перевизначити в підкласі ---
     protected virtual DamageResult CalculateAndApplyDamage(DamageInfo info)
     {
         Debug.Log("CalculateAndApplyDamage");
-        int baseAmount = Mathf.Max(0, info.Amount);
+        float baseAmount = Mathf.Max(0f, info.Amount);
+        float currentAmount = baseAmount, resist = 0;
 
-        // 1) базова редукція від типу (резисти як 0..1)
-        float typeResist = 0f;
-        if (resistances != null && resistances.TryGetValue(info.Type, out float r))
-            typeResist = Mathf.Clamp01(r);
-
-        float afterType = baseAmount * (1f - typeResist);
-
-        // 2) броня (physical) - приклад формули: зменшення за формулою armor/(armor + 100)
-        float armorReduction = 0f;
-        if (info.Type == DamageType.Physical)
+        if (info.Type != DamageType.Void)
         {
-            armorReduction = armor / (armor + 100f); // нормалізуємо
+            if (info.Type != DamageType.Physical)
+            {
+
+                if (resistances.TryGetValue(info.Type, out resist))
+                {
+                    currentAmount = Mathf.Max(1f, baseAmount * (-resist / 30f + 1));
+                }
+            }
+            currentAmount = info.Type == DamageType.Physical ? currentAmount * Mathf.Max(1f, (-resist / 30f + 1)) : Mathf.Max(1f, currentAmount * (-resist / 50f + 1));
         }
 
-        float afterArmor = afterType * (1f - armorReduction);
+        float absorbed = baseAmount - currentAmount;
 
-        int final = Mathf.Max(0, Mathf.RoundToInt(afterArmor));
-        int absorbed = baseAmount - final;
-
-        // застосувати
-        currentHP -= final;
-        currentHP = 0;
+        currentHP -= currentAmount;
         bool isDead = currentHP <= 0;
 
         DamageResult res = new DamageResult
         {
-            FinalAmount = final,
+            FinalAmount = currentAmount,
             Absorbed = absorbed,
             Type = info.Type,
             IsFatal = isDead
@@ -87,7 +76,6 @@ public class Damageable : MonoBehaviour, IDamageable
     protected virtual void Die(DamageInfo info)
     {
         OnDeathEvent?.Invoke();
-        // за замовчуванням — просто вимикаємо об'єкт (переопреділяй в класах)
         transform.parent.gameObject.SetActive(false);
     }
 }

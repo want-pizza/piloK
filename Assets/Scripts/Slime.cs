@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Slime : MonoBehaviour, IMove
@@ -6,16 +8,21 @@ public class Slime : MonoBehaviour, IMove
     public SlimeState State => state;
 
     private float xVelocity, yVelocity;
-    public float XVelocity => xVelocity;
 
+    public float XVelocity => xVelocity;
     public float YVelocity => yVelocity;
+
+    [SerializeField] private float efficiencyTime = 0.1f; 
+    private bool isEfficiency = false;
 
     [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
-    [SerializeField] private CircleCollider2D attackZone;
     [SerializeField] private TriggerChecker groundChecker;
+
+    [Header("SFX")]
+    [SerializeField] private AudioClip landClip;
 
     [Header("Settings")]
     [SerializeField] private float detectRange = 6f;
@@ -48,7 +55,7 @@ public class Slime : MonoBehaviour, IMove
         player = FindAnyObjectByType<PlayerMovement>().transform; //need changed
         rb = GetComponentInChildren<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
-        attackZone = GetComponentInChildren<CircleCollider2D>();
+        //attackZone = GetComponentInChildren<CircleCollider2D>();
         //groundChecker = GetComponentInChildren<TriggerChecker>();
     }
     private void OnEnable()
@@ -73,7 +80,6 @@ public class Slime : MonoBehaviour, IMove
             case SlimeState.Patrol: PatrolLogic(); break;
             case SlimeState.Chasing: ChasingLogic(); break;
             case SlimeState.Jumping: JumpingLogic(); break;
-            case SlimeState.Attacking: AttackingLogic(); break;
             case SlimeState.Cooldown: CooldownLogic(); break;
             case SlimeState.Stunned: break;
         }
@@ -128,17 +134,9 @@ public class Slime : MonoBehaviour, IMove
         }
     }
 
-
     void ChasingLogic()
     {
         UpdateXYVelocity();
-        float dist = Vector2.Distance(transform.position, player.position);
-
-        if (dist < attackZone.radius)
-        {
-            state = SlimeState.Attacking;
-            return;
-        }
 
         jumpTimer -= Time.deltaTime;
         if (jumpTimer <= 0)
@@ -168,14 +166,6 @@ public class Slime : MonoBehaviour, IMove
         }
     }
 
-    void AttackingLogic()
-    {
-        // атака відбудеться через trigger enter
-        // тут просто ставимо таймер
-        state = SlimeState.Cooldown;
-        jumpTimer = 0.5f;
-    }
-
     public void OnSuccessfulHit()
     {
         UpdateXYVelocity();
@@ -189,7 +179,7 @@ public class Slime : MonoBehaviour, IMove
     void TryJumpInDirection(int dir)
     {
         UpdateXYVelocity();
-        Debug.Log($"jump; isGrounded ={isGrounded}");
+        //Debug.Log($"jump; isGrounded ={isGrounded}");
         if (isGrounded) 
             rb.AddForce(new Vector2(dir * jumpHorizontalSpeed, jumpVerticalSpeed), ForceMode2D.Impulse);
     }
@@ -197,7 +187,7 @@ public class Slime : MonoBehaviour, IMove
     void TryJumpTowardPlayer()
     {
         UpdateXYVelocity();
-        Debug.Log("jump to player");
+        //Debug.Log("jump to player");
         if (!isGrounded)
             return;
         Vector2 dir = (player.position - transform.position).normalized;
@@ -252,9 +242,22 @@ public class Slime : MonoBehaviour, IMove
         yVelocity = rb.velocity.y;
     }
 
-    public void TakeEfficiency(Vector2 direction, float power)
+    public void TakeEfficiency(Vector2 point, float power)
     {
-        throw new System.NotImplementedException();
+        if (isEfficiency)
+            return;
+        if (point == Vector2.down)
+            rb.velocity = Vector3.zero;
+
+        rb.AddForceAtPosition(new Vector2(power * 0.7f, power * 0.3f), point);
+        isEfficiency = true;
+        StartCoroutine(TurnOffEfficiency(efficiencyTime));
+    }
+
+    IEnumerator TurnOffEfficiency(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isEfficiency = false;
     }
 
     public void OnPausedChanged(bool paused)
@@ -262,7 +265,12 @@ public class Slime : MonoBehaviour, IMove
         throw new System.NotImplementedException();
     }
 
-    private void SetGrounded(bool value) { Debug.Log($"SetGrounded({value})"); isGrounded = value; }
+    private void SetGrounded(bool value) 
+    { 
+        //Debug.Log($"SetGrounded({value})"); 
+        isGrounded = value;
+        if (isGrounded) AudioManager.Instance.PlaySFX(landClip, transform.position);
+    }
 }
 
 public enum SlimeState

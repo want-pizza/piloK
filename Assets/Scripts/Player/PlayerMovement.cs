@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void SubscribeMovementInputs()
     {
-        Debug.Log("subscribe");
+        //Debug.Log("subscribe");
 
         _inputActions.Player.Move.performed += SetHorizontalInput;
         _inputActions.Player.Move.canceled += InputCanceled;
@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void UnsubscribeMovementInputs()
     {
-        Debug.Log("unsubscribe");
+        //Debug.Log("unsubscribe");
         if (movementInputsUnsubscribed) return;
 
         movementInputsUnsubscribed = true;

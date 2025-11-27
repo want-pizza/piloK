@@ -173,6 +173,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 9999
   damageType: 0
+  critChance: 15
+  critMultiply: 3
+  discardingForce: 2
   targetLayers:
     serializedVersion: 2
     m_Bits: 2056

@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour, ICanBePaused
 {
     public static AudioManager Instance { get; private set; }
 
+    [SerializeField] private Transform audioListenerTransform;
     [Header("Mixer")]
     [SerializeField] private AudioMixer audioMixer;
 
@@ -40,6 +42,7 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.outputAudioMixerGroup = musicGroup;
         musicSource.loop = true;
@@ -48,10 +51,12 @@ public class AudioManager : MonoBehaviour, ICanBePaused
     private void OnEnable()
     {
         PauseManager.OnPauseChanged += OnPausedChanged;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         PauseManager.OnPauseChanged -= OnPausedChanged;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     private void Start()
     {
@@ -104,22 +109,22 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         poolIndex = (poolIndex + 1) % sfxPool.Length;
         AudioSource src = sfxPool[poolIndex];
 
-        // setup
-        src.spatialBlend = pos.HasValue ? 1f : 0f;
-        if (pos.HasValue)
-            src.transform.position = pos.Value;
+        Vector3 listenerPos = audioListenerTransform.position;
+        float distance = pos.HasValue ? Vector3.Distance(listenerPos, pos.Value) : 0f;
 
-        src.volume = volume;
+        // тво€ крива затуханн€
+        float distanceVolume = 1f - Mathf.Clamp01(distance / 12f);
+        // 12f Ч максимальна дистанц≥€ чутност≥ (налаштуй)
 
-        // track active sounds
+        src.spatialBlend = 0f; // повн≥стю 2D звук
+        src.volume = volume * distanceVolume;
+
         activeSFX.Add(src);
 
-        // play
         src.PlayOneShot(clip);
-
-        // stop tracking when finished
         StartCoroutine(TrackSFX(src, clip.length));
     }
+
 
     private IEnumerator TrackSFX(AudioSource src, float duration)
     {
@@ -174,6 +179,10 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         SetMasterVolume(master);
         SetMusicVolume(music);
         SetSFXVolume(sfx);
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        audioListenerTransform = FindObjectOfType<PlayerMovement>().transform;
     }
 
     public void OnPausedChanged(bool paused)

@@ -1,26 +1,30 @@
+using System;
 using UnityEngine;
 
+[Flags]
 public enum DamageType
 {
+    Void,
     Physical,
     Fire,
     Ice,
-    Poison,
+    Poison
 }
 
 public struct DamageInfo
 {
-    public int Amount;
+    public float Amount;
     public DamageType Type;
     public GameObject Attacker;
     public Vector2 HitPoint;
     public bool IsCritical;
+    public float KnockBackForce;
 }
 
 public struct DamageResult
 {
-    public int FinalAmount;
-    public int Absorbed;
+    public float FinalAmount;
+    public float Absorbed;
     public DamageType Type;
     public bool IsFatal;
 }

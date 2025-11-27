@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLifeCircle : MonoBehaviour
@@ -20,26 +21,18 @@ public class PlayerLifeCircle : MonoBehaviour
     private void OnEnable()
     {
         isDead.OnValueChanged += OnIsDeadChanged;
+        GetComponent<PlayerStats>().CurrentHealth.OnValueChanged += OnCurrentHpChanged;
     }
 
     private void OnDisable()
     {
         isDead.OnValueChanged -= OnIsDeadChanged;
+        GetComponent<PlayerStats>().CurrentHealth.OnValueChanged -= OnCurrentHpChanged;
     }
-
+    private void OnCurrentHpChanged(float value) => isDead.Value = value <= 0f ? true : false;
     private void OnIsDeadChanged(bool value)
     {
         Debug.Log($"{value} is dead");
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //Debug.Log($"collision.gameObject.layer = {collision.gameObject.layer}");
-        if (collision.gameObject.layer == 8)
-        {
-            isDead.Value = true;
-            //Debug.Log("isDead = true");
-        }
     }
     public void TeleportToRespawnPoint()
     {
@@ -49,5 +42,7 @@ public class PlayerLifeCircle : MonoBehaviour
     {
         //Debug.Log(" isDead.Value = false;");
         isDead.Value = false;
+        PlayerStats playerStats = GetComponent<PlayerStats>();
+        playerStats.CurrentHealth.Value = playerStats.MaxHealth.Value;
     }
 }

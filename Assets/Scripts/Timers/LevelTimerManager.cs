@@ -36,6 +36,7 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
     private void OnDisable()
     {
         PauseManager.OnPauseChanged -= OnPausedChanged;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
 

@@ -11,6 +11,16 @@ public class Stat<T>
 
     private T lastValue;
 
+    public Stat(T value)
+    {
+        BaseValue = value;
+    }
+
+    public static implicit operator T(Stat<T> obj)
+    {
+        return obj.Value;
+    }
+
     public T Value
     {
         get

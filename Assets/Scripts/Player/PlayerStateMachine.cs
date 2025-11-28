@@ -24,7 +24,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         {
             currentState.Value = (PlayerState)newState;
             currentState.Value.OnEnter();
-            Debug.Log($"current state - {typeof(T)}");
+            //Debug.Log($"current state - {typeof(T)}");
         }
         else
         {
@@ -39,7 +39,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         {
             currentState.Value = (PlayerState)newState;
             currentState.Value.OnEnter(boolVariableName);
-            Debug.Log($"current state - {typeof(T)}");
+            //Debug.Log($"current state - {typeof(T)}");
         }
         else
         {

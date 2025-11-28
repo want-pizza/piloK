@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -5696796471935601647}
   - component: {fileID: 1339956097859916113}
   - component: {fileID: 6630071050197577321}
-  - component: {fileID: -1110075289000829440}
   m_Layer: 10
   m_Name: DaggerSwingHitHandler
   m_TagString: Untagged
@@ -48,6 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitCollider: {fileID: 1339956097859916113}
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 2304
 --- !u!60 &1339956097859916113
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -151,30 +153,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &-1110075289000829440
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6841169715495415741}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7

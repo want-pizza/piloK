@@ -33,6 +33,8 @@ public class Slime : MonoBehaviour, IMove
     [SerializeField] private float jumpVerticalSpeed = 5f;
     [SerializeField] private float jumpInterval = 1.2f;
 
+    [SerializeField] private float KnockbackMultiplier = 2f;
+
     [SerializeField] private float groundCheckDistance = 0.1f;
 
     [Header("Patrol Settings")]
@@ -244,12 +246,12 @@ public class Slime : MonoBehaviour, IMove
 
     public void TakeEfficiency(Vector2 point, float power)
     {
+        Debug.Log("SlimeTakeEfficiency");
         if (isEfficiency)
             return;
-        if (point == Vector2.down)
-            rb.velocity = Vector3.zero;
+        Debug.Log($"SlimeTakeEfficiency point = ({point.x}; {point.y}); power = {power}");
 
-        rb.AddForceAtPosition(new Vector2(power * 0.7f, power * 0.3f), point);
+        rb.AddForce(new Vector2(power * 0.7f * point.x * KnockbackMultiplier, power * 0.3f * KnockbackMultiplier), ForceMode2D.Impulse);
         isEfficiency = true;
         StartCoroutine(TurnOffEfficiency(efficiencyTime));
     }

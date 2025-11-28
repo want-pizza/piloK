@@ -1,81 +1,98 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
-[RequireComponent(typeof(Animator))]
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private AttackEventChannel attackChannel;
-    [SerializeField] private CharacterFacing characterFacing;
+    [Header("References")]
+    [SerializeField] private CharacterFacing facing;
+    [SerializeField] private AttackEventChannel attackEventChannel;
+    [SerializeField] private PlayerStats stats;
 
-    private void OnEnable()
-    {
-        attackChannel.OnSwingStart += OnSwingStartReceived;
-        attackChannel.OnSwingEnd += DestroyHitBox;
-    }
+    [Header("Hitboxes")]
+    [SerializeField] private GameObject hitboxRight;
+    [SerializeField] private GameObject hitboxUp;
+    [SerializeField] private GameObject hitboxDown;
 
-    private void OnDisable()
-    {
-        attackChannel.OnSwingStart -= OnSwingStartReceived;
-        attackChannel.OnSwingEnd -= DestroyHitBox;
-    }
-
-    [Header("Hitbox")]
-    [SerializeField] private GameObject hitboxPrefab;
-    [SerializeField] private Transform attackOrigin;
-    [SerializeField] private float hitboxDistance = 1.5f;
-    [SerializeField] private float hitboxLifetime = 0.15f;
+    private GameObject currentHitbox;
 
     private Animator animator;
-    private Vector2 lastDir = Vector2.right;
-    public Vector2 LastDir => lastDir;
-
-    private GameObject hitbox;
+    public Vector2 LastSwingPoint { get; private set; }
+    public PlayerStats Stats => stats;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+
+        if(stats == null)
+            stats = GetComponentInParent<PlayerStats>();
+
+        DisableAll();
+    }
+    private void OnEnable()
+    {
+        attackEventChannel.OnSwingStart += StartAttack;
+        attackEventChannel.OnHitboxOn += EnableHitbox;
+        attackEventChannel.OnHitboxOff += DisableHitbox;
+    }
+    private void OnDisable()
+    {
+        attackEventChannel.OnSwingStart -= StartAttack;
+        attackEventChannel.OnHitboxOn -= EnableHitbox;
+        attackEventChannel.OnHitboxOff -= DisableHitbox;
     }
 
-    public void OnSwingStartReceived(string name)
+    public void StartAttack(string triggerName)
     {
-        if (characterFacing.IsFacingRight)
-        {
-            transform.rotation = Quaternion.identity;
-            lastDir = Vector2.right;
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 180f, 0);
-            lastDir = Vector2.left;
-        }
-        animator.Play(name);
-        
-        SpawnHitbox(name);
+        animator.Play(triggerName);
     }
-    private void SpawnHitbox(string name)
+
+    // Animation Event
+    public void EnableHitbox(string direction)
     {
-        Vector3 pos = Vector3.zero;
+        Debug.Log($"direction - {direction}");
+        DisableAll();
 
-        if (name == "SwingUp")
+        switch (direction)
         {
-            lastDir = Vector2.up;
-            pos = attackOrigin.position + Vector3.up * hitboxDistance;
-        }
-        else if (name == "SwingDown")
-        {
-            lastDir = Vector2.down;
-            pos = attackOrigin.position + Vector3.down * hitboxDistance;
-        }
-        else
-        {
-            pos = attackOrigin.position + (Vector3)lastDir * hitboxDistance;
+            case "Right":
+                
+                LastSwingPoint = facing.IsFacingRight ? Vector2.right : Vector2.left;
+                currentHitbox = hitboxRight;
+                break;
 
+            case "Right1":
+                LastSwingPoint = facing.IsFacingRight ? Vector2.right : Vector2.left;
+                currentHitbox = hitboxRight;
+                break;
+
+            case "Up":
+                LastSwingPoint = Vector2.up;
+                currentHitbox = hitboxUp;
+                break;
+
+            case "Down":
+                LastSwingPoint = Vector2.down;
+                currentHitbox = hitboxDown;
+                break;
+
+            default:
+                Debug.Log("Incorrect direction");
+                break;
         }
-        hitbox = Instantiate(hitboxPrefab, pos, Quaternion.identity);
-        hitbox.GetComponent<HitHandler>().Init(this);
+
+        transform.rotation = facing.IsFacingRight ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
+        currentHitbox.SetActive(true);
     }
-    public void DestroyHitBox()
+
+    // Animation Event
+    public void DisableHitbox()
     {
-        Destroy(hitbox);
+        DisableAll();
+    }
+
+    private void DisableAll()
+    {
+        hitboxRight?.SetActive(false);
+        hitboxUp?.SetActive(false);
+        hitboxDown?.SetActive(false);
     }
 }

@@ -34,7 +34,12 @@ public class SlimeDamageable : Damageable
         FXManager.Instance.Play(hitKey, transform.position, Quaternion.identity);
 
         Debug.Log($"info.KnockBackForce = {info.KnockBackForce}");
-        slimeMovement.TakeEfficiency(info.HitPoint, info.KnockBackForce);
+
+        if (info.HitPoint != null)
+        {
+            Debug.Log("Slime info.HitPoint != null");
+            slimeMovement.TakeEfficiency(info.HitPoint, info.KnockBackForce);
+        }
         // запусти партикли в залежності від Type
         // ParticleManager.Play("slime_splat", info.HitPoint);
         // SoundManager.Play("slime_hurt");

@@ -16,7 +16,7 @@ public class ItemStatData : BaseItemObject, ISendModifires
                     stats.MaxHealth.AddModifier(new AddModifier<float>(bonus.amount));
                     break;
                 case StatType.Damage:
-                    stats.Damage.AddModifier(new AddModifier<float>(bonus.amount));
+                    stats.PhisicalDamage.AddModifier(new AddModifier<float>(bonus.amount));
                     break;
             }
         }

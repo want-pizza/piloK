@@ -404,6 +404,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     public void TakeEfficiency(Vector2 direction, float power)
     {
+        Debug.Log("Player TakeEfficiency");
         if (direction == Vector2.down)
             rb.velocity = Vector3.zero;
 

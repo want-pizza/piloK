@@ -2,34 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class HitHandler : MonoBehaviour
 {
     [SerializeField] private Collider2D hitCollider;
-    private List<Collision2D> colliders = new List<Collision2D>();
+    [SerializeField] private LayerMask hitLayerMask;
     private bool wasEfficiencyTaken = false;
+    private bool wasTargetEfficiencyTaken = false;
 
     //Add weapons system(change weaponController to weapon base class or interface)
     private WeaponController ownerWeapon;
-
-    public void Init(WeaponController weapon)
+    private void Awake()
     {
-        ownerWeapon = weapon;
+        ownerWeapon = GetComponentInParent<WeaponController>();
+    }
+    private void OnEnable()
+    {
+        wasEfficiencyTaken = false;
+        wasTargetEfficiencyTaken = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 8 && !wasEfficiencyTaken) //spike 
+        if (hitLayerMask.Contains(collision.gameObject.layer) && !wasEfficiencyTaken)
         {
+            Debug.Log("Hit");
             wasEfficiencyTaken = true;
-            collision.gameObject.GetComponent<IHitable>().PlaySFX();
-            ownerWeapon.GetComponentInParent<IMove>().TakeEfficiency(ownerWeapon.LastDir, 10f);
-        }
-        if (collision.TryGetComponent<IDamageable>(out var target))
-        {
-            //DamageSystem.Instance.ProcessHit(ownerWeapon, target, collision.gameObject);
-        }
+            collision.gameObject.GetComponent<IHitable>()?.PlaySFX();
+            ownerWeapon.GetComponentInParent<IMove>().TakeEfficiency(ownerWeapon.LastSwingPoint, 10f);
 
-        Destroy(gameObject); 
+            if (collision.TryGetComponent<IDamageable>(out var target))
+            {
+                List<DamageInfo> infos = DamageBuilder.BuildForPlayer(ownerWeapon.Stats);
+                if (infos != null && infos.Count > 0)
+                {
+                    foreach (DamageInfo info in infos)
+                    {
+                        if (!wasTargetEfficiencyTaken)
+                        {
+                            DamageInfo tempInfo = info;
+                            tempInfo.HitPoint = ownerWeapon.LastSwingPoint;
+                            target.TakeDamage(tempInfo);
+                            wasTargetEfficiencyTaken = true;
+                        }
+                        else
+                            target.TakeDamage(info);
+                    }
+                }
+            }
+        }
     }
 }

@@ -93,7 +93,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.15
+    functionName: OnHitBoxOn
+    data: Right
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.21666667
+    functionName: OnHitBoxOff
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.23333333
     functionName: OnSwingEndReceived
     data: 
     objectReferenceParameter: {fileID: 0}

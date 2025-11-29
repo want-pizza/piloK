@@ -5,20 +5,27 @@ using UnityEngine;
 public class ItemStatData : BaseItemObject, ISendModifires
 {
     public List<StatBonus> bonuses;
+    private Dictionary<StatType, IStatModifier<float>> modifiers = new Dictionary<StatType, IStatModifier<float>>(); // List<IStatModifier<float>> if want to have many modifiers to one stat
 
     public void Apply(PlayerStats stats)
     {
-        foreach (var bonus in bonuses)
+        for(int i = 0; i < bonuses.Count; i++)
         {
-            switch (bonus.statType)
-            {
-                case StatType.MaxHealth:
-                    stats.MaxHealth.AddModifier(new AddModifier<float>(bonus.amount));
-                    break;
-                case StatType.Damage:
-                    stats.PhisicalDamage.AddModifier(new AddModifier<float>(bonus.amount));
-                    break;
-            }
+            StatType statType = bonuses[i].statType;
+            IStatModifier<float> modifier = StatConventer.GetStatModiier(bonuses[i].modifier, bonuses[i].amount);
+            
+            stats.GetStatByType(statType).AddModifier(modifier);
+            modifiers.Add(statType, modifier);
+        }
+    }
+    public void Remove(PlayerStats stats)
+    {
+        for (int i = 0; i < bonuses.Count; i++)
+        {
+            StatType statType = bonuses[i].statType;
+
+            stats.GetStatByType(statType).RemoveModifier(modifiers[statType]);
+            modifiers.Remove(statType);
         }
     }
 }

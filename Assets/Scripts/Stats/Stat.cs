@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Stat<T>
 {
@@ -27,7 +28,7 @@ public class Stat<T>
         {
             T value = BaseValue;
 
-            foreach (var mod in modifiers)
+            foreach (var mod in modifiers.OrderBy(x => x.Priority))
             {
                 value = mod.Modify(value);
             }

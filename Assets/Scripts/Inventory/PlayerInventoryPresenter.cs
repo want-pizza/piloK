@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
@@ -13,10 +14,10 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
 
     protected override void OnEnable()
     {
-        //Debug.Log("PlayerInventoryPresenter OnEnable");
+        Debug.Log("PlayerInventoryPresenter OnEnable");
         base.OnEnable();
         inventory.OnItemEquiped += AddStats;
-        //inventory.OnItemUnequiped += RemoveStats;
+        inventory.OnItemUnequiped += RemoveStats;
         inventory.OnItemUnequiped += UnequipItem;
         isOpen.Value = false;
         displayInventory.gameObject.SetActive(isOpen);
@@ -28,16 +29,19 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         unequipEventChannel.OnItemEquipped.Invoke(@object);
         //must edit UI
     }
-    public void AddStats(BaseItemObject itemObject)
+    private void AddStats(BaseItemObject itemObject)
     {
         if(itemObject is ISendModifires statData)
         {
             statData.Apply(playerStats);
         }
     }
-    private void RemoveStats(BaseItemObject @object)
+    private void RemoveStats(BaseItemObject itemObject)
     {
-        throw new NotImplementedException();
+        if (itemObject is ISendModifires statData)
+        {
+            statData.Remove(playerStats);
+        }
     }
     protected override void ToggleInventory(InputAction.CallbackContext ctx)
     {
@@ -98,7 +102,6 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
     {
         base.OnDisable();
         inventory.OnItemEquiped -= AddStats;
-        inventory.OnItemUnequiped -= AddStats;
         inventory.OnItemUnequiped -= UnequipItem;
     }
     private void OnApplicationQuit()

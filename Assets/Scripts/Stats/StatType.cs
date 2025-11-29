@@ -1,8 +1,13 @@
 public enum StatType
 {
     MaxHealth,
-    Damage,
-    IsImmortal,
     CurrentHealth,
-    ResistTime
+    ResistTime,
+    KnockBackForce,
+    SelfKnockBackForceMultiplier,
+    CritChance,
+    CritMultiplier,
+
+    PhisicalDamage,
+    FireDamage
 }

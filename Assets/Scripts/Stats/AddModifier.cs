@@ -1,10 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
+[Serializable]
 public class AddModifier<T> : IStatModifier<T>
 {
     public T Value;
+
+    private int priority = 0;
+    public int Priority => priority;
 
     public AddModifier(T value)
     {

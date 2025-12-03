@@ -7,13 +7,12 @@ public class IdleTransition : TransitionBase
 {
     protected IStateMachine stateMachine;
     protected Field<float> xVelocityField;
-    protected Field<bool> isGroundedField, isInventoryOpenField, isDashing, isDead;
-    public IdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField, Field<bool> isDashing, Field<bool> isDead) 
+    protected Field<bool> isGroundedField, isDashing, isDead;
+    public IdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> isDashing, Field<bool> isDead) 
     {
         stateMachine = _stateMachine;
         xVelocityField = _xVelocityField;
         isGroundedField = _isGroundedField;
-        isInventoryOpenField = _isInventoryOpenField;
         this.isDashing = isDashing;
         this.isDead = isDead;
         //Debug.Log($"IdleTransition get FieldIsDead hash={isDead.GetHashCode()}");
@@ -23,7 +22,6 @@ public class IdleTransition : TransitionBase
         SubscribeToPause();
         xVelocityField.OnValueChanged += OnXVelosityChanged;
         isGroundedField.OnValueChanged += OnIsGroundedChanged;
-        isInventoryOpenField.OnValueChanged += OnIsInventoryOpenChanged;
         isDashing.OnValueChanged += OnIsDashingChanged;
         isDead.OnValueChanged += OnIsDeadChanged;
     }
@@ -32,7 +30,6 @@ public class IdleTransition : TransitionBase
         UnsubscribeFromPause();
         xVelocityField.OnValueChanged -= OnXVelosityChanged;
         isGroundedField.OnValueChanged -= OnIsGroundedChanged;
-        isInventoryOpenField.OnValueChanged -= OnIsInventoryOpenChanged;
         isDashing.OnValueChanged -= OnIsDashingChanged;
         isDead.OnValueChanged -= OnIsDeadChanged;
     }
@@ -42,7 +39,6 @@ public class IdleTransition : TransitionBase
         //Debug.Log($"TryIdleTransition, isDead.Value = {isDead.Value}");
         if (xVelocityField.Value == 0f
             && isGroundedField.Value
-            && !isInventoryOpenField.Value
             && !isDead.Value)
         {
             stateMachine.ChangeState<PlayerIdleState>();

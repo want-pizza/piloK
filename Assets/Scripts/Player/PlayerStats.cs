@@ -10,13 +10,14 @@ public class PlayerStats : MonoBehaviour
     public Stat<float> ResistTime = new(10f);
     public Stat<float> KnockBackForce = new(2f);
     public Stat<float> SelfKnockBackForceMultiplier = new(2f);
-    public Stat<float> CritChance = new(10f);
+    public Stat<float> CritChance = new(100f);
     public Stat<float> CritMultiplier = new(2f);
 
     public Stat<float> PhisicalDamage = new(10f);
     public Stat<float> FireDamage = new(0f);
 
     private Dictionary<StatType, Stat<float>> dictionary = new Dictionary<StatType, Stat<float>>();
+    public Dictionary<StatType, Stat<float>> GetAllStats() => dictionary;
 
     public Stat<float> GetStatByType(StatType type) => dictionary[type];
     private void Awake()

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PauseController : MonoBehaviour
 {
     [SerializeField] private SM_Window window;
+    [SerializeField] private SM_Window statPanel;
     private PlayerAction _inputActions;
     private static bool canPause = true;
     private void Awake()

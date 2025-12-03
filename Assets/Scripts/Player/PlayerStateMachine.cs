@@ -70,7 +70,6 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
-                            inventoryPresenter.IsOpen,
                             movement.FieldIsDashing,
                             lifeCircle.FieldIsDead);
         //Transition wallSliceTrasition = new WallSlideTransition(
@@ -98,7 +97,6 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             this,
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
-                            inventoryPresenter.IsOpen,
                             movement.FieldIsDashing,
                             lifeCircle.FieldIsDead,
                             "Landing");

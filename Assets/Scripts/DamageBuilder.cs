@@ -15,11 +15,11 @@ public static class DamageBuilder
         if (stats.PhisicalDamage != 0)
         {
             float finalDamage = stats.PhisicalDamage;
-            CalculateCrit(ref finalDamage, stats.CritChance, stats.CritMultiplier);
+            finalDamage = CalculateCrit(finalDamage, stats.CritChance, stats.CritMultiplier);
 
             DamageInfo info = new DamageInfo
             {
-                Amount = stats.PhisicalDamage,
+                Amount = finalDamage,
                 Type = DamageType.Physical,
                 Attacker = stats.gameObject,
                 IsCritical = stats.PhisicalDamage != finalDamage,
@@ -32,11 +32,11 @@ public static class DamageBuilder
         if (stats.FireDamage != 0)
         {
             float finalDamage = stats.FireDamage;
-            CalculateCrit(ref finalDamage, stats.CritChance, stats.CritMultiplier);
+            finalDamage = CalculateCrit(finalDamage, stats.CritChance, stats.CritMultiplier);
 
             DamageInfo info = new DamageInfo
             {
-                Amount = stats.FireDamage,
+                Amount = finalDamage,
                 Type = DamageType.Physical,
                 Attacker = stats.gameObject,
                 IsCritical = stats.FireDamage != finalDamage,
@@ -49,5 +49,5 @@ public static class DamageBuilder
         return list;
     }
 
-    private static float CalculateCrit(ref float baseDamage, float chance, float multiplier) => Random.value * 100f < chance ? baseDamage * multiplier : baseDamage;
+    private static float CalculateCrit(float baseDamage, float chance, float multiplier) => Random.Range(0f, 100f) < chance ? baseDamage * multiplier : baseDamage;
 }

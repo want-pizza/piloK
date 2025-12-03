@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class FallIdleTransition : IdleTransition
 {
     private string boolValueName;
-    public FallIdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> _isInventoryOpenField, Field<bool> isDashing, Field<bool> isDead, string _boolValueName)
-                              : base(_stateMachine, _xVelocityField, _isGroundedField, _isInventoryOpenField, isDashing, isDead)
+    public FallIdleTransition(IStateMachine _stateMachine, Field<float> _xVelocityField, Field<bool> _isGroundedField, Field<bool> isDashing, Field<bool> isDead, string _boolValueName)
+                              : base(_stateMachine, _xVelocityField, _isGroundedField,  isDashing, isDead)
     {
         boolValueName = _boolValueName;
     }
     protected override void TryTransition()
     {
         DebugFields();
-        if (xVelocityField == 0 && isGroundedField && !isInventoryOpenField)
+        if (xVelocityField == 0 && isGroundedField)
             stateMachine.ChangeState<PlayerIdleState>(boolValueName);
     }
     protected override void DebugFields()

@@ -29,6 +29,7 @@ public class Damageable : MonoBehaviour, IDamageable
     {
         Debug.Log("TakeDamage");
         DamageResult result = CalculateAndApplyDamage(info);
+        FloatingTextSpawner.Instance.Spawn(result.FinalAmount.ToString("0.##"), transform.position);
 
         OnDamagedEvent?.Invoke(info, result);
 

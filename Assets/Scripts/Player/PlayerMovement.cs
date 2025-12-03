@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     private bool movementInputsUnsubscribed = false;
     private Vector3 efficiencyDirection;
     private float efficiencyPower;
+    private bool isInputsActive;
 
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
@@ -267,14 +268,15 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         if (isPaused) return;
 
-        if (!currentState.Value.CanMove())
+        if (!currentState.Value.CanMove() && isInputsActive)
         {
             //Debug.Log($"currentState.Value = {currentState.Value.ToString()}");
             _inputX = 0f;
             UnsubscribeMovementInputs();
         }
-        else if (movementInputsUnsubscribed && !isEndOfLevel)
+        else if (movementInputsUnsubscribed && !isEndOfLevel && isInputsActive)
         {
+            Debug.Log("sfdsdfsdfsfdsdfsfd");
             SubscribeMovementInputs();
         }
 
@@ -440,6 +442,10 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (paused)
             UnsubscribeMovementInputs();
         else SubscribeMovementInputs();
+    }
+    public void TurnOnInput(bool value)
+    {
+        isInputsActive = value;
     }
     public void PlayLevelTransition(bool isLeft)
     {

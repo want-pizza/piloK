@@ -9,6 +9,7 @@ using static UnityEditor.Progress;
 public class PlayerInventoryPresenter : InventoryPresenterBase
 {
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerMovement pLayerMovement;
     [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
     [SerializeField] private InventoryEquipEventChannelSO unequipEventChannel;
 
@@ -21,6 +22,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         inventory.OnItemUnequiped += UnequipItem;
         isOpen.Value = false;
         displayInventory.gameObject.SetActive(isOpen);
+        pLayerMovement.TurnOnInput(false);
     }
 
     private void UnequipItem(BaseItemObject @object)
@@ -103,6 +105,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         base.OnDisable();
         inventory.OnItemEquiped -= AddStats;
         inventory.OnItemUnequiped -= UnequipItem;
+        pLayerMovement.TurnOnInput(true);
     }
     private void OnApplicationQuit()
     {

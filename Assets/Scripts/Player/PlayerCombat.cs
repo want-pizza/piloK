@@ -71,7 +71,12 @@ public class PlayerCombat : MonoBehaviour, ICanBePaused
 
     private void StartAttack(Vector2 dir)
     {
-        string animName = $"SwordSwing{CalculateCombo()}";
+        string animName;
+        animName = $"SwordSwing{CalculateCombo()}";
+        if (dir == Vector2.down)
+        {
+            animName = "SwordDownSwing";
+        }
         currentAttackAnim.Value = animName;
         isAttacking.Value = true;
 

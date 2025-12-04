@@ -7,7 +7,7 @@ public class PlayerStats : MonoBehaviour
 {
     public Stat<float> MaxHealth = new(100f);
     public Field<float> CurrentHealth = new(100f);
-    public Stat<float> ResistTime = new(10f);
+    public Stat<float> ResistTime = new(1f);
     public Stat<float> KnockBackForce = new(2f);
     public Stat<float> SelfKnockBackForceMultiplier = new(2f);
     public Stat<float> CritChance = new(100f);

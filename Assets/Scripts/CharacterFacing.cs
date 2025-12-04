@@ -22,13 +22,19 @@ public class CharacterFacing : MonoBehaviour
     }
     private void OnEnable()
     {
-        eventChannel.OnAttackTriggered += TurnOnBlockFacing;
-        eventChannel.OnAttackEnded += TurnOffBlockFacing;
+        if (isCameraFollow)
+        {
+            eventChannel.OnAttackTriggered += TurnOnBlockFacing;
+            eventChannel.OnAttackEnded += TurnOffBlockFacing;
+        }
     }
     private void OnDisable()
     {
-        eventChannel.OnAttackTriggered -= TurnOnBlockFacing;
-        eventChannel.OnAttackEnded -= TurnOffBlockFacing;
+        if (isCameraFollow)
+        {
+            eventChannel.OnAttackTriggered -= TurnOnBlockFacing;
+            eventChannel.OnAttackEnded -= TurnOffBlockFacing;
+        }
     }
     public void UpdateDirection()
     {
@@ -49,13 +55,12 @@ public class CharacterFacing : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!blockFacing)
+            UpdateDirection();
         if (isCameraFollow)
         {
             UpdateYCameraDamping();
         }
-        if (!blockFacing)
-            UpdateDirection();
-
     }
 
     private void UpdateYCameraDamping()
@@ -85,6 +90,7 @@ public class CharacterFacing : MonoBehaviour
     }
     private void TurnOffBlockFacing()
     {
+        Debug.Log("TurnOffBlockFacing");
         blockFacing = false;
     }
 }

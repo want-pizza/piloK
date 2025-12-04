@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Rock : WeaponBehavior
 {
-    public override void Equip(GameObject player)
+    public override void Equip(UnityEngine.GameObject player)
     {
         Debug.Log($"Equipped {weaponData.name}");
     }
@@ -15,7 +15,7 @@ public class Rock : WeaponBehavior
         Debug.Log($"attack - {weaponData.name}");
     }
 
-    public override void Unequip(GameObject player)
+    public override void Unequip(UnityEngine.GameObject player)
     {
         Debug.Log($"Unequipped {weaponData.name}");
     }

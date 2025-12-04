@@ -6,7 +6,7 @@ public class FloatingTextSpawner : MonoBehaviour
 {
     public static FloatingTextSpawner Instance;
 
-    [SerializeField] private GameObject prefab;
+    [SerializeField] private UnityEngine.GameObject prefab;
 
     private void Awake()
     {

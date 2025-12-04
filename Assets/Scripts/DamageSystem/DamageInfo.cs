@@ -15,7 +15,7 @@ public struct DamageInfo
 {
     public float Amount;
     public DamageType Type;
-    public GameObject Attacker;
+    public UnityEngine.GameObject Attacker;
     public Vector2 HitPoint;
     public bool IsCritical;
     public float KnockBackForce;

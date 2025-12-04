@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class EndOfLevel : MonoBehaviour
 {
-    [SerializeField] private GameObject endOfLevelMenuPrefab;
+    [SerializeField] private UnityEngine.GameObject endOfLevelMenuPrefab;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
     [SerializeField] private BaseItemObject baseItem;
@@ -17,7 +17,7 @@ public class EndOfLevel : MonoBehaviour
     private TriggerChecker playerTriggerChecker;
 
 
-    private GameObject endOflevelMenu;
+    private UnityEngine.GameObject endOflevelMenu;
     void Start()
     {
         playerTriggerChecker = transform.GetComponent<TriggerChecker>();

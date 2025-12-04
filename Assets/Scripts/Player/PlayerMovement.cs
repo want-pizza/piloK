@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour, IMove
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float airAcceleration = 5f;
     [SerializeField] private float groundDeceleration = 20f;
+    [SerializeField] private float airDeceleration = 5;
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 4f;
@@ -276,7 +277,6 @@ public class PlayerMovement : MonoBehaviour, IMove
         }
         else if (movementInputsUnsubscribed && !isEndOfLevel && isInputsActive)
         {
-            Debug.Log("sfdsdfsdfsfdsdfsfd");
             SubscribeMovementInputs();
         }
 
@@ -295,7 +295,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         }
 
         float targetVelocityX = Mathf.Abs(_inputX) > 0.1f ? _inputX * moveSpeed : 0f;
-        float accelerationRate = targetVelocityX != 0f ? isGrounded ? acceleration : airAcceleration : isGrounded ? groundDeceleration : 0;
+        float accelerationRate = targetVelocityX != 0f ? isGrounded ? acceleration : airAcceleration : isGrounded ? groundDeceleration : airDeceleration;
 
         if (IsHittingWall(_inputX) && !isWallJumping)
         {

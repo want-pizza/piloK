@@ -8,11 +8,11 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private PlayerStats stats;
 
     [Header("Hitboxes")]
-    [SerializeField] private GameObject hitboxRight;
-    [SerializeField] private GameObject hitboxUp;
-    [SerializeField] private GameObject hitboxDown;
+    [SerializeField] private UnityEngine.GameObject hitboxRight;
+    [SerializeField] private UnityEngine.GameObject hitboxUp;
+    [SerializeField] private UnityEngine.GameObject hitboxDown;
 
-    private GameObject currentHitbox;
+    private UnityEngine.GameObject currentHitbox;
 
     private Animator animator;
     public Vector2 LastSwingPoint { get; private set; }

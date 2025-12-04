@@ -6,18 +6,18 @@ using TMPro;
 public class StarEntry
 {
     public string name;
-    public GameObject starObject;
+    public UnityEngine.GameObject starObject;
 }
 
 public class StarSelector : MonoBehaviour
 {
     [SerializeField] private List<StarEntry> starEntries = new List<StarEntry>();
 
-    private Dictionary<string, GameObject> stars;
+    private Dictionary<string, UnityEngine.GameObject> stars;
 
     private void Awake()
     {
-        stars = new Dictionary<string, GameObject>();
+        stars = new Dictionary<string, UnityEngine.GameObject>();
         foreach (var entry in starEntries)
         {
             if (!stars.ContainsKey(entry.name))

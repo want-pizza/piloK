@@ -14,7 +14,7 @@ public class FXBehaviour : MonoBehaviour
             cooldownTimer -= Time.deltaTime;
     }
 
-    void OnParticleCollision(GameObject other)
+    void OnParticleCollision(UnityEngine.GameObject other)
     {
         if (cooldownTimer > 0f)
             return;

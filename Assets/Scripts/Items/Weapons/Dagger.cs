@@ -9,12 +9,12 @@ public class Dagger : WeaponBehavior
         
     }
 
-    public override void Equip(GameObject player)
+    public override void Equip(UnityEngine.GameObject player)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void Unequip(GameObject player)
+    public override void Unequip(UnityEngine.GameObject player)
     {
         throw new System.NotImplementedException();
     }

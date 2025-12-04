@@ -6,17 +6,17 @@ using UnityEngine.UI;
 
 public class DisplayInventory : MonoBehaviour
 {
-    [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private UnityEngine.GameObject cellPrefab;
     [SerializeField] private int X_START;
     [SerializeField] private int Y_START;
     [SerializeField] private int X_SPACE_BETWEEN_ITEM;
     [SerializeField] private int Y_SPACE_BETWEEN_ITEMS;
     [SerializeField] private int NUMBER_SLOTS_IN_COLUMN;
 
-    [SerializeField] private GameObject interactionMenu;
-    [SerializeField] private GameObject hintTemplate;
+    [SerializeField] private UnityEngine.GameObject interactionMenu;
+    [SerializeField] private UnityEngine.GameObject hintTemplate;
 
-    private List<GameObject> cells = new();
+    private List<UnityEngine.GameObject> cells = new();
 
     public int GetNumberSlotsInColumn { get => NUMBER_SLOTS_IN_COLUMN; }
 
@@ -78,7 +78,7 @@ public class DisplayInventory : MonoBehaviour
 
         foreach (var hint in hints)
         {
-            GameObject hintGO = Instantiate(hintTemplate, interactionMenu.transform);
+            UnityEngine.GameObject hintGO = Instantiate(hintTemplate, interactionMenu.transform);
             hintGO.SetActive(true);
 
             var text = hintGO.GetComponent<TMPro.TextMeshProUGUI>();

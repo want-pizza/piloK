@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class FlyingUpwardTransition : TransitionBase
 {
-    Field<bool> isGrounded, isDashing;
+    Field<bool> isGrounded, isDashing, isJumping;
     Field<float> velosityY;
 
-    public FlyingUpwardTransition(IStateMachine stateMachine, Field<bool> isGrounded, Field<float> velosityY, Field<bool> isDashing)
+    public FlyingUpwardTransition(IStateMachine stateMachine, Field<bool> isGrounded, Field<float> velosityY, Field<bool> isDashing, Field<bool> isJumping)
     {
         this.stateMachine = stateMachine;
         this.isGrounded = isGrounded;
         this.velosityY = velosityY;
         this.isDashing = isDashing;
+        this.isJumping = isJumping;
     }
     public override void OnEnable()
     {
@@ -21,6 +22,7 @@ public class FlyingUpwardTransition : TransitionBase
         isGrounded.OnValueChanged += OnIsGroundedChanged;
         velosityY.OnValueChanged += OnVelosityYChanged;
         isDashing.OnValueChanged += OnIsDashingChanged;
+        isJumping.OnValueChanged += IsJumping_OnValueChanged;
     }
     public override void OnDisable()
     {
@@ -28,10 +30,11 @@ public class FlyingUpwardTransition : TransitionBase
         isGrounded.OnValueChanged -= OnIsGroundedChanged;
         velosityY.OnValueChanged -= OnVelosityYChanged;
         isDashing.OnValueChanged -= OnIsDashingChanged;
+        isJumping.OnValueChanged -= IsJumping_OnValueChanged;
     }
     protected override void TryTransition()
     {
-        if (!isGrounded && velosityY > 0.1f && !isDashing)
+        if (!isGrounded && velosityY > 0.1f && !isDashing && !isJumping)
             stateMachine.ChangeState<PlayerFlyingUpwardState>();
     }
     private void OnIsGroundedChanged(bool isGrounded)
@@ -43,6 +46,10 @@ public class FlyingUpwardTransition : TransitionBase
         TryTransition();
     }
     private void OnIsDashingChanged(bool obj)
+    {
+        TryTransition();
+    }
+    private void IsJumping_OnValueChanged(bool obj)
     {
         TryTransition();
     }

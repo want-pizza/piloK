@@ -193,7 +193,7 @@ public class Slime : MonoBehaviour, IMove
         if (!isGrounded)
             return;
         Vector2 dir = (player.position - transform.position).normalized;
-        rb.AddForce(new Vector2(dir.x * jumpHorizontalSpeed, jumpVerticalSpeed), ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(dir.x * jumpHorizontalSpeed, jumpVerticalSpeed / jumpHorizontalSpeed * 2f), ForceMode2D.Impulse);
     }
 
     void UpdateAnimations()

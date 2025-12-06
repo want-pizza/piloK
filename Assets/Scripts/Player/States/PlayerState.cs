@@ -10,6 +10,7 @@ public abstract class PlayerState : IState
     protected string animationName;
     //protected string boolValueName;
     public virtual bool CanMove() => true;
+    public virtual bool CanDash() => true;
     public virtual bool CanOpenInventory() => false;
 
     public virtual void OnEnter()

@@ -81,13 +81,13 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         TransitionBase jumpTransition = new JumpTransition(
                             this,
                             movement.FieldIsJumping,
-                            movement.FieldIsGrounded,
                             "StartJumping");
         TransitionBase flyingUpwardTransition = new FlyingUpwardTransition(
                             this,
                             movement.FieldIsGrounded,
                             movement.FieldVelocityY,
-                            movement.FieldIsDashing);
+                            movement.FieldIsDashing,
+                            movement.FieldIsJumping);
         TransitionBase fallTransition = new FallTransition(
                             this,
                             movement.FieldIsGrounded,
@@ -105,6 +105,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
                             movement.FieldVelocityX,
                             movement.FieldIsGrounded,
                             movement.FieldIsDashing,
+                            movement.FieldIsJumping,
                             "Landing");
         TransitionBase dashTransition = new DashTransition(
                             this,
@@ -128,7 +129,7 @@ public class PlayerStateMachine : MonoBehaviour, IStateMachine
         states.Add(typeof(PlayerAttackState), new PlayerAttackState(this, playerCombat.CurrentAttackAnim, deathTransition, attackExitTransition));
         states.Add(typeof(PlayerDeathState), new PlayerDeathState(this, "Death", idleTransition));
 
-        states.Add(typeof(PlayerAnyState), new PlayerAnyState(this, deathTransition, idleTransition, attackTransition, runTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
+        states.Add(typeof(PlayerAnyState), new PlayerAnyState(this, deathTransition, runTransition, idleTransition, attackTransition, jumpTransition, fallTransition, dashTransition, flyingUpwardTransition));
     }
     public bool IsVariableExist(string name)
     {

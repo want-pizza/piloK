@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9314dc550ed8b43af0711e9b980f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   spread: 0.1
   explosionEffectKey: fireball
   hitListener: {fileID: 670127652902594634}
@@ -5038,6 +5038,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.03, y: 0.06}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.15

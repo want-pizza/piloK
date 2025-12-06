@@ -131,7 +131,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -313,8 +313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a9448081029ea48990c5d2538a70aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
-  currentHP: 100
+  maxHP: 50
+  currentHP: 50
   hitKey: GreenSlimeHit
   deathKey: GreenSlimeDeath
   hitClip: {fileID: 8300000, guid: a8d5668a57eb56c4288d8b3c3a70483b, type: 3}

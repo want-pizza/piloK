@@ -8,6 +8,7 @@ public class Mage : MonoBehaviour, IMove
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
     [SerializeField] private CharacterFacing characterFacing;
+    [SerializeField] private Damageable damageable;
 
     [Header("Checkers")]
     [SerializeField] private TriggerChecker groundChecker;
@@ -18,7 +19,7 @@ public class Mage : MonoBehaviour, IMove
     [SerializeField] private float keepDistance = 4f;
     [SerializeField] private float retreatDistance = 2f;
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] float acceleration = 8f;
+    [SerializeField] private float acceleration = 8f;
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float efficiencyTime = 0.2f;
@@ -35,13 +36,15 @@ public class Mage : MonoBehaviour, IMove
     private bool isGrounded;
     private bool isObstacleAhead;
     private bool isEdgeAhead;
+    private bool isRetreatDistance = false;
+    private bool isKeepDisatance;
 
     private float stateTimer;
 
     private bool isEfficiency = false;
 
-
     private bool isAttacking = false;
+    private bool isAttackCooldown = false;
 
     private MageState state = MageState.Idle;
     public MageState State => state;
@@ -63,6 +66,7 @@ public class Mage : MonoBehaviour, IMove
         groundChecker.OnTriggeredStateChanged += OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged += OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged += OnObstacleTriggered;
+        damageable.OnDamagedEvent += OnHit;
     }
 
     private void OnDisable()
@@ -70,6 +74,7 @@ public class Mage : MonoBehaviour, IMove
         groundChecker.OnTriggeredStateChanged -= OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged -= OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged -= OnObstacleTriggered;
+        damageable.OnDamagedEvent -= OnHit;
     }
 
     private void OnEdgeTriggered(bool value)
@@ -119,7 +124,7 @@ public class Mage : MonoBehaviour, IMove
     {
         float dist = Vector2.Distance(transform.position, player.position);
 
-        if (dist < keepDistance * 1.4f)
+        if (dist < keepDistance * 1.4f && !anim.GetBool("isAttacking"))
         {
             state = MageState.HoldDistance;
             return;
@@ -129,35 +134,80 @@ public class Mage : MonoBehaviour, IMove
     void HoldLogic()
     {
         float dist = Vector2.Distance(transform.position, player.position);
-
         int dir = GetPlayerDirection();
 
+        // --- 1) Тримання дистанції ---
         if (dist < retreatDistance)
-            Move(-dir);
-        else if (dist > keepDistance)
-            Move(dir);
-        else
-            Move(0);
-
-        if (dist > retreatDistance && ClearLineToPlayer())
         {
-            if(characterFacing.IsFacingRight ? dir == -1 : dir == 1)
+            isRetreatDistance = true;
+            Move(-dir);
+            return;
+        }
+        else
+        {
+            isRetreatDistance = false;
+        }
+
+        // --- 2) Нема прямої лінії, але ми вміщаємось в рамки дистанції ---
+        if (!ClearLineToPlayer() && (characterFacing.IsFacingRight == (GetPlayerDirection() == 1)))
+        {
+            // якщо є прірва попереду — стоїмо
+            if (isEdgeAhead)
+            {
+                Move(0);
+                return;
+            }
+
+            // якщо ми далеко — підходимо ближче
+            if (dist > keepDistance)
+            {
+                Move(dir);
+                return;
+            }
+
+            // якщо ми в нормальній дистанції але нема видимості — підходимо доки не буде видно
+            Move(dir);
+            return;
+        }
+
+        // --- 3) Є пряма лінія, нема кулдауна атаки ---
+        if (!isAttackCooldown && dist > retreatDistance)
+        {
+            // Поворот на гравця перед атакою
+            if (characterFacing.IsFacingRight ? dir == -1 : dir == 1)
                 Move(dir);
 
             isAttacking = true;
             state = MageState.Attacking;
             return;
         }
-    }
 
+        // --- 4) Якщо все ок просто підтримуємо дистанцію ---
+        if (dist > keepDistance)
+        {
+            isKeepDisatance = false;
+            Move(dir);
+        }
+        else
+        {
+            isKeepDisatance = true;
+            Move(0);
+        }
+            
+    }
 
     void AttackLogic()
     {
-        Move(0);
-        anim.Play("Attack");
+        if (characterFacing.IsFacingRight == (GetPlayerDirection() == 1))
+            Move(0);
+        else
+            Move(GetPlayerDirection());
+
+        anim.SetBool("isAttacking", true);
 
         stateTimer = attackCooldown;
-        state = MageState.Cooldown;
+        AttackCoolDown(attackCooldown);
+        state = MageState.Idle;
     }
 
     void CooldownLogic()
@@ -174,6 +224,9 @@ public class Mage : MonoBehaviour, IMove
     // ──────────────────── HELPERS ────────────────────-
     void Move(int dir)
     {
+        if (isEfficiency || isObstacleAhead || (isEdgeAhead && !isRetreatDistance || !isKeepDisatance))
+            return;
+        
         //Debug.Log($"mOVE dir -{dir}");
         float targetVelocityX = isGrounded ? dir * moveSpeed: dir * moveSpeed/2;
 
@@ -192,7 +245,7 @@ public class Mage : MonoBehaviour, IMove
             return;
 
         Debug.Log($"isEdgeAhead = {isEdgeAhead}; isObstacleAhead = {isObstacleAhead};");
-        if (isEdgeAhead || isObstacleAhead)
+        if ((isEdgeAhead && isRetreatDistance) || isObstacleAhead)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -221,22 +274,26 @@ public class Mage : MonoBehaviour, IMove
     }
 
     // ───────────────── ПОРАЖЕННЯ / STUN ─────────────────
-    public void Stun(float time)
+    public void AttackCoolDown(float time)
     {
-        state = MageState.Stunned;
+        isAttackCooldown = true;
         StartCoroutine(StunRoutine(time));
     }
 
     IEnumerator StunRoutine(float t)
     {
         yield return new WaitForSeconds(t);
-        state = MageState.HoldDistance;
+        isAttackCooldown = false;
     }
 
     public void Die()
     {
         state = MageState.Dead;
         rb.velocity = Vector2.zero;
+    }
+    private void OnHit(DamageInfo info, DamageResult result)
+    {
+        anim.Play("Hit");
     }
 
     public void TakeEfficiency(Vector2 point, float power)

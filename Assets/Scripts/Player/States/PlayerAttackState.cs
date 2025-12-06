@@ -12,6 +12,8 @@ public class PlayerAttackState : PlayerState
         Debug.Log($" {this.GetType()};");
     }
 
+    public override bool CanDash() => false;
+
     public override void OnEnter()
     {
         base.OnEnter();

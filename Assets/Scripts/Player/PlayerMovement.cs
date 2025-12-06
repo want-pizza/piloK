@@ -80,7 +80,6 @@ public class PlayerMovement : MonoBehaviour, IMove
     private bool movementInputsUnsubscribed = false;
     private Vector3 efficiencyDirection;
     private float efficiencyPower;
-    private bool isInputsActive;
 
     public float XVelocity { get => _velocityX; }
     public float YVelocity { get => _velocityY; }
@@ -120,7 +119,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void SubscribeMovementInputs()
     {
-        //Debug.Log("subscribe");
+        Debug.Log("subscribe");
 
         _inputActions.Player.Move.performed += SetHorizontalInput;
         _inputActions.Player.Move.canceled += InputCanceled;
@@ -135,7 +134,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private void UnsubscribeMovementInputs()
     {
-        //Debug.Log("unsubscribe");
+        Debug.Log("unsubscribe");
         if (movementInputsUnsubscribed) return;
 
         movementInputsUnsubscribed = true;
@@ -163,7 +162,7 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (isGrounded)
         {
             isJumping.Value = false;
-            //Debug.Log("Field isJumping = false");
+            Debug.Log("Field isJumping = false");
 
             if (isJumpBufferTimming)
             {
@@ -234,7 +233,7 @@ public class PlayerMovement : MonoBehaviour, IMove
             float jumpForce = Mathf.Sqrt(2 * Mathf.Abs(fallGravity) * jumpHeight);
             _velocityY.Value = jumpForce;
             //Debug.Log($"Field _velocityY = {_velocityY.Value}");
-            //Debug.Log("Field isJumping = true");
+            Debug.Log("Field isJumping = true");
             isJumping.Value = true;
             isJumpBufferTimming = false;
             //Debug.Log($"Jump initiated: _velocityY = {_velocityY}");
@@ -269,13 +268,13 @@ public class PlayerMovement : MonoBehaviour, IMove
     {
         if (isPaused) return;
 
-        if (!currentState.Value.CanMove() && isInputsActive)
+        if (!currentState.Value.CanMove())
         {
-            //Debug.Log($"currentState.Value = {currentState.Value.ToString()}");
+            Debug.Log($"currentState.Value = {currentState.Value.ToString()}");
             _inputX = 0f;
             UnsubscribeMovementInputs();
         }
-        else if (movementInputsUnsubscribed && !isEndOfLevel && isInputsActive)
+        else if (movementInputsUnsubscribed && !isEndOfLevel)
         {
             SubscribeMovementInputs();
         }
@@ -310,6 +309,8 @@ public class PlayerMovement : MonoBehaviour, IMove
                 );
             if (isWallJumping)
                 isWallJumping = false;
+
+            _velocityX.Value -= 0.0001f;
         }
 
         CalculateVelocityY();
@@ -391,7 +392,7 @@ public class PlayerMovement : MonoBehaviour, IMove
 
     private bool CanDash()
     {
-        return !isDashing && !isDashCooldown && wasOnGroundAfterDash;
+        return !isDashing && !isDashCooldown && wasOnGroundAfterDash && currentState.Value.CanDash() && currentState.Value.CanMove();
     }
 
     private bool IsHittingWall(float dir)
@@ -442,10 +443,6 @@ public class PlayerMovement : MonoBehaviour, IMove
         if (paused)
             UnsubscribeMovementInputs();
         else SubscribeMovementInputs();
-    }
-    public void TurnOnInput(bool value)
-    {
-        isInputsActive = value;
     }
     public void PlayLevelTransition(bool isLeft)
     {

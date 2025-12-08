@@ -33,6 +33,7 @@ public class InventoryObject : ScriptableObject
             {
                 InventorySlots[i].UpdateSlot(i, itemObject, amount);
                 OnItemAdded?.Invoke(itemObject);
+                EquipItem(i);
                 return true;
             }
         }
@@ -53,10 +54,10 @@ public class InventoryObject : ScriptableObject
             if (InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)
             {
                 Debug.Log($"EquippedWeaponIndex - {EquippedWeaponIndex}");
-                if (EquippedWeaponIndex != -1)
-                {
-                    UnequipItem(EquippedWeaponIndex);
-                }
+                //if (EquippedWeaponIndex != -1)
+                //{
+                //    UnequipItem(EquippedWeaponIndex);
+                //}
                 InventorySlots[index].IsEquipped = true;
                 EquippedWeaponIndex = index;
                 OnItemEquiped?.Invoke(InventorySlots[index].Item);
@@ -64,7 +65,6 @@ public class InventoryObject : ScriptableObject
             }
         return false;
     }
-
 
     public bool DropItem(int index)
     {

@@ -56,9 +56,9 @@ public class Mage : MonoBehaviour, IMove
 
     private void Awake()
     {
-        player = FindAnyObjectByType<PlayerMovement>().transform;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+        player = FindAnyObjectByType<PlayerMovement>().transform;
     }
 
     private void OnEnable()

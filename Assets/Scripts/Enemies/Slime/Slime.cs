@@ -54,11 +54,11 @@ public class Slime : MonoBehaviour, IMove
 
     private void Awake()
     {
-        player = FindAnyObjectByType<PlayerMovement>().transform; //need changed
         rb = GetComponentInChildren<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         //attackZone = GetComponentInChildren<CircleCollider2D>();
         //groundChecker = GetComponentInChildren<TriggerChecker>();
+        player = FindAnyObjectByType<PlayerMovement>().transform; //need changed
     }
     private void OnEnable()
     {

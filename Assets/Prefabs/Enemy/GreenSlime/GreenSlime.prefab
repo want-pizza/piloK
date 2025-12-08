@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 677211966953532733}
   - component: {fileID: 4186603078965930587}
   - component: {fileID: 4581490834389035561}
+  - component: {fileID: 4483661773436897308}
   m_Layer: 13
   m_Name: GreenSlime
   m_TagString: Untagged
@@ -143,6 +144,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &4483661773436897308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435860025352986460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d7d12d157909b44a93fe57df49570a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 0
 --- !u!1 &2573856710743544887
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +280,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.21, y: 0.1}
+  m_Size: {x: 1.48, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &3021994047221313540
 GameObject:
@@ -315,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   currentHP: 50
+  enemyPoolMember: {fileID: 4483661773436897308}
   hitKey: GreenSlimeHit
   deathKey: GreenSlimeDeath
   hitClip: {fileID: 8300000, guid: a8d5668a57eb56c4288d8b3c3a70483b, type: 3}
@@ -531,7 +546,7 @@ MonoBehaviour:
   discardingForce: 2
   targetLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 65536
   continuous: 1
   hitInterval: 0.15
 --- !u!114 &5811350085605312166
@@ -548,7 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 65536
   isReturnCollider: 1
 --- !u!58 &8453581684462761158
 CircleCollider2D:

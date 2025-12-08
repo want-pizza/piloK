@@ -49,18 +49,19 @@ public class InventoryObject : ScriptableObject
 
     public bool EquipItem(int index)
     {
-        if(InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)
-        {
-            Debug.Log($"EquippedWeaponIndex - {EquippedWeaponIndex}");
-            if(EquippedWeaponIndex != -1)
+        if(InventorySlots[index].Item != null)
+            if (InventorySlots[index].Item.CanEquip && !InventorySlots[index].IsEquipped)
             {
-                UnequipItem(EquippedWeaponIndex);
+                Debug.Log($"EquippedWeaponIndex - {EquippedWeaponIndex}");
+                if (EquippedWeaponIndex != -1)
+                {
+                    UnequipItem(EquippedWeaponIndex);
+                }
+                InventorySlots[index].IsEquipped = true;
+                EquippedWeaponIndex = index;
+                OnItemEquiped?.Invoke(InventorySlots[index].Item);
+                return true;
             }
-            InventorySlots[index].IsEquipped = true;
-            EquippedWeaponIndex = index;
-            OnItemEquiped?.Invoke(InventorySlots[index].Item);
-            return true;
-        }
         return false;
     }
 

@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 468257766772004270}
   - component: {fileID: 7851351692451453286}
   - component: {fileID: 6994644142171005024}
+  - component: {fileID: 2327698422658996540}
   m_Layer: 13
   m_Name: LittleMage
   m_TagString: Untagged
@@ -239,6 +240,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &2327698422658996540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048926771099986389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d7d12d157909b44a93fe57df49570a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 1
 --- !u!1 &2284533841530408062
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,6 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   currentHP: 50
+  enemyPoolMember: {fileID: 2327698422658996540}
   hitClips:
   - {fileID: 8300000, guid: e25ac875cbafe0d469346b4e236d7b69, type: 3}
   - {fileID: 8300000, guid: f420e328eba5b124180cf4c2e6a871cf, type: 3}

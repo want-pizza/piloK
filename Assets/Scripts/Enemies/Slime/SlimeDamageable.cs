@@ -22,6 +22,7 @@ public class SlimeDamageable : Damageable
     private void OnEnable()
     {
         OnDamagedEvent += OnHit;
+        currentHP = maxHP;
     }
     private void OnDisable()
     {

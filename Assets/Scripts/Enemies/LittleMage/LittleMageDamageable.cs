@@ -12,12 +12,13 @@ public class LittleMageDamageable : Damageable
     private void Start()
     {
         littleMageMovement = GetComponentInParent<IMove>();
-        resistances[DamageType.Fire] = 0.7f; // -20% -> означає +20% damage (можна інтерпретувати)
+        resistances[DamageType.Fire] = 0.7f;
 
     }
     private void OnEnable()
     {
         OnDamagedEvent += OnHit;
+        currentHP = maxHP;
     }
     private void OnDisable()
     {
@@ -47,7 +48,6 @@ public class LittleMageDamageable : Damageable
         Debug.Log("Slime is dead");
         AudioManager.Instance.PlaySFX(deathClip, transform.position);
         //FXManager.Instance.Play(deathKey, transform.position, Quaternion.identity);
-
         base.Die(info);
     }
 }

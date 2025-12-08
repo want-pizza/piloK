@@ -8,6 +8,9 @@ public class Damageable : MonoBehaviour, IDamageable
     public float maxHP = 100;
     public float currentHP = 100;
 
+    [Header("PoolMemberReference")]
+    [SerializeField] private EnemyPoolMember enemyPoolMember;
+
     [Tooltip("Resistance per damage type (0..1 meaning % reduction)")]
     public Dictionary<DamageType, float> resistances = new Dictionary<DamageType, float>()
     {
@@ -77,6 +80,7 @@ public class Damageable : MonoBehaviour, IDamageable
     protected virtual void Die(DamageInfo info)
     {
         OnDeathEvent?.Invoke();
+        enemyPoolMember?.Die();
         transform.parent.gameObject.SetActive(false);
     }
 }

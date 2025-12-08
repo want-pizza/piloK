@@ -67,14 +67,17 @@ public class Mage : MonoBehaviour, IMove
         edgeChecker.OnTriggeredStateChanged += OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged += OnObstacleTriggered;
         damageable.OnDamagedEvent += OnHit;
+        damageable.OnDeathEvent += Die;
     }
 
     private void OnDisable()
     {
+        anim.SetBool("isAttacking", false);
         groundChecker.OnTriggeredStateChanged -= OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged -= OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged -= OnObstacleTriggered;
         damageable.OnDamagedEvent -= OnHit;
+        damageable.OnDeathEvent -= Die;
     }
 
     private void OnEdgeTriggered(bool value)
@@ -103,7 +106,8 @@ public class Mage : MonoBehaviour, IMove
             acceleration * Time.fixedDeltaTime
         );
 
-        rb.velocity = new Vector2(currentVelocityX, rb.velocity.y);
+        if(!isEfficiency)
+            rb.velocity = new Vector2(currentVelocityX, rb.velocity.y);
 
         switch (state)
         {
@@ -124,7 +128,7 @@ public class Mage : MonoBehaviour, IMove
     {
         float dist = Vector2.Distance(transform.position, player.position);
 
-        if (dist < keepDistance * 1.4f && !anim.GetBool("isAttacking"))
+        if (!anim.GetBool("isAttacking"))
         {
             state = MageState.HoldDistance;
             return;
@@ -135,6 +139,7 @@ public class Mage : MonoBehaviour, IMove
     {
         float dist = Vector2.Distance(transform.position, player.position);
         int dir = GetPlayerDirection();
+        bool isClearLineToPlayer = ClearLineToPlayer();
 
         // --- 1) Тримання дистанції ---
         if (dist < retreatDistance)
@@ -149,7 +154,7 @@ public class Mage : MonoBehaviour, IMove
         }
 
         // --- 2) Нема прямої лінії, але ми вміщаємось в рамки дистанції ---
-        if (!ClearLineToPlayer() && (characterFacing.IsFacingRight == (GetPlayerDirection() == 1)))
+        if (!isClearLineToPlayer && (characterFacing.IsFacingRight == (GetPlayerDirection() == 1)))
         {
             // якщо є прірва попереду — стоїмо
             if (isEdgeAhead)
@@ -171,7 +176,7 @@ public class Mage : MonoBehaviour, IMove
         }
 
         // --- 3) Є пряма лінія, нема кулдауна атаки ---
-        if (!isAttackCooldown && dist > retreatDistance)
+        if (isClearLineToPlayer && !isAttackCooldown && dist > retreatDistance)
         {
             // Поворот на гравця перед атакою
             if (characterFacing.IsFacingRight ? dir == -1 : dir == 1)
@@ -198,10 +203,8 @@ public class Mage : MonoBehaviour, IMove
 
     void AttackLogic()
     {
-        if (characterFacing.IsFacingRight == (GetPlayerDirection() == 1))
-            Move(0);
-        else
-            Move(GetPlayerDirection());
+        if (!(characterFacing.IsFacingRight == (GetPlayerDirection() == 1)))
+            currentVelocityX = GetPlayerDirection() / 100f;
 
         anim.SetBool("isAttacking", true);
 

@@ -6,38 +6,7 @@ public class HealthBar : MonoBehaviour
 {
     public Image fillImage;
     public TextMeshProUGUI healthText;
-
-    private float maxHealth, currentHealth;
-    private float MaxHealth
-    {
-        get => maxHealth;
-        set
-        {
-            maxHealth = value;
-            UpdateHealthBar();
-        }
-    }
-    private float CurrentHealth
-    {
-        get => currentHealth;
-        set
-        {
-            currentHealth = value;
-            UpdateHealthBar();
-        }
-        
-    }
-    private void Start()
-    {
-        PlayerStats stats = FindAnyObjectByType<PlayerStats>();
-        currentHealth = stats.CurrentHealth.Value;
-        maxHealth = stats.MaxHealth.Value;
-
-        stats.CurrentHealth.OnValueChanged += value => CurrentHealth = value; 
-        stats.MaxHealth.OnValueChanged += value => MaxHealth = value; 
-        UpdateHealthBar ();
-    }
-    void UpdateHealthBar()
+    public void UpdateHealthBar(float currentHealth, float maxHealth)
     {
         fillImage.fillAmount = currentHealth / maxHealth;
         Debug.Log($"fillAmount = {fillImage.fillAmount}");

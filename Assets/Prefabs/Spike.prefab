@@ -178,7 +178,7 @@ MonoBehaviour:
   discardingForce: 2
   targetLayers:
     serializedVersion: 2
-    m_Bits: 2056
+    m_Bits: 67584
   continuous: 0
   hitInterval: 1
 --- !u!61 &2784031991375080641

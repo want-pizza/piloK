@@ -7,6 +7,9 @@ public class Damageable : MonoBehaviour, IDamageable
     [Header("Base Stats")]
     public float maxHP = 100;
     public float currentHP = 100;
+    public int xp = 30;
+
+    private ICharacterLevel lastCharacterLevel;
 
     [Header("PoolMemberReference")]
     [SerializeField] private EnemyPoolMember enemyPoolMember;
@@ -32,7 +35,7 @@ public class Damageable : MonoBehaviour, IDamageable
     {
         Debug.Log("TakeDamage");
         DamageResult result = CalculateAndApplyDamage(info);
-        FloatingTextSpawner.Instance.Spawn(result.FinalAmount.ToString("0.##"), transform.position);
+        FloatingTextSpawner.Instance.Spawn(result.FinalAmount.ToString("0.##"), transform.position, info.IsCritical, false);
 
         OnDamagedEvent?.Invoke(info, result);
 
@@ -44,6 +47,9 @@ public class Damageable : MonoBehaviour, IDamageable
 
     protected virtual DamageResult CalculateAndApplyDamage(DamageInfo info)
     {
+        ICharacterLevel characterLevel = info.Attacker.GetComponent<ICharacterLevel>();
+        lastCharacterLevel = characterLevel == null ? lastCharacterLevel : characterLevel;
+
         Debug.Log("CalculateAndApplyDamage");
         float baseAmount = Mathf.Max(0f, info.Amount);
         float currentAmount = baseAmount, resist = 0;
@@ -79,6 +85,9 @@ public class Damageable : MonoBehaviour, IDamageable
 
     protected virtual void Die(DamageInfo info)
     {
+        if (lastCharacterLevel != null)
+            lastCharacterLevel.GainXP(xp);
+
         OnDeathEvent?.Invoke();
         enemyPoolMember?.Die();
         transform.parent.gameObject.SetActive(false);

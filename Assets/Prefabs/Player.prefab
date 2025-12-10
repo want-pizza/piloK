@@ -5186,9 +5186,11 @@ GameObject:
   - component: {fileID: 5811855047759398656}
   - component: {fileID: 3686637558403484563}
   - component: {fileID: 2700398928418572655}
+  - component: {fileID: 6179211607385831575}
   - component: {fileID: 1338309736127884257}
   - component: {fileID: 8628599753269972173}
   - component: {fileID: 7207985164142077367}
+  - component: {fileID: 8258352379307037209}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -5321,6 +5323,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e7a2189716a8141b7219555181f5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6179211607385831575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758754546277564767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d8675a00c5eb0849adf5f1c9c2b4e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ui: {fileID: 0}
+  allItems: []
+  items:
+  - {fileID: 11400000, guid: 2bb4250d64b786943ac8eae94f812dfe, type: 2}
+  - {fileID: 11400000, guid: 54175afc5df3d8e438e3d5bc6e15e3d2, type: 2}
+  - {fileID: 11400000, guid: 6cb39d3c29b0c3d4891c1eb97d989661, type: 2}
 --- !u!61 &1338309736127884257
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5401,6 +5421,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2758754546277564767}
   m_Enabled: 1
+--- !u!114 &8258352379307037209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758754546277564767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0427c1ae481f58c418eca9f9b490fe23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 2700398928418572655}
+  healthBar: {fileID: 0}
 --- !u!1 &3305347005269632241
 GameObject:
   m_ObjectHideFlags: 0
@@ -20714,6 +20748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 100
+  xp: 30
   enemyPoolMember: {fileID: 0}
   hitKey: PlayerHit
   deathKey: PlayerDeath
@@ -20727,6 +20762,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1597005390721957803}
     m_Modifications:
+    - target: {fileID: -5696796471935601647, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 2700398928418572655}
     - target: {fileID: 2583475320720947202, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.21
@@ -20798,6 +20837,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1597005390721957803}
     m_Modifications:
+    - target: {fileID: -5696796471935601647, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 2700398928418572655}
     - target: {fileID: 2583475320720947202, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09
@@ -20869,6 +20912,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1597005390721957803}
     m_Modifications:
+    - target: {fileID: -5696796471935601647, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 2700398928418572655}
     - target: {fileID: 2583475320720947202, guid: 358276eefa2d0db4c856885ec91edee0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09

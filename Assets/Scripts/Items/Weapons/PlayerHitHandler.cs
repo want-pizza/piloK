@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitHandler : MonoBehaviour
+public class PlayerHitHandler : MonoBehaviour
 {
+    [SerializeField] private PlayerStats stats;
+
+    [Header("Settings")]
     [SerializeField] private Collider2D hitCollider;
     [SerializeField] private LayerMask hitLayerMask;
     private bool wasEfficiencyTaken = false;
@@ -41,7 +44,12 @@ public class HitHandler : MonoBehaviour
                         {
                             DamageInfo tempInfo = info;
                             tempInfo.HitPoint = ownerWeapon.LastSwingPoint;
-                            target.TakeDamage(tempInfo);
+                            DamageResult result = target.TakeDamage(tempInfo);
+
+                            if(info.Type == DamageType.Physical && Random.Range(0, 100) < stats.VampirismChance)
+                            {
+                                stats.CurrentHealth.Value += Mathf.Max(1, result.FinalAmount * stats.VampirismStrength / 100);
+                            }
                             wasTargetEfficiencyTaken = true;
                         }
                         else

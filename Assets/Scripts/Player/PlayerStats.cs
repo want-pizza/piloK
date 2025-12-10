@@ -7,14 +7,20 @@ public class PlayerStats : MonoBehaviour
 {
     public Stat<float> MaxHealth = new(100f);
     public Field<float> CurrentHealth = new(100f);
+
     public Stat<float> ResistTime = new(0.2f);
+
     public Stat<float> KnockBackForce = new(4f);
     public Stat<float> SelfKnockBackForceMultiplier = new(1f);
+
     public Stat<float> CritChance = new(10f);
     public Stat<float> CritMultiplier = new(2f);
 
     public Stat<float> PhisicalDamage = new(10f);
     public Stat<float> FireDamage = new(0f);
+
+    public Stat<float> VampirismChance = new(100f);
+    public Stat<float> VampirismStrength = new(10f);
 
     private Dictionary<StatType, Stat<float>> dictionary = new Dictionary<StatType, Stat<float>>();
     public Dictionary<StatType, Stat<float>> GetAllStats() => dictionary;
@@ -49,9 +55,5 @@ public class PlayerStats : MonoBehaviour
                 }
             }
         }
-    }
-    private void OnEnable()
-    {
-        PhisicalDamage.OnValueChanged += value => Debug.Log($"phisicalDamage = {value}"); 
     }
 }

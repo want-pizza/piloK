@@ -46,6 +46,10 @@ public class Mage : MonoBehaviour, IMove
     private bool isAttacking = false;
     private bool isAttackCooldown = false;
 
+    private bool isPaused = false;
+    private Coroutine efficiencyCorutine;
+    private Coroutine stunCorutine;
+
     private MageState state = MageState.Idle;
     public MageState State => state;
 
@@ -100,6 +104,9 @@ public class Mage : MonoBehaviour, IMove
 
     void FixedUpdate()
     {
+        if (isPaused)
+            return;
+
         currentVelocityX = Mathf.MoveTowards(
             currentVelocityX,
             targetVelocityX,
@@ -280,7 +287,7 @@ public class Mage : MonoBehaviour, IMove
     public void AttackCoolDown(float time)
     {
         isAttackCooldown = true;
-        StartCoroutine(StunRoutine(time));
+        stunCorutine = StartCoroutine(StunRoutine(time));
     }
 
     IEnumerator StunRoutine(float t)
@@ -308,7 +315,7 @@ public class Mage : MonoBehaviour, IMove
 
         rb.AddForce(new Vector2(power * 0.7f * point.x * KnockbackMultiplier, power * 0.3f * KnockbackMultiplier), ForceMode2D.Impulse);
         isEfficiency = true;
-        StartCoroutine(TurnOffEfficiency(efficiencyTime));
+        efficiencyCorutine = StartCoroutine(TurnOffEfficiency(efficiencyTime));
     }
 
     IEnumerator TurnOffEfficiency(float time)
@@ -319,7 +326,7 @@ public class Mage : MonoBehaviour, IMove
 
     public void OnPausedChanged(bool paused)
     {
-        throw new System.NotImplementedException();
+        isPaused = paused;
     }
 }
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4186603078965930587}
   - component: {fileID: 4581490834389035561}
   - component: {fileID: 4483661773436897308}
+  - component: {fileID: 3918468964731402146}
   m_Layer: 13
   m_Name: GreenSlime
   m_TagString: Untagged
@@ -157,6 +158,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+--- !u!114 &3918468964731402146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435860025352986460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd8f64f3fc1c6d04185007562a2a7be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2573856710743544887
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   currentHP: 50
+  xp: 10
   enemyPoolMember: {fileID: 4483661773436897308}
   hitKey: GreenSlimeHit
   deathKey: GreenSlimeDeath

@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class LevelUpItemChoiceUI : MonoBehaviour
 {
+    [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
 
-    private System.Action<ItemStatData> onItemSelected;
-
-    public void Open(ItemStatData[] items, System.Action<ItemStatData> callback)
+    public void Open(ItemStatData[] items)
     {
         GetComponent<SM_Window>().Toggle(true);
-        onItemSelected = callback;
 
         foreach (Transform child in itemsContainer)
             Destroy(child.gameObject);
@@ -24,11 +22,12 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         }
     }
 
-    private void SelectItem(ItemStatData item)
+    private void SelectItem(BaseItemObject item)
     {
-        onItemSelected?.Invoke(item);
+        inventoryPresenter.TryPickupItem(item, 1);
+        PauseController.Instance.SetPause(false);
         Close();
     }
 
-    public void Close() => gameObject.SetActive(false);
+    public void Close() => GetComponent<SM_Window>().Toggle(false);
 }

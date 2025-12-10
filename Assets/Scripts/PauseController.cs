@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PauseController : MonoBehaviour
 {
+    public static PauseController Instance { get; private set; }
+
     [SerializeField] private SM_Window window;
     [SerializeField] private SM_Window statPanel;
     private PlayerAction _inputActions;
@@ -12,6 +14,11 @@ public class PauseController : MonoBehaviour
     private void Awake()
     {
         _inputActions = InputManager.Instance.PlayerActions;
+        if (Instance != this)
+        {
+            Instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
     }
     private void OnEnable()
     {
@@ -23,9 +30,11 @@ public class PauseController : MonoBehaviour
     }
     public void SetPause(bool pause)
     {
+        Debug.Log($"SetPause({pause}); canpause = {canPause}");
         if (!canPause) return;
 
         PauseManager.InternalSetPause(pause);
+        Time.timeScale = pause ? 0.0f : 1.0f;
     }
     public void TogglePause(InputAction.CallbackContext context)
     {

@@ -27,8 +27,10 @@ public class ItemCardUI : MonoBehaviour
 
         foreach (var bonus in data.bonuses)
         {
-            var txt = Instantiate(bonusPrefab, bonusesParent);
-            txt.text = $"{bonus.statType}: +{bonus.amount}";
+            TMP_Text txt = Instantiate(bonusPrefab, bonusesParent);
+            txt.text += $"{bonus.statType}: +{bonus.amount}";
+            txt.enabled = true;
+            Debug.Log($"Instantiated Bonus active={txt.gameObject.activeSelf} enabled={txt.enabled}", txt.gameObject);
         }
     }
 

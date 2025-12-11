@@ -5,11 +5,14 @@ using UnityEngine;
 public class LevelUpItemChoiceUI : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
+    [SerializeField] private PlayerStatsController statsController;
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
 
     public void Open(ItemStatData[] items)
     {
+        inventoryPresenter.RefreUI();
+        statsController.ShowStats();
         GetComponent<SM_Window>().Toggle(true);
 
         foreach (Transform child in itemsContainer)

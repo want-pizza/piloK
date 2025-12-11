@@ -9,5 +9,8 @@ public enum StatType
     CritMultiplier,
 
     PhisicalDamage,
-    FireDamage
+    FireDamage,
+
+    VampirismChance,
+    VampirismStrength
 }

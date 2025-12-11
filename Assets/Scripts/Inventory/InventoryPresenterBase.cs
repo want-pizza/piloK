@@ -31,7 +31,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         inventory.OnItemAdded += ShowInventoryItem;
-        inputActions.Player.Inventory.started += ToggleInventory;
+        //inputActions.Player.Inventory.started += ToggleInventory;
     }
     protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
@@ -223,6 +223,6 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void OnDisable()
     {
         inventory.OnItemAdded -= ShowInventoryItem;
-        inputActions.Player.Inventory.started -= ToggleInventory;
+        //inputActions.Player.Inventory.started -= ToggleInventory;
     }
 }

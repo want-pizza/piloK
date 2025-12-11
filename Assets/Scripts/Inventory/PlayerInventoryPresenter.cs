@@ -21,7 +21,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         inventory.OnItemUnequiped += RemoveStats;
         inventory.OnItemUnequiped += UnequipItem;
         isOpen.Value = false;
-        displayInventory.gameObject.SetActive(isOpen);
+        //displayInventory.gameObject.SetActive(isOpen);
     }
 
     private void UnequipItem(BaseItemObject @object)
@@ -69,6 +69,10 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
             displayInventory.CleanInteractionMenu();
             displayInventory.HideInteractionMenu();
         }
+    }
+    public void RefreUI()
+    {
+        displayInventory.RefreshUI(inventory.InventorySlots);
     }
     protected override void TryEquip(InputAction.CallbackContext ctx)
     {

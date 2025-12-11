@@ -1,33 +1,52 @@
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStatsUI : MonoBehaviour
 {
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private Transform container;
+    [SerializeField] private StatUIElement statElementPrefab;
 
-    [Header("Basic stats")]
-    [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] private TextMeshProUGUI resistTimeText;
-    [SerializeField] private TextMeshProUGUI physicalDamageText;
-    [SerializeField] private TextMeshProUGUI fireDamageText;
+    private readonly List<StatUIElement> pool = new List<StatUIElement>();
 
-    private void Start()
+    private Dictionary<StatType, string> prettyNames = new Dictionary<StatType, string>()
     {
-        // Підписуємося на зміни
-        playerStats.MaxHealth.OnValueChanged += _ => UpdateUI();
-        playerStats.CurrentHealth.OnValueChanged += _ => UpdateUI();
-        playerStats.ResistTime.OnValueChanged += _ => UpdateUI();
-        playerStats.PhisicalDamage.OnValueChanged += _ => UpdateUI();
-        playerStats.FireDamage.OnValueChanged += _ => UpdateUI();
+        { StatType.PhisicalDamage, "STR" },
+        { StatType.MaxHealth, "HLT" },
+        { StatType.CritChance, "CCH" },
+        { StatType.CritMultiplier, "CML" },
+        { StatType.VampirismChance, "VCH" },
+        { StatType.VampirismStrength, "VSTR" }
+    };
 
-        UpdateUI(); // одноразове оновлення при старті
-    }
-
-    private void UpdateUI()
+    public void DisplayStats(Dictionary<StatType, Stat<float>> stats)
     {
-        healthText.text = $"HP: {playerStats.CurrentHealth.Value}/{playerStats.MaxHealth.Value}";
-        resistTimeText.text = $"Resist: {playerStats.ResistTime.Value}s";
-        physicalDamageText.text = $"Phys DMG: {playerStats.PhisicalDamage.Value}";
-        fireDamageText.text = $"Fire DMG: {playerStats.FireDamage.Value}";
+        int index = 0;
+
+        foreach (var pair in stats)
+        {
+            if (!prettyNames.ContainsKey(pair.Key))
+                continue;
+
+            StatUIElement element;
+
+            if (index < pool.Count)
+            {
+                element = pool[index];
+                element.gameObject.SetActive(true);
+            }
+            else
+            {
+                element = Instantiate(statElementPrefab, container);
+                pool.Add(element);
+            }
+
+            element.SetName(prettyNames[pair.Key]);
+            element.SetValue(pair.Value.Value);
+
+            index++;
+        }
+
+        for (int i = index; i < pool.Count; i++)
+            pool[i].gameObject.SetActive(false);
     }
 }

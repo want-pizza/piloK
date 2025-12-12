@@ -6,9 +6,10 @@ public class PlayerStatsUI : MonoBehaviour
     [SerializeField] private Transform container;
     [SerializeField] private StatUIElement statElementPrefab;
 
-    private readonly List<StatUIElement> pool = new List<StatUIElement>();
+    private readonly Dictionary<StatType, StatUIElement> pool =
+        new Dictionary<StatType, StatUIElement>();
 
-    private Dictionary<StatType, string> prettyNames = new Dictionary<StatType, string>()
+    private readonly Dictionary<StatType, string> prettyNames = new Dictionary<StatType, string>()
     {
         { StatType.PhisicalDamage, "STR" },
         { StatType.MaxHealth, "HLT" },
@@ -18,10 +19,11 @@ public class PlayerStatsUI : MonoBehaviour
         { StatType.VampirismStrength, "VSTR" }
     };
 
+    // ------------------------------
+    // MAIN DISPLAY
+    // ------------------------------
     public void DisplayStats(Dictionary<StatType, Stat<float>> stats)
     {
-        int index = 0;
-
         foreach (var pair in stats)
         {
             if (!prettyNames.ContainsKey(pair.Key))
@@ -29,24 +31,44 @@ public class PlayerStatsUI : MonoBehaviour
 
             StatUIElement element;
 
-            if (index < pool.Count)
+            // if exists, reuse
+            if (pool.TryGetValue(pair.Key, out element))
             {
-                element = pool[index];
                 element.gameObject.SetActive(true);
             }
             else
             {
                 element = Instantiate(statElementPrefab, container);
-                pool.Add(element);
+                pool[pair.Key] = element;
             }
 
             element.SetName(prettyNames[pair.Key]);
             element.SetValue(pair.Value.Value);
-
-            index++;
         }
 
-        for (int i = index; i < pool.Count; i++)
-            pool[i].gameObject.SetActive(false);
+        // hide elements that are NOT present in stats
+        foreach (var kvp in pool)
+        {
+            if (!stats.ContainsKey(kvp.Key))
+                kvp.Value.gameObject.SetActive(false);
+        }
+    }
+
+    // ------------------------------
+    // PREVIEW
+    // ------------------------------
+    public void ShowPreviews(IEnumerable<StatPreview> previews)
+    {
+        foreach (var preview in previews)
+        {
+            if (pool.TryGetValue(preview.Type, out var ui))
+                ui.ShowPreview(preview.Delta, preview.NewValue);
+        }
+    }
+
+    public void ClearAllPreviews()
+    {
+        foreach (var ui in pool.Values)
+            ui.ClearPreview();
     }
 }

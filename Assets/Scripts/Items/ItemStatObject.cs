@@ -12,7 +12,7 @@ public class ItemStatData : BaseItemObject, ISendModifires
         for(int i = 0; i < bonuses.Count; i++)
         {
             StatType statType = bonuses[i].statType;
-            IStatModifier<float> modifier = StatConventer.GetStatModiier(bonuses[i].modifier, bonuses[i].amount);
+            IStatModifier<float> modifier = ModifierFactory.GetModifier(bonuses[i].modifier, bonuses[i].amount);
             
             stats.GetStatByType(statType).AddModifier(modifier);
             modifiers.Add(statType, modifier);

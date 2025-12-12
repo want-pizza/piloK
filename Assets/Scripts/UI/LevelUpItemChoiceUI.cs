@@ -21,12 +21,13 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         foreach (var item in items)
         {
             var card = Instantiate(itemCardPrefab, itemsContainer);
-            card.Setup(item, SelectItem);
+            card.Setup(statsController, item, SelectItem);
         }
     }
 
     private void SelectItem(BaseItemObject item)
     {
+        Debug.Log("inventoryPresenter.TryPickupItem");
         inventoryPresenter.TryPickupItem(item, 1);
         PauseController.Instance.SetPause(false);
         Close();

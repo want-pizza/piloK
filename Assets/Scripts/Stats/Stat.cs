@@ -8,6 +8,8 @@ public class Stat<T>
 
     private List<IStatModifier<T>> modifiers = new();
 
+    public List<IStatModifier<T>> Modifires => modifiers;
+
     public event Action<T> OnValueChanged;
 
     private T lastValue;

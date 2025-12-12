@@ -1,8 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ItemCardUI : MonoBehaviour
+public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text nameText;
@@ -10,11 +12,14 @@ public class ItemCardUI : MonoBehaviour
     [SerializeField] private Transform bonusesParent;
     [SerializeField] private TMP_Text bonusPrefab;
 
+    private PlayerStatsController controller;
+
     private ItemStatData itemData;
     private System.Action<ItemStatData> onSelectCallback;
 
-    public void Setup(ItemStatData data, System.Action<ItemStatData> callback)
+    public void Setup(PlayerStatsController controller, ItemStatData data, System.Action<ItemStatData> callback)
     {
+        this.controller = controller;
         itemData = data;
         onSelectCallback = callback;
 
@@ -36,6 +41,19 @@ public class ItemCardUI : MonoBehaviour
 
     public void OnClick()
     {
+        controller.HidePreview();
+
+        Debug.Log($"onSelectCallback = {onSelectCallback}");
         onSelectCallback?.Invoke(itemData);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        controller.ShowItemPreview(itemData);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        controller.HidePreview();
     }
 }

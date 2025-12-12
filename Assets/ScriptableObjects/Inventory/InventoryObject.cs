@@ -33,7 +33,7 @@ public class InventoryObject : ScriptableObject
             {
                 InventorySlots[i].UpdateSlot(i, itemObject, amount);
                 OnItemAdded?.Invoke(itemObject);
-                EquipItem(i);
+                Debug.Log($"EquipItem(i) = {EquipItem(i)}");
                 return true;
             }
         }

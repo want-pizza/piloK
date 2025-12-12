@@ -1,20 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class StatConventer
+public static class ModifierFactory
 {
-    public static IStatModifier<float> GetStatModiier(ModifierType modifierType, float amount)
+    public static IStatModifier<float> GetModifier(ModifierType modifierType, float amount)
     {
-        if(modifierType == ModifierType.add)
-            return new AddModifier<float>(amount);
+        switch (modifierType)
+        {
+            case ModifierType.add:
+                return new AddModifier<float>(amount);
 
-        if (modifierType == ModifierType.multiply)
-            return new AddModifier<float>(amount);
+            //case ModifierType.multiply:
+            //    return new MultiplyModifier(amount);
 
-        if (modifierType == ModifierType.addAfterMultiply)
-            return new AddModifier<float>(amount);
+            //case ModifierType.addAfterMultiply:
+            //    return new AddAfterMultiplyModifier(amount);
 
-        return null;
+            default:
+                throw new System.NotImplementedException(
+                    $"Unknown modifier type: {modifierType}"
+                );
+        }
     }
 }

@@ -6,6 +6,7 @@ public class XPBar : MonoBehaviour
 {
     public Image fillImage;
     public TextMeshProUGUI xpText;
+    public RectTransform holder;
 
     private int maxXP;
     private int currentXP;
@@ -49,14 +50,10 @@ public class XPBar : MonoBehaviour
 
         xpText.text = $"{currentXP} / {maxXP}";
 
-
-        RectTransform rt = GetComponent<RectTransform>();
-
         float newWidth =
-            maxXP < 150 ? 150f :
-            maxXP > 200 ? maxXP / 2f :
-            maxXP;
+            maxXP < 50 ? 150f :
+            maxXP + 100f;
 
-        rt.sizeDelta = new Vector2(newWidth, rt.sizeDelta.y);
+        holder.sizeDelta = new Vector2(newWidth, holder.sizeDelta.y);
     }
 }

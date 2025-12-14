@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
+  m_Name: Magic Mitten
+  m_EditorClassIdentifier: 
+  id: 7
+  displayName: Magic Mitten
+  icon: {fileID: 1927129175, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  pickupSound: {fileID: 0}
+  canEquip: 1
+  canUnequip: 0
+  isStackable: 0
+  description: 
+  bonuses:
+  - statType: 5
+    modifier: 0
+    amount: 10
+  - statType: 6
+    modifier: 0
+    amount: 0.5
+  - statType: 6
+    modifier: 1
+    amount: 1.2

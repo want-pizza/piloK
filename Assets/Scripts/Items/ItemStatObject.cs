@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemStatData : BaseItemObject, ISendModifires
 {
     public List<StatBonus> bonuses;
-    private Dictionary<StatType, IStatModifier<float>> modifiers = new Dictionary<StatType, IStatModifier<float>>(); // List<IStatModifier<float>> if want to have many modifiers to one stat
+    private Dictionary<StatType, List<IStatModifier<float>>> modifiers = new Dictionary<StatType, List<IStatModifier<float>>>(); // List<IStatModifier<float>> if want to have many modifiers to one stat
 
     public void Apply(PlayerStats stats)
     {
@@ -15,17 +15,29 @@ public class ItemStatData : BaseItemObject, ISendModifires
             IStatModifier<float> modifier = ModifierFactory.GetModifier(bonuses[i].modifier, bonuses[i].amount);
             
             stats.GetStatByType(statType).AddModifier(modifier);
-            modifiers.Add(statType, modifier);
+
+            if (!modifiers.TryGetValue(statType, out var list))
+            {
+                list = new List<IStatModifier<float>>();
+                modifiers.Add(statType, list);
+            }
+
+            list.Add(modifier);
         }
     }
     public void Remove(PlayerStats stats)
     {
-        for (int i = 0; i < bonuses.Count; i++)
+        foreach (var pair in modifiers)
         {
-            StatType statType = bonuses[i].statType;
+            var stat = stats.GetStatByType(pair.Key);
+            var list = pair.Value;
 
-            stats.GetStatByType(statType).RemoveModifier(modifiers[statType]);
-            modifiers.Remove(statType);
+            for (int i = 0; i < list.Count; i++)
+            {
+                stat.RemoveModifier(list[i]);
+            }
         }
+
+        modifiers.Clear();
     }
 }

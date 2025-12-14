@@ -7,8 +7,8 @@ public static class ModifierFactory
             case ModifierType.add:
                 return new AddModifier<float>(amount);
 
-            //case ModifierType.multiply:
-            //    return new MultiplyModifier(amount);
+            case ModifierType.multiply:
+                return new MultiplyModifier<float>(amount);
 
             //case ModifierType.addAfterMultiply:
             //    return new AddAfterMultiplyModifier(amount);

@@ -1,15 +1,15 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class AddModifier<T> : IStatModifier<T>
+public class MultiplyModifier<T> : IStatModifier<T>
 {
     public T Value;
 
-    private int priority = 0;
+    private int priority = 1;
     public int Priority => priority;
 
-    public AddModifier(T value)
+    public MultiplyModifier(T value)
     {
         Value = value;
     }
@@ -18,12 +18,12 @@ public class AddModifier<T> : IStatModifier<T>
     {
         if (typeof(T) == typeof(int))
         {
-            int result = (int)(object)value + (int)(object)Value;
+            int result = (int)(object)value * (int)(object)Value;
             return (T)(object)result;
         }
         else if (typeof(T) == typeof(float))
         {
-            float result = (float)(object)value + (float)(object)Value;
+            float result = (float)(object)value * (float)(object)Value;
             return (T)(object)result;
         }
         else
@@ -32,6 +32,4 @@ public class AddModifier<T> : IStatModifier<T>
             return (T)(object)value;
         }
     }
-
 }
-

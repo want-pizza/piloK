@@ -23,6 +23,9 @@ public class PlayerStats : MonoBehaviour
 
     public Stat<float> FireDamage = new(0f);
 
+    public Stat<float> PhysicalResistance = new(0f);
+    public Stat<float> FireResistance = new(0f);
+
     private Dictionary<StatType, Stat<float>> dictionary = new Dictionary<StatType, Stat<float>>();
     public Dictionary<StatType, Stat<float>> GetAllStats() => dictionary;
 

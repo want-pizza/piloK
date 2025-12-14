@@ -28,7 +28,7 @@ public class WaveTimerUI : MonoBehaviour
 
     private void UpdateWaveTimer(int waveIndex, float timeLeft)
     {
-        timerText.text = timeLeft.ToString("#.##");
+        timerText.text = timeLeft.ToString("0.##");
 
         bool danger = timeLeft <= dangerThreshold;
         animator.SetBool(IsEnding, danger);
@@ -39,7 +39,8 @@ public class WaveTimerUI : MonoBehaviour
 
     private void UpdateInterWaveTimer(float timeLeft)
     {
-        waveText.text = "Next wave in";
+        waveText.text = "Time to next wave";
+        waveNumber.text = "";
         timerText.text = Mathf.Ceil(timeLeft).ToString();
 
         animator.SetBool(IsEnding, false);

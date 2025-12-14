@@ -10,7 +10,6 @@ public class PlayerHitHandler : MonoBehaviour
     [SerializeField] private Collider2D hitCollider;
     [SerializeField] private LayerMask hitLayerMask;
     private bool wasEfficiencyTaken = false;
-    private bool wasTargetEfficiencyTaken = false;
 
     //Add weapons system(change weaponController to weapon base class or interface)
     private WeaponController ownerWeapon;
@@ -21,17 +20,21 @@ public class PlayerHitHandler : MonoBehaviour
     private void OnEnable()
     {
         wasEfficiencyTaken = false;
-        wasTargetEfficiencyTaken = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (hitLayerMask.Contains(collision.gameObject.layer) && !wasEfficiencyTaken)
+        if (hitLayerMask.Contains(collision.gameObject.layer))
         {
             Debug.Log("Hit");
-            wasEfficiencyTaken = true;
+            
             collision.gameObject.GetComponent<IHitable>()?.PlaySFX();
-            ownerWeapon.GetComponentInParent<IMove>().TakeEfficiency(ownerWeapon.LastSwingPoint, 10f);
+
+            if (!wasEfficiencyTaken)
+            {
+                ownerWeapon.GetComponentInParent<IMove>().TakeEfficiency(ownerWeapon.LastSwingPoint, 10f);
+                wasEfficiencyTaken = true;
+            }
 
             if (collision.TryGetComponent<IDamageable>(out var target))
             {
@@ -40,20 +43,18 @@ public class PlayerHitHandler : MonoBehaviour
                 {
                     foreach (DamageInfo info in infos)
                     {
-                        if (!wasTargetEfficiencyTaken)
-                        {
-                            DamageInfo tempInfo = info;
-                            tempInfo.HitPoint = ownerWeapon.LastSwingPoint;
-                            DamageResult result = target.TakeDamage(tempInfo);
+                        DamageInfo tempInfo = info;
+                        tempInfo.HitPoint = ownerWeapon.LastSwingPoint;
+                        DamageResult result = target.TakeDamage(tempInfo);
 
-                            if(info.Type == DamageType.Physical && Random.Range(0, 100) < stats.VampirismChance)
+                        if (stats.CurrentHealth < stats.MaxHealth)
+                        {
+                            if (info.Type == DamageType.Physical && Random.Range(0, 100) < stats.VampirismChance)
                             {
                                 stats.CurrentHealth.Value += Mathf.Max(1, result.FinalAmount * stats.VampirismStrength / 100);
+                                stats.CurrentHealth.Value = Mathf.Min(stats.MaxHealth, stats.CurrentHealth);
                             }
-                            wasTargetEfficiencyTaken = true;
                         }
-                        else
-                            target.TakeDamage(info);
                     }
                 }
             }

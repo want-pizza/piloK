@@ -12,5 +12,8 @@ public enum StatType
     FireDamage,
 
     VampirismChance,
-    VampirismStrength
+    VampirismStrength,
+
+    PhysicalResistance,
+    FireResistance
 }

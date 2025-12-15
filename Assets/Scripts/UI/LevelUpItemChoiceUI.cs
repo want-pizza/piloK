@@ -9,7 +9,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
 
-    public void Open(ItemStatData[] items)
+    public void Open(BaseItemObject[] items)
     {
         inventoryPresenter.RefreUI();
         statsController.ShowStats();
@@ -21,7 +21,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         foreach (var item in items)
         {
             var card = Instantiate(itemCardPrefab, itemsContainer);
-            card.Setup(statsController, item, SelectItem);
+            card.SetupItemStatData(statsController, item, SelectItem);
         }
     }
 

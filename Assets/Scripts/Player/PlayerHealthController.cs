@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthBarController : MonoBehaviour
+public class PlayerHealthController : MonoBehaviour
 {
     [SerializeField] PlayerStats stats;
     [SerializeField] HealthBar healthBar;
@@ -57,7 +57,10 @@ public class PlayerHealthBarController : MonoBehaviour
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
         if(lasthealth < currentHealth)
         {
-            FloatingTextSpawner.Instance.Spawn($"{currentHealth - lasthealth}", transform.position, false, true);
+            Debug.Log($"lasthealth = {lasthealth}; currentHealth = {currentHealth}");
+            Vector3 position = transform.position;
+            position.y += 1;
+            FloatingTextSpawner.Instance.Spawn($"{currentHealth - lasthealth}", position, false, true);
         }
         lasthealth = currentHealth;
     }

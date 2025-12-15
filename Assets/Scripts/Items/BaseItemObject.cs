@@ -10,8 +10,6 @@ public abstract class BaseItemObject : ScriptableObject
     [SerializeField] private bool canEquip;
     [SerializeField] private bool canUnequip;
     [SerializeField] private bool isStackable;
-
-    public virtual void Use(PlayerStats stats) { }
     
     public int Id => id;
     public Sprite Icon => icon;
@@ -22,6 +20,8 @@ public abstract class BaseItemObject : ScriptableObject
 
     public bool CanUnequip => canUnequip;
     public bool CanEquip => canEquip;
+    public virtual void OnEquip(PlayerContext context) { }
+    public virtual void OnUnequip() { }
 
     [TextArea(15, 20)]
     [SerializeField] private string description;

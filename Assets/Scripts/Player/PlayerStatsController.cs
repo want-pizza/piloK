@@ -13,21 +13,41 @@ public class PlayerStatsController : MonoBehaviour
         statsUI.DisplayStats(stats);
     }
 
-    public void ShowItemPreview(ItemStatData item)
+    public void ShowItemPreview(BaseItemObject _item)
     {
+        ItemStatData item = _item is ItemStatData ? (ItemStatData)_item : null;
+
+        if (item == null)
+            return;
+
         var previews = new List<StatPreview>();
+
+        // 1) групуємо бонуси по статах
+        var groupedBonuses = new Dictionary<StatType, List<StatBonus>>();
 
         foreach (var bonus in item.bonuses)
         {
-            Stat<float> stat = playerStats.GetAllStats()[bonus.statType];
+            if (!groupedBonuses.TryGetValue(bonus.statType, out var list))
+            {
+                list = new List<StatBonus>();
+                groupedBonuses.Add(bonus.statType, list);
+            }
+
+            list.Add(bonus);
+        }
+
+        foreach (var pair in groupedBonuses)
+        {
+            StatType statType = pair.Key;
+            List<StatBonus> bonuses = pair.Value;
+
+            Stat<float> stat = playerStats.GetStatByType(statType);
 
             float oldValue = stat.Value;
-
-
-            float newValue = StatPreviewUtility.CalculatePreviewValue(stat, bonus);
+            float newValue = StatPreviewUtility.CalculatePreviewValue(stat, bonuses);
 
             previews.Add(new StatPreview(
-                bonus.statType,
+                statType,
                 oldValue,
                 newValue
             ));
@@ -35,6 +55,7 @@ public class PlayerStatsController : MonoBehaviour
 
         statsUI.ShowPreviews(previews);
     }
+
 
     public void HidePreview()
     {

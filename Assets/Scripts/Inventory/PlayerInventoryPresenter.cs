@@ -8,6 +8,7 @@ using static UnityEditor.Progress;
 
 public class PlayerInventoryPresenter : InventoryPresenterBase
 {
+    [SerializeField] private PlayerContext playerContext;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerMovement pLayerMovement;
     [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
@@ -32,9 +33,13 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
     }
     private void AddStats(BaseItemObject itemObject)
     {
-        if(itemObject is ISendModifires statData)
+        if (itemObject is ISendModifires statData)
         {
             statData.Apply(playerStats);
+        }
+        if(itemObject is RuntimeItemData)
+        {
+            itemObject.OnEquip(playerContext);
         }
     }
     private void RemoveStats(BaseItemObject itemObject)
@@ -42,6 +47,10 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         if (itemObject is ISendModifires statData)
         {
             statData.Remove(playerStats);
+        }
+        if (itemObject is RuntimeItemData)
+        {
+            itemObject.OnUnequip();
         }
     }
     protected override void ToggleInventory(InputAction.CallbackContext ctx)

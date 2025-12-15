@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerLevel : MonoBehaviour, ICharacterLevel
 {
     [SerializeField] private LevelUpItemChoiceUI ui;
-    [SerializeField] private List<ItemStatData> allItems;
-    [SerializeField] private ItemStatData[] items;
+    [SerializeField] private RuntimeItemData test;
+    [SerializeField] private List<BaseItemObject> allItems;
+    [SerializeField] private BaseItemObject[] items;
+
 
     private Field<int> currentLevel = new Field<int>(1);
     private Field<int> currentXP = new Field<int>(0);
@@ -18,6 +20,7 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     private void OnLevelUp()
     {
         items = GetRandomItems(3);
+        items[0] = test;
         ui.Open(items);
         PauseController.Instance.SetPause(true);
     }
@@ -38,15 +41,15 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
         return currentLevel * 100;
     }
 
-    private ItemStatData[] GetRandomItems(int count)
+    private BaseItemObject[] GetRandomItems(int count)
     {
         // робимо локальний список
-        List<ItemStatData> pool = new List<ItemStatData>(allItems);
+        List<BaseItemObject> pool = new List<BaseItemObject>(allItems);
 
         // гарантуємо що count не більший за розмір пулу
         count = Mathf.Min(count, pool.Count);
 
-        ItemStatData[] result = new ItemStatData[count];
+        BaseItemObject[] result = new BaseItemObject[count];
 
         for (int i = 0; i < count; i++)
         {

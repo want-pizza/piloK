@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.XR;
 
 public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -14,13 +15,13 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private PlayerStatsController controller;
 
-    private ItemStatData itemData;
-    private System.Action<ItemStatData> onSelectCallback;
+    private BaseItemObject baseItemData;
+    private System.Action<BaseItemObject> onSelectCallback;
 
-    public void Setup(PlayerStatsController controller, ItemStatData data, System.Action<ItemStatData> callback)
+    public void SetupItemStatData(PlayerStatsController controller, BaseItemObject data, System.Action<BaseItemObject> callback)
     {
         this.controller = controller;
-        itemData = data;
+        baseItemData = data;
         onSelectCallback = callback;
 
         icon.sprite = data.Icon;
@@ -30,13 +31,10 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         foreach (Transform child in bonusesParent)
             Destroy(child.gameObject);
 
-        foreach (var bonus in data.bonuses)
-        {
-            TMP_Text txt = Instantiate(bonusPrefab, bonusesParent);
-            txt.text += $"{bonus.statType}: +{bonus.amount}";
-            txt.enabled = true;
-            Debug.Log($"Instantiated Bonus active={txt.gameObject.activeSelf} enabled={txt.enabled}", txt.gameObject);
-        }
+        TMP_Text txt = Instantiate(bonusPrefab, bonusesParent);
+        txt.text += $"{baseItemData.Description}";
+        txt.enabled = true;
+        Debug.Log($"Instantiated Bonus active={txt.gameObject.activeSelf} enabled={txt.enabled}", txt.gameObject);
     }
 
     public void OnClick()
@@ -44,12 +42,12 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         controller.HidePreview();
 
         Debug.Log($"onSelectCallback = {onSelectCallback}");
-        onSelectCallback?.Invoke(itemData);
+        onSelectCallback?.Invoke(baseItemData);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        controller.ShowItemPreview(itemData);
+        controller.ShowItemPreview(baseItemData);
     }
 
     public void OnPointerExit(PointerEventData eventData)

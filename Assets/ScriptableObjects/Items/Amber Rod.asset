@@ -15,11 +15,12 @@ MonoBehaviour:
   id: 13
   displayName: Amber Rod
   icon: {fileID: 1576446707, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 2
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
+  description: Give new type of damage "Fire Damage"
   bonuses:
   - statType: 8
     modifier: 0

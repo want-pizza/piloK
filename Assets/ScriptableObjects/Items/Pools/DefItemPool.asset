@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a2702dd104a554f954abfce271a9bb, type: 3}
+  m_Name: DefItemPool
+  m_EditorClassIdentifier: 
+  entries:
+  - item: {fileID: 11400000, guid: ea9b10627458830459569d17da8542a0, type: 2}
+    count: -1
+    rareness: 0
+  - item: {fileID: 11400000, guid: ca0aeb1bac3b4a44ca366f84f8f81746, type: 2}
+    count: 3
+    rareness: 2
+  - item: {fileID: 11400000, guid: 3c81417733781ac468766fbc5f51c3f3, type: 2}
+    count: 1
+    rareness: 3
+  - item: {fileID: 11400000, guid: ec4cbe653cabb9a4aa08d5a607330e3c, type: 2}
+    count: -1
+    rareness: 0
+  - item: {fileID: 11400000, guid: 86a0d878daeac574cab7ea8e8a784830, type: 2}
+    count: 3
+    rareness: 2
+  - item: {fileID: 11400000, guid: 54175afc5df3d8e438e3d5bc6e15e3d2, type: 2}
+    count: 3
+    rareness: 2
+  - item: {fileID: 11400000, guid: 23561432a62556d4fbcc5cadc4506e25, type: 2}
+    count: 3
+    rareness: 2
+  - item: {fileID: 11400000, guid: a267fea24082b6a49a274eab4706a48a, type: 2}
+    count: -1
+    rareness: 0
+  - item: {fileID: 11400000, guid: 0caa99b95d07e5a46addb0c7ab52c0f5, type: 2}
+    count: 1
+    rareness: 3
+  - item: {fileID: 11400000, guid: 1919a48a5ed9e77488d03e8682c2f430, type: 2}
+    count: 5
+    rareness: 1
+  - item: {fileID: 11400000, guid: c89088d059e7df54d81d26fa02224660, type: 2}
+    count: 5
+    rareness: 1
+  - item: {fileID: 11400000, guid: 5c7e7c0b0f8ba194096a529c8c247ea0, type: 2}
+    count: 5
+    rareness: 1
+  - item: {fileID: 11400000, guid: 6cb39d3c29b0c3d4891c1eb97d989661, type: 2}
+    count: -1
+    rareness: 0
+  - item: {fileID: 11400000, guid: fdeacaa15df86e44ba652bcc6823681d, type: 2}
+    count: 3
+    rareness: 2
+  usualCount: -1
+  rareCount: 5
+  epicCount: 3
+  legendaryCount: 1
+  root: Assets/ScriptableObjects/Items

@@ -10,17 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
-  m_Name: Mitten
+  m_Name: Magic Mitten
   m_EditorClassIdentifier: 
-  id: 5
-  displayName: Beginner's Mitt
-  icon: {fileID: 1652661239, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  id: 7
+  displayName: Magic Mitten
+  icon: {fileID: 1927129175, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 3
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
+  description: INCRESES ALL CRITTICAL STATS!!!
   bonuses:
   - statType: 5
     modifier: 0
-    amount: 5
+    amount: 10
+  - statType: 6
+    modifier: 0
+    amount: 0.5
+  - statType: 6
+    modifier: 1
+    amount: 1.2

@@ -15,11 +15,14 @@ MonoBehaviour:
   id: 10
   displayName: Anvil
   icon: {fileID: -783782123, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 3
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
+  description: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
+
+'
   bonuses:
   - statType: 11
     modifier: 0

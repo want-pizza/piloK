@@ -678,6 +678,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5690466820816644225}
   m_SourcePrefab: {fileID: 100100000, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+--- !u!114 &2339440468827356454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8820209144200916244, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+  m_PrefabInstance: {fileID: 6489952913213870130}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339440468827356457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2339440468827356456 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8820209144200916250, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
@@ -702,6 +713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 8263402004783745421}
   nameText: {fileID: 1329584223028470094}
+  backgroundImage: {fileID: 2339440468827356454}
   bonusesParent: {fileID: 7670648113324887987}
   bonusPrefab: {fileID: 8895877822592543019}
 --- !u!114 &9015269323163189555

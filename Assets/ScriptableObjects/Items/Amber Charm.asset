@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
-  m_Name: Helmet
+  m_Name: Amber Charm
   m_EditorClassIdentifier: 
-  id: 9
-  displayName: Helmet
-  icon: {fileID: -1976634158, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  id: 12
+  displayName: Amber Charm
+  icon: {fileID: 2066565483, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 0
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
+  description: Give small amount of Fire Resistence
   bonuses:
-  - statType: 11
+  - statType: 12
     modifier: 0
-    amount: 5
+    amount: 10

@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 11
   displayName: Heavy Shield
   icon: {fileID: -1664131148, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 2
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0

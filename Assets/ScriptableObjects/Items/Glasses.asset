@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
-  m_Name: Master's Mitt
+  m_Name: Glasses
   m_EditorClassIdentifier: 
-  id: 6
-  displayName: Masters's Mitt
-  icon: {fileID: -55532225, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  id: 8
+  displayName: Glasses
+  icon: {fileID: -444059197, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 2
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
+  description: "Increases \u0421rit \u042Cultiplier"
   bonuses:
   - statType: 6
     modifier: 0
-    amount: 0.3
+    amount: 1

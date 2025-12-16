@@ -9,6 +9,7 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private Image backgroundImage;
     //[SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Transform bonusesParent;
     [SerializeField] private TMP_Text bonusPrefab;
@@ -28,6 +29,8 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         nameText.text = data.DisplayName;
         //descriptionText.text = data.Description;
 
+        backgroundImage.color = GetColorByRareness(data.Rareness);
+
         foreach (Transform child in bonusesParent)
             Destroy(child.gameObject);
 
@@ -35,6 +38,18 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         txt.text += $"{baseItemData.Description}";
         txt.enabled = true;
         Debug.Log($"Instantiated Bonus active={txt.gameObject.activeSelf} enabled={txt.enabled}", txt.gameObject);
+    }
+
+    private Color GetColorByRareness(ItemRareness rareness)
+    {
+        switch (rareness)
+        {
+            case ItemRareness.Usual: return Color.white;
+            case ItemRareness.Rare: return Color.blue;
+            case ItemRareness.Epic: return Color.magenta;
+            case ItemRareness.Legendary: return Color.yellow;
+            default: return Color.gray;
+        }
     }
 
     public void OnClick()

@@ -9,15 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 801935c02a935804a99cd287cf00b304, type: 3}
-  m_Name: RegenRing
+  m_Script: {fileID: 11500000, guid: 7e02b9062dc4f7c43a6873c2767d57e4, type: 3}
+  m_Name: Bastard sword
   m_EditorClassIdentifier: 
-  id: 15
-  displayName: Ring of Regeneration
-  icon: {fileID: 1196118833, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  id: 4
+  displayName: Bastard Sword
+  icon: {fileID: 929522133, guid: 7364da38df3f56d40b25dfb82be32030, type: 3}
+  rareness: 0
   pickupSound: {fileID: 0}
   canEquip: 1
   canUnequip: 0
   isStackable: 0
-  description: 
-  runtimePrefab: {fileID: 0}
+  description: Good for a start
+  bonuses:
+  - statType: 7
+    modifier: 0
+    amount: 5

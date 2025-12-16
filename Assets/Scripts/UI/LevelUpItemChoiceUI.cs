@@ -1,6 +1,7 @@
 using QuantumTek.SimpleMenu;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class LevelUpItemChoiceUI : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
 
-    public void Open(BaseItemObject[] items)
+    public void Open(List<BaseItemObject> items)
     {
         inventoryPresenter.RefreUI();
         statsController.ShowStats();

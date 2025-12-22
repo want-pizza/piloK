@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class WaveSpawnData
 {
-    public int enemyType;
+    public EnemyDefinition enemy;
     public Transform spawnPoint;
 }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour, ICharacterLevel
@@ -15,6 +16,13 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
 
     public Field<int> CurrentLevel => currentLevel;
     public Field<int> CurrentXP => currentXP;
+
+    public static int Coins = 0;
+
+    [Header("Reroll Settings")]
+    [SerializeField] int rerollCost = 5;
+    [SerializeField] float rerollCostMultiplier = 1.25f;
+
 
     private void Awake()
     {
@@ -42,13 +50,22 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     {
         var items = randomizer.GetRandomItems(3);
 
-
         // for tests
         //items[0] = test;
 
         ui.Open(items);
         PauseController.Instance.SetPause(true);
         Time.timeScale = 0;
+    }
+
+    public bool Reroll()
+    {
+        if (Coins <= rerollCost)
+            return false;
+
+        var items = randomizer.GetRandomItems(3);
+        ui.Open(items);
+        return true;
     }
 
     public void GainXP(int value)

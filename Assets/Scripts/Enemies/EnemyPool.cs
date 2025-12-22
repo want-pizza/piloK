@@ -6,7 +6,7 @@ public class EnemyPool : MonoBehaviour
     public static EnemyPool Instance;
 
     [SerializeField] private List<GameObject> enemyPrefabs;
-    [SerializeField] private int initialCount = 5;
+    [SerializeField] private int initialCount = 1;
 
     private Dictionary<int, Queue<GameObject>> pools = new Dictionary<int, Queue<GameObject>>();
 
@@ -38,11 +38,14 @@ public class EnemyPool : MonoBehaviour
 
         obj.transform.position = position;
         obj.SetActive(true);
+
+        Debug.Log($"SPAWN ENEMY {enemyType} | {obj.name}");
         return obj;
     }
 
     public void Return(int enemyType, GameObject obj)
     {
+        Debug.Log($"RETURN ENEMY {enemyType} | {obj.name}");
         obj.SetActive(false);
         pools[enemyType].Enqueue(obj);
     }

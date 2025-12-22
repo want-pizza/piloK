@@ -9,6 +9,7 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text rarenessText;
     [SerializeField] private Image backgroundImage;
     //[SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Transform bonusesParent;
@@ -29,7 +30,8 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         nameText.text = data.DisplayName;
         //descriptionText.text = data.Description;
 
-        backgroundImage.color = GetColorByRareness(data.Rareness);
+        rarenessText.text = GetNameByRareness(data.Rareness);
+        rarenessText.color = GetColorByRareness(data.Rareness);
 
         foreach (Transform child in bonusesParent)
             Destroy(child.gameObject);
@@ -44,11 +46,22 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         switch (rareness)
         {
-            case ItemRareness.Usual: return Color.white;
-            case ItemRareness.Rare: return Color.blue;
-            case ItemRareness.Epic: return Color.magenta;
-            case ItemRareness.Legendary: return Color.yellow;
+            case ItemRareness.Usual: return new Color(201, 201, 201, 10);
+            case ItemRareness.Rare: return new Color(76, 175, 80, 12);
+            case ItemRareness.Epic: return new Color(155, 89, 182, 21);
+            case ItemRareness.Legendary: return new Color(245, 181, 26);
             default: return Color.gray;
+        }
+    }
+    private string GetNameByRareness(ItemRareness rareness)
+    {
+        switch (rareness)
+        {
+            case ItemRareness.Usual: return "Usual";
+            case ItemRareness.Rare: return "Rare";
+            case ItemRareness.Epic: return "Epic";
+            case ItemRareness.Legendary: return "Legendary";
+            default: return "none";
         }
     }
 

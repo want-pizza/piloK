@@ -7,8 +7,10 @@ public class LevelUpItemChoiceUI : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryPresenter inventoryPresenter;
     [SerializeField] private PlayerStatsController statsController;
+    [SerializeField] private PlayerLevel playerLevel;
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
+    [SerializeField] private AudioClip rerollCancled;
 
     public void Open(List<BaseItemObject> items)
     {
@@ -32,6 +34,14 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         inventoryPresenter.TryPickupItem(item, 1);
         PauseController.Instance.SetPause(false);
         Close();
+    }
+
+    public void TryReroll()
+    {
+        if (!playerLevel.Reroll())
+        {
+            AudioManager.Instance.PlaySFX(rerollCancled);
+        }
     }
 
     public void Close() => GetComponent<SM_Window>().Toggle(false);

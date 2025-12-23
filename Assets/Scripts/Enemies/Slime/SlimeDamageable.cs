@@ -12,6 +12,24 @@ public class SlimeDamageable : Damageable
     [SerializeField] private AudioClip deathClip;
 
     private IMove slimeMovement;
+
+    public void OnSpawn()
+    {
+        currentHP = maxHP;
+        isAlive = true;
+    }
+
+    private void OnEnable()
+    {
+        OnDamagedEvent += OnHit;
+        currentHP = maxHP;
+        isAlive = true;
+    }
+    private void OnDisable()
+    {
+        OnDamagedEvent -= OnHit;
+    }
+
     private void Start()
     {
         slimeMovement = GetComponentInParent<IMove>();
@@ -19,15 +37,7 @@ public class SlimeDamageable : Damageable
         resistances[DamageType.Fire] = -0.2f; // -20% -> означає +20% damage (можна інтерпретувати)
         
     }
-    private void OnEnable()
-    {
-        OnDamagedEvent += OnHit;
-        currentHP = maxHP;
-    }
-    private void OnDisable()
-    {
-        OnDamagedEvent -= OnHit;
-    }
+
 
     private void OnHit(DamageInfo info, DamageResult result)
     {

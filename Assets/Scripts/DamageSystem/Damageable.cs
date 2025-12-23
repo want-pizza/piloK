@@ -9,6 +9,7 @@ public class Damageable : MonoBehaviour, IDamageable
     public float currentHP = 100;
     public int xp = 30;
 
+    protected bool isAlive = true;
     private ICharacterLevel lastCharacterLevel;
 
     [Header("PoolMemberReference")]
@@ -85,11 +86,16 @@ public class Damageable : MonoBehaviour, IDamageable
 
     protected virtual void Die(DamageInfo info)
     {
+        if (!isAlive)
+            return;
+
         if (lastCharacterLevel != null)
             lastCharacterLevel.GainXP(xp);
 
+        isAlive = false;
+
         OnDeathEvent?.Invoke();
+
         enemyPoolMember?.Die();
-        transform.parent.gameObject.SetActive(false);
     }
 }

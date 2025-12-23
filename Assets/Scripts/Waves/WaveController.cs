@@ -68,7 +68,7 @@ public class WaveController : MonoBehaviour
             float timeRatio = timer;
             int coins = Mathf.CeilToInt(10 * timeRatio);
 
-            PlayerLevel.Coins += coins;
+            CoinController.Instance.AddCoins(coins);
         }
     }
 

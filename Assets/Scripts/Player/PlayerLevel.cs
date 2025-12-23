@@ -17,8 +17,6 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     public Field<int> CurrentLevel => currentLevel;
     public Field<int> CurrentXP => currentXP;
 
-    public static int Coins = 0;
-
     [Header("Reroll Settings")]
     [SerializeField] int rerollCost = 5;
     [SerializeField] float rerollCostMultiplier = 1.25f;
@@ -60,9 +58,10 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
 
     public bool Reroll()
     {
-        if (Coins <= rerollCost)
+        if (CoinController.Instance.Coins <= rerollCost)
             return false;
 
+        CoinController.Instance.AddCoins(-rerollCost);
         var items = randomizer.GetRandomItems(3);
         ui.Open(items);
         return true;

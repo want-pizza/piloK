@@ -36,10 +36,11 @@ public class EnemyPool : MonoBehaviour
         else
             obj = Instantiate(enemyPrefabs[enemyType]);
 
+        Debug.Log($"[POOL] Spawn {enemyType} | active before = {obj.activeSelf}");
+
         obj.transform.position = position;
         obj.SetActive(true);
 
-        Debug.Log($"SPAWN ENEMY {enemyType} | {obj.name}");
         return obj;
     }
 

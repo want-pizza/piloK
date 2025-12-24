@@ -889,6 +889,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8820209144200916251, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5690466820816644225}
+    - targetCorrespondingSourceObject: {fileID: 8820209144200916251, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2541203922577867558}
   m_SourcePrefab: {fileID: 100100000, guid: e76d55484067e48c3b008442ed4e07ec, type: 3}
 --- !u!114 &2339440468827356454 stripped
 MonoBehaviour:
@@ -929,6 +932,9 @@ MonoBehaviour:
   backgroundImage: {fileID: 2339440468827356454}
   bonusesParent: {fileID: 7670648113324887987}
   bonusPrefab: {fileID: 8895877822592543019}
+  canvasGroup: {fileID: 2541203922577867558}
+  appearDuration: 0.25
+  startScale: 0.85
 --- !u!114 &9015269323163189555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,3 +981,15 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!225 &2541203922577867558
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339440468827356457}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

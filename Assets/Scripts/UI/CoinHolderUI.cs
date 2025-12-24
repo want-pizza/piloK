@@ -29,9 +29,6 @@ public class CoinHolderUI : MonoBehaviour
 
     private void PlayCoinAnimation(int delta)
     {
-        if (animRoutine != null)
-            StopCoroutine(animRoutine);
-
         animRoutine = StartCoroutine(AnimateCoins(delta));
     }
 

@@ -2038,7 +2038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4923011333016884313, guid: 0f1a3838ccd716747bbb374ed5a8a108, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7136148902573472196, guid: 0f1a3838ccd716747bbb374ed5a8a108, type: 3}
       propertyPath: m_LocalPosition.x
@@ -47585,9 +47585,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8277259350639791552, guid: 964303191731ee84587467199b63c1c4, type: 3}
+      propertyPath: levelUp
+      value: 
+      objectReference: {fileID: 8300000, guid: d25d43a05e45c4e478a644a8c65929e6, type: 3}
+    - target: {fileID: 8277259350639791552, guid: 964303191731ee84587467199b63c1c4, type: 3}
       propertyPath: playerLevel
       value: 
       objectReference: {fileID: 2062322004}
+    - target: {fileID: 8277259350639791552, guid: 964303191731ee84587467199b63c1c4, type: 3}
+      propertyPath: rerollCancled
+      value: 
+      objectReference: {fileID: 8300000, guid: ec3b3e7438fb527409bbffbd728d25fb, type: 3}
     - target: {fileID: 8277259350639791552, guid: 964303191731ee84587467199b63c1c4, type: 3}
       propertyPath: itemsContainer
       value: 
@@ -49510,9 +49518,9 @@ RectTransform:
   - {fileID: 1204228074}
   m_Father: {fileID: 68563971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -461, y: -237}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 130, y: 84}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1839070974
@@ -49926,9 +49934,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemsHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 4191295224844625541, guid: 5f7e83c9aa7b64a61802f2f2db28497e, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 4191295224844625541, guid: 5f7e83c9aa7b64a61802f2f2db28497e, type: 3}
     - {fileID: 4191295224844625540, guid: 5f7e83c9aa7b64a61802f2f2db28497e, type: 3}
+    - {fileID: 4191295224844625541, guid: 5f7e83c9aa7b64a61802f2f2db28497e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4191295223173602103, guid: 5f7e83c9aa7b64a61802f2f2db28497e, type: 3}

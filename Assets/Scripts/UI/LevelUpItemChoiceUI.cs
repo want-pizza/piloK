@@ -2,6 +2,8 @@ using QuantumTek.SimpleMenu;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.UI;
 
 public class LevelUpItemChoiceUI : MonoBehaviour
 {
@@ -10,10 +12,19 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     [SerializeField] private PlayerLevel playerLevel;
     [SerializeField] private ItemCardUI itemCardPrefab;
     [SerializeField] private Transform itemsContainer;
+
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip levelUp;
     [SerializeField] private AudioClip rerollCancled;
+
+    private bool isOpened = false;
 
     public void Open(List<BaseItemObject> items)
     {
+        if(!isOpened)
+            AudioManager.Instance.PlayCantPausedSFX(levelUp);
+
+        isOpened = true;
         inventoryPresenter.RefreUI();
         statsController.ShowStats();
         GetComponent<SM_Window>().Toggle(true);
@@ -21,12 +32,34 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         foreach (Transform child in itemsContainer)
             Destroy(child.gameObject);
 
+        StartCoroutine(SpawnItemsRoutine(items));
+    }
+
+    private IEnumerator SpawnItemsRoutine(List<BaseItemObject> items)
+    {
+        List<ItemCardUI> spawned = new();
+
         foreach (var item in items)
         {
             var card = Instantiate(itemCardPrefab, itemsContainer);
+            card.gameObject.SetActive(false); 
             card.SetupItemStatData(statsController, item, SelectItem);
+            spawned.Add(card);
+        }
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(
+            itemsContainer as RectTransform
+        );
+
+        foreach (var card in spawned)
+        {
+            yield return new WaitForSecondsRealtime(card.AppearDuration - 0.05f);
+            card.gameObject.SetActive(true);
+            yield return new WaitForSecondsRealtime(0.15f);
         }
     }
+
 
     private void SelectItem(BaseItemObject item)
     {
@@ -40,9 +73,14 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     {
         if (!playerLevel.Reroll())
         {
-            AudioManager.Instance.PlaySFX(rerollCancled);
+            AudioManager.Instance.PlayCantPausedSFX(rerollCancled);
         }
     }
 
-    public void Close() => GetComponent<SM_Window>().Toggle(false);
+    public void Close()
+    { 
+        GetComponent<SM_Window>().Toggle(false); 
+        isOpened = false;
+    }
+
 }

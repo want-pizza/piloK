@@ -125,6 +125,26 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         StartCoroutine(TrackSFX(src, clip.length));
     }
 
+    public void PlayCantPausedSFX(AudioClip clip, Vector3? pos = null, float volume = 1f)
+    {
+        if (clip == null) return;
+
+        poolIndex = (poolIndex + 1) % sfxPool.Length;
+        AudioSource src = sfxPool[poolIndex];
+
+        Vector3 listenerPos = audioListenerTransform.position;
+        float distance = pos.HasValue ? Vector3.Distance(listenerPos, pos.Value) : 0f;
+
+        // тво€ крива затуханн€
+        float distanceVolume = 1f - Mathf.Clamp01(distance / 30f);
+        // 12f Ч максимальна дистанц≥€ чутност≥ (налаштуй)
+
+        src.spatialBlend = 0f; // повн≥стю 2D звук
+        src.volume = volume * distanceVolume;
+
+        src.PlayOneShot(clip);
+    }
+
 
     private IEnumerator TrackSFX(AudioSource src, float duration)
     {

@@ -4,6 +4,7 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
+using System.Collections;
 
 public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,6 +21,45 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private BaseItemObject baseItemData;
     private System.Action<BaseItemObject> onSelectCallback;
 
+
+    [Header("Appear Settings")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private float appearDuration = 0.25f;
+    [SerializeField] private float startScale = 0.85f;
+
+    public float AppearDuration => appearDuration;
+
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+        StartCoroutine(AppearRoutine());
+    }
+
+    private IEnumerator AppearRoutine()
+    {
+        canvasGroup.alpha = 0f;
+        transform.localScale = Vector3.one * startScale;
+
+        float time = 0f;
+        while (time < appearDuration)
+        {
+            float t = time / appearDuration;
+
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+            transform.localScale = Vector3.Lerp(
+                Vector3.one * startScale,
+                Vector3.one,
+                t
+            );
+
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1f;
+        transform.localScale = Vector3.one;
+    }
+
     public void SetupItemStatData(PlayerStatsController controller, BaseItemObject data, System.Action<BaseItemObject> callback)
     {
         this.controller = controller;
@@ -32,6 +72,7 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         rarenessText.text = GetNameByRareness(data.Rareness);
         rarenessText.color = GetColorByRareness(data.Rareness);
+        appearDuration = GetDurationByRareness(data.Rareness);
 
         foreach (Transform child in bonusesParent)
             Destroy(child.gameObject);
@@ -62,6 +103,18 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             case ItemRareness.Epic: return "Epic";
             case ItemRareness.Legendary: return "Legendary";
             default: return "none";
+        }
+    }
+
+    private float GetDurationByRareness(ItemRareness rareness)
+    {
+        switch (rareness)
+        {
+            case ItemRareness.Usual: return 0.25f;
+            case ItemRareness.Rare: return 0.35f;
+            case ItemRareness.Epic: return 0.65f;
+            case ItemRareness.Legendary: return 0.8f;
+            default: return 0.25f;
         }
     }
 

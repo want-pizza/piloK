@@ -13,12 +13,6 @@ public class SlimeDamageable : Damageable
 
     private IMove slimeMovement;
 
-    public void OnSpawn()
-    {
-        currentHP = maxHP;
-        isAlive = true;
-    }
-
     private void OnEnable()
     {
         OnDamagedEvent += OnHit;

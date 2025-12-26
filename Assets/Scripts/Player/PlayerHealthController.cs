@@ -14,6 +14,8 @@ public class PlayerHealthController : MonoBehaviour
         get => maxHealth;
         set
         {
+            RunStatsCollector.Instance.TryAddMaxHp((int)value);
+
             maxHealth = value;
             OnHealthChanged();
         }

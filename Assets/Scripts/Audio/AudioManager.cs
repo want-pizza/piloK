@@ -112,11 +112,9 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         Vector3 listenerPos = audioListenerTransform.position;
         float distance = pos.HasValue ? Vector3.Distance(listenerPos, pos.Value) : 0f;
 
-        // тво€ крива затуханн€
-        float distanceVolume = 1f - Mathf.Clamp01(distance / 12f);
-        // 12f Ч максимальна дистанц≥€ чутност≥ (налаштуй)
+        float distanceVolume = 1f - Mathf.Clamp01(distance / 30f);
 
-        src.spatialBlend = 0f; // повн≥стю 2D звук
+        src.spatialBlend = 0f;
         src.volume = volume * distanceVolume;
 
         activeSFX.Add(src);
@@ -135,11 +133,10 @@ public class AudioManager : MonoBehaviour, ICanBePaused
         Vector3 listenerPos = audioListenerTransform.position;
         float distance = pos.HasValue ? Vector3.Distance(listenerPos, pos.Value) : 0f;
 
-        // тво€ крива затуханн€
+        // curse
         float distanceVolume = 1f - Mathf.Clamp01(distance / 30f);
-        // 12f Ч максимальна дистанц≥€ чутност≥ (налаштуй)
 
-        src.spatialBlend = 0f; // повн≥стю 2D звук
+        src.spatialBlend = 0f;
         src.volume = volume * distanceVolume;
 
         src.PlayOneShot(clip);

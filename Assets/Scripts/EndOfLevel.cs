@@ -31,7 +31,7 @@ public class EndOfLevel : MonoBehaviour
         {
             PauseController.SetCanPause(false);
             movement.PlayLevelTransition(isLeft);
-            LevelTimerManager.Instance.StopTimer();
+            RunManager.Instance.EndRun();
             endOflevelMenu = Instantiate(endOfLevelMenuPrefab);
             CheckStars();
             SubscribeToEventsButton();

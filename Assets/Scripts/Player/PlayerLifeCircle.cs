@@ -32,7 +32,13 @@ public class PlayerLifeCircle : MonoBehaviour
     private void OnCurrentHpChanged(float value) => isDead.Value = value <= 0f ? true : false;
     private void OnIsDeadChanged(bool value)
     {
+        var playerDamageble = GetComponentInChildren<PlayerDamageable>().gameObject;
         Debug.Log($"{value} is dead");
+        if (value)
+            playerDamageble.SetActive(false);
+        else
+            playerDamageble.SetActive(true);
+
     }
     public void TeleportToRespawnPoint()
     {
@@ -40,6 +46,8 @@ public class PlayerLifeCircle : MonoBehaviour
     }
     public void Respawn()
     {
+        RunManager.Instance.EndRun();
+        return;
         //Debug.Log(" isDead.Value = false;");
         isDead.Value = false;
         PlayerStats playerStats = GetComponent<PlayerStats>();

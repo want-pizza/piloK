@@ -55,6 +55,9 @@ public class PlayerHitHandler : MonoBehaviour
                                 stats.CurrentHealth.Value = Mathf.Min(stats.MaxHealth, stats.CurrentHealth);
                             }
                         }
+
+                        //  RunStatsCollector
+                        RunStatsCollector.Instance.AddDamageDealt(result.FinalAmount);
                     }
                 }
             }

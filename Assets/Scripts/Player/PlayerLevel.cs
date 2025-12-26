@@ -46,6 +46,8 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
 
     private void OnLevelUp()
     {
+        RunStatsCollector.Instance.SetLevel(currentLevel);
+
         var items = randomizer.GetRandomItems(3);
 
         // for tests

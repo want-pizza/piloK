@@ -18,5 +18,8 @@ public class CoinController : MonoBehaviour
     {
         Coins += amount;
         OnCoinsDelta?.Invoke(amount);
+
+        // RunStatsCollector
+        RunStatsCollector.Instance.AddCoins(amount);
     }
 }

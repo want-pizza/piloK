@@ -18,55 +18,46 @@ public class ItemRandomizer
         if (available.Count == 0)
             return null;
 
-        // Вибираємо рідкість
         ItemRareness rarity = RollRarity();
 
-        // Фільтруємо доступні айтеми по рідкості
         var filtered = available.FindAll(i => i.Rareness == rarity);
         if (filtered.Count == 0)
-            filtered = available; // якщо немає потрібної рідкості, беремо будь-який
+            filtered = available;
 
-        // Вибір випадкового айтема
         var selected = filtered[Random.Range(0, filtered.Count)];
         pool.Consume(selected);
 
-        return Object.Instantiate(selected); // повертаємо копію
+        return Object.Instantiate(selected);
     }
 
     public List<BaseItemObject> GetRandomItems(int quantity)
     {
         var result = new List<BaseItemObject>();
 
-        // Робимо локальну копію доступного пулу
         var available = new List<BaseItemObject>(pool.GetAvailable());
 
         if (available.Count == 0 || quantity <= 0)
-            return result; // нічого повертати
+            return result;
 
-        quantity = Mathf.Min(quantity, available.Count); // обмежуємо кількість
+        quantity = Mathf.Min(quantity, available.Count);
 
         while (result.Count < quantity)
         {
-            // Вибираємо рідкість
             ItemRareness rarity = RollRarity();
 
-            // Фільтруємо доступні айтеми по рідкості
             var filtered = available.FindAll(i => i.Rareness == rarity);
             if (filtered.Count == 0)
-                filtered = available; // якщо нема потрібної рідкості
+                filtered = available;
 
-            // Вибір випадкового айтема
             var selected = filtered[Random.Range(0, filtered.Count)];
 
-            // Додаємо в результат і віднімаємо з локальної копії
             result.Add(Object.Instantiate(selected));
-            available.Remove(selected);   // щоб не повторювався
-            pool.Consume(selected);        // зменшуємо кількість в пулі
+            available.Remove(selected);
+            pool.Consume(selected);
         }
 
         return result;
     }
-
 
     private ItemRareness RollRarity()
     {

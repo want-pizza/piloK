@@ -90,7 +90,12 @@ public class Damageable : MonoBehaviour, IDamageable
             return;
 
         if (lastCharacterLevel != null)
+        {
+            // RunStatsCollector
+            RunStatsCollector.Instance.AddKill();
+
             lastCharacterLevel.GainXP(xp);
+        }
 
         isAlive = false;
 

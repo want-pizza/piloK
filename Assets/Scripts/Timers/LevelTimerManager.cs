@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -11,8 +12,6 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
     private bool hasStarted;
     private Field<bool> isHide = new Field<bool>(true);
 
-    [SerializeField] private PlayerMovement player;
-
     public Field<bool> isHideField => isHide;
 
     private void Awake()
@@ -23,27 +22,28 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
             return;
         }
         
-        SceneManager.sceneLoaded += OnSceneLoaded;
+ 
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
     {
+        RunManager.Instance.RunStarted += TurnOnTimer;
+        RunManager.Instance.RunEnded += TurnOffTimer;
         PauseManager.OnPauseChanged += OnPausedChanged;
     }
 
     private void OnDisable()
     {
         PauseManager.OnPauseChanged -= OnPausedChanged;
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        RunManager.Instance.RunStarted -= TurnOnTimer;
     }
 
-
-    private void Update()
+    private void TurnOnTimer()
     {
 
-        if (!hasStarted && player != null && Mathf.Abs(player.FieldVelocityX.Value) > 0.01f)
+        if (!hasStarted)
         {
             //Debug.Log("StartTimer();");
             ShowTimer();
@@ -57,16 +57,15 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void TurnOffTimer()
     {
-        ResetTimer();
-        hasStarted = false;
-
-        player = FindObjectOfType<PlayerMovement>();
+        StopTimer();
+        RunStatsCollector.Instance.SetSurvivedTime(levelTimer);
+        HideTimer();
     }
 
-    public void StartTimer() => isRunning = true;
-    public void StopTimer() => isRunning = false;
+    private void StartTimer() => isRunning = true;
+    private void StopTimer() => isRunning = false;
     public void ResetTimer()
     {
         levelTimer = 0f;

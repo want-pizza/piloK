@@ -158,7 +158,7 @@ MonoBehaviour:
   moveSpeed: 6
   acceleration: 8
   jumpForce: 10
-  attackCooldown: 4
+  attackCooldown: 1.5
   efficiencyTime: 0.2
   groundMask:
     serializedVersion: 2

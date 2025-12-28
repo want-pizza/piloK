@@ -62,7 +62,7 @@ public class PlayerHealthController : MonoBehaviour
             Debug.Log($"lasthealth = {lasthealth}; currentHealth = {currentHealth}");
             Vector3 position = transform.position;
             position.y += 1;
-            FloatingTextSpawner.Instance.Spawn($"{currentHealth - lasthealth}", position, false, true);
+            FloatingTextSpawner.Instance.Spawn($"{(currentHealth - lasthealth).ToString("#")}", position, false, true);
         }
         lasthealth = currentHealth;
     }

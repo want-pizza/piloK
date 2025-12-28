@@ -50,7 +50,7 @@ MonoBehaviour:
   damageType: 2
   critChance: 0
   critMultiply: 1
-  discardingForce: 1
+  discardingForce: 8
   targetLayers:
     serializedVersion: 2
     m_Bits: 69632

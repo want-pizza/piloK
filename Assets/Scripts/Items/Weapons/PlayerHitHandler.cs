@@ -44,13 +44,15 @@ public class PlayerHitHandler : MonoBehaviour
                     foreach (DamageInfo info in infos)
                     {
                         DamageInfo tempInfo = info;
-                        tempInfo.HitPoint = ownerWeapon.LastSwingPoint;
+                        tempInfo.KnockBackDirection = ownerWeapon.LastSwingPoint;
                         DamageResult result = target.TakeDamage(tempInfo);
+
 
                         if (stats.CurrentHealth < stats.MaxHealth)
                         {
                             if (info.Type == DamageType.Physical && Random.Range(0, 100) < stats.VampirismChance)
                             {
+                                //HitFeedbackController.Instance?.PlayHitFeedback(result);
                                 stats.CurrentHealth.Value += Mathf.Max(1, result.FinalAmount * stats.VampirismStrength / 100);
                                 stats.CurrentHealth.Value = Mathf.Min(stats.MaxHealth, stats.CurrentHealth);
                             }

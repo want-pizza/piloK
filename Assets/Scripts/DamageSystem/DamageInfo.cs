@@ -16,7 +16,7 @@ public struct DamageInfo
     public float Amount;
     public DamageType Type;
     public UnityEngine.GameObject Attacker;
-    public Vector2 HitPoint;
+    public Vector2 KnockBackDirection;
     public bool IsCritical;
     public float KnockBackForce;
 }

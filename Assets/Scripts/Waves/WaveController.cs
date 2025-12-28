@@ -18,6 +18,7 @@ public class WaveController : MonoBehaviour
     private float timer;
     private bool isInterWave = false;
 
+    private bool isStarted = false;
     private bool isEnd = false;
 
     public event System.Action<int, float> OnTimerChanged;
@@ -42,8 +43,21 @@ public class WaveController : MonoBehaviour
 
     private void OnEnable()
     {
+        RunManager.Instance.RunStarted += TurnOnWaves;
+        RunManager.Instance.RunEnded += TurnOffWaves;
         EnemyPoolMember.OnEnemyDied += HandleEnemyDied;
         waveTimerUI.Subscribe(this);
+    }
+
+    private void TurnOffWaves()
+    {
+        isEnd = true;
+        RunStatsCollector.Instance.SetWave(currentWave);
+    }
+
+    private void TurnOnWaves()
+    {
+        isStarted = true;
     }
 
     private void OnDisable()
@@ -84,7 +98,7 @@ public class WaveController : MonoBehaviour
 
     private void Update()
     {
-        if (isEnd)
+        if (isEnd || !isStarted)
             return;
 
         timer -= Time.deltaTime;

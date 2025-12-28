@@ -46,7 +46,7 @@ public class PlayerDamageable : Damageable
         Debug.Log($"Player take {result.FinalAmount} damage");
 
         if(result.FinalAmount < 999f)
-            playerMovement.TakeEfficiency(info.HitPoint, info.KnockBackForce);
+            playerMovement.TakeEfficiency(info.KnockBackDirection, info.KnockBackForce);
 
         StartCoroutine(ResistFrames(playerStats.ResistTime));
 

@@ -15,12 +15,12 @@ public class SpawnPoint : MonoBehaviour
     public float GetCostMultiplier(EnemyType type)
     {
         var mod = modifiers.Find(m => m.enemyType == type);
-        return mod != null ? mod.powerMultiplier : 1f;
+        return mod != null ? mod.powerMultiplier : 99999f;
     }
 }
 
 public enum EnemyType
 {
     GreenSlime,
-    Littlemage
+    LittleMage
 }

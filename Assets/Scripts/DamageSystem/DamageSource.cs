@@ -58,7 +58,7 @@ public class DamageSource : MonoBehaviour
             Amount = baseDamage,
             Type = damageType,
             Attacker = gameObject,
-            HitPoint = other.ClosestPoint(transform.position),
+            KnockBackDirection = transform.position.x > other.transform.position.x ? Vector2.right : Vector2.left,
             IsCritical = false,
             KnockBackForce = discardingForce
         };

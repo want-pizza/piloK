@@ -38,6 +38,7 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
     {
         PauseManager.OnPauseChanged -= OnPausedChanged;
         RunManager.Instance.RunStarted -= TurnOnTimer;
+        RunManager.Instance.RunEnded -= TurnOffTimer;
     }
 
     private void TurnOnTimer()
@@ -50,7 +51,9 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
             StartTimer();
             hasStarted = true;
         }
-
+    }
+    private void Update()
+    {
         if (isRunning)
         {
             levelTimer += Time.deltaTime;
@@ -60,6 +63,7 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
     private void TurnOffTimer()
     {
         StopTimer();
+        Debug.Log($"levelTimer = {levelTimer}");
         RunStatsCollector.Instance.SetSurvivedTime(levelTimer);
         HideTimer();
     }

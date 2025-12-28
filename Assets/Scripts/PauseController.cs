@@ -8,7 +8,6 @@ public class PauseController : MonoBehaviour
     public static PauseController Instance { get; private set; }
 
     [SerializeField] private SM_Window window;
-    [SerializeField] private SM_Window statPanel;
     private PlayerAction _inputActions;
     private static bool canPause = true;
     private void Awake()

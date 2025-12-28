@@ -1,19 +1,36 @@
 using QuantumTek.SimpleMenu;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class DeathMenuUI : MonoBehaviour
 {
     [SerializeField] private Transform statsContainer;
     [SerializeField] private RunStatUI runStatPrefab;
-    [SerializeField] private SM_Window window;
+    [SerializeField] private RectTransform contentRT;
 
     public void Open(RunStats stats)
     {
         Build(stats);
 
         Canvas.ForceUpdateCanvases();
-        window.Toggle(true);
+        contentRT.gameObject.SetActive(true);
+        StartCoroutine(OpenRoutine());
+        
+    }
+
+    private IEnumerator OpenRoutine()
+    {
+        yield return null;
+        RebuildUI();
+    }
+
+    public void RebuildUI()
+    {
+        LayoutRebuilder.MarkLayoutForRebuild(contentRT);
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
     }
 
     private void Build(RunStats stats)

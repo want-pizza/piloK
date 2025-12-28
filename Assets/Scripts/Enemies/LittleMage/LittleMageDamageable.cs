@@ -33,10 +33,10 @@ public class LittleMageDamageable : Damageable
 
         Debug.Log($"info.KnockBackForce = {info.KnockBackForce}");
 
-        if (info.HitPoint != null)
+        if (info.KnockBackDirection != null)
         {
             Debug.Log("LittleMage info.HitPoint != null");
-            littleMageMovement.TakeEfficiency(info.HitPoint, info.KnockBackForce);
+            littleMageMovement.TakeEfficiency(info.KnockBackDirection, info.KnockBackForce);
         }
         // запусти партикли в залежності від Type
         // ParticleManager.Play("slime_splat", info.HitPoint);

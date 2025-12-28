@@ -40,10 +40,10 @@ public class SlimeDamageable : Damageable
 
         Debug.Log($"info.KnockBackForce = {info.KnockBackForce}");
 
-        if (info.HitPoint != null)
+        if (info.KnockBackDirection != null)
         {
             Debug.Log("Slime info.HitPoint != null");
-            slimeMovement.TakeEfficiency(info.HitPoint, info.KnockBackForce);
+            slimeMovement.TakeEfficiency(info.KnockBackDirection, info.KnockBackForce);
         }
         // запусти партикли в залежності від Type
         // ParticleManager.Play("slime_splat", info.HitPoint);

@@ -22,7 +22,6 @@ public class PlayerStatsController : MonoBehaviour
 
         var previews = new List<StatPreview>();
 
-        // 1) групуємо бонуси по статах
         var groupedBonuses = new Dictionary<StatType, List<StatBonus>>();
 
         foreach (var bonus in item.bonuses)

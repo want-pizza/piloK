@@ -27,7 +27,7 @@ public class EnemyPool : MonoBehaviour
         }
     }
 
-    public GameObject Get(int enemyType, Vector3 position)
+    public GameObject Get(int enemyType, Vector3 position) //change int enemyType
     {
         GameObject obj;
 

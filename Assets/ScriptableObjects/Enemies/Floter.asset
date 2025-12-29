@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7de41d143c548294ea4210fdbcc2f69d, type: 3}
-  m_Name: GreenSlime
+  m_Name: Floter
   m_EditorClassIdentifier: 
-  id: 0
+  id: 2
   type: 0
-  basePowerCost: 9090
-  prefab: {fileID: 1435860025352986460, guid: f165a8a579e571146a74c81165c13efd, type: 3}
+  basePowerCost: 6
+  prefab: {fileID: 2193197458409679167, guid: 2d16e94a8b8e4d0448b28b1e51dc26a7, type: 3}

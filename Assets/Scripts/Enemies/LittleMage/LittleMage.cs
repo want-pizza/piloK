@@ -47,7 +47,6 @@ public class Mage : MonoBehaviour, IMove
     private bool isAttackCooldown = false;
 
     private bool isPaused = false;
-    private Coroutine efficiencyCorutine;
     private Coroutine stunCorutine;
 
     private MageState state = MageState.Idle;
@@ -315,7 +314,7 @@ public class Mage : MonoBehaviour, IMove
 
         rb.AddForce(new Vector2(power * 0.7f * point.x * KnockbackMultiplier, power * 0.3f * KnockbackMultiplier), ForceMode2D.Impulse);
         isEfficiency = true;
-        efficiencyCorutine = StartCoroutine(TurnOffEfficiency(efficiencyTime));
+        StartCoroutine(TurnOffEfficiency(efficiencyTime));
     }
 
     IEnumerator TurnOffEfficiency(float time)

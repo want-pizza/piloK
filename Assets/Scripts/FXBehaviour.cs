@@ -4,6 +4,7 @@ public class FXBehaviour : MonoBehaviour
 {
     [Header("Audio")]
     [SerializeField] private AudioClip hitSound;
+    [SerializeField] private float soundLoud = 1f;
     [SerializeField] private float soundCooldown = 0.1f;
 
     private float cooldownTimer = 0f;
@@ -21,7 +22,7 @@ public class FXBehaviour : MonoBehaviour
 
         if (other.CompareTag("Ground"))
         {
-            AudioManager.Instance.PlaySFX(hitSound, other.transform.position, 1f);
+            AudioManager.Instance.PlaySFX(hitSound, other.transform.position, soundLoud);
             cooldownTimer = soundCooldown;
         }
     }

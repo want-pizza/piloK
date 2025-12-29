@@ -47,4 +47,5 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 1435860025352986460, guid: f165a8a579e571146a74c81165c13efd, type: 3}
   - {fileID: 1048926771099986389, guid: 5537aca78d1ad7c4bacf3d6c65e9d8f2, type: 3}
+  - {fileID: 2193197458409679167, guid: 2d16e94a8b8e4d0448b28b1e51dc26a7, type: 3}
   initialCount: 5

@@ -22,5 +22,6 @@ public class SpawnPoint : MonoBehaviour
 public enum EnemyType
 {
     GreenSlime,
-    LittleMage
+    LittleMage,
+    Floter
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DamageSource : MonoBehaviour
@@ -17,6 +18,8 @@ public class DamageSource : MonoBehaviour
 
     [Tooltip("Time between repeated hits ( if continuous = true )")]
     [SerializeField] private float hitInterval = 1f;
+
+    public event Action OnDamageDealedNoArgs;
 
     private float nextHitTime;
 
@@ -62,6 +65,8 @@ public class DamageSource : MonoBehaviour
             IsCritical = false,
             KnockBackForce = discardingForce
         };
+
+        OnDamageDealedNoArgs?.Invoke();
 
         target.TakeDamage(info);
     }

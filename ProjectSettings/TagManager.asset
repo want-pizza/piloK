@@ -6,6 +6,7 @@ TagManager:
   tags:
   - AnimationImage_Ui
   - Ground
+  - Floter
   layers:
   - Default
   - TransparentFX

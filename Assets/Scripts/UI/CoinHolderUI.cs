@@ -54,11 +54,10 @@ public class CoinHolderUI : MonoBehaviour
 
             previewText.text = remaining > 0 ? $"+{remaining}" : "";
 
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
 
-        // фінал
         displayedCoins = targetCoins;
         coinsText.text = displayedCoins.ToString();
         previewText.text = string.Empty;

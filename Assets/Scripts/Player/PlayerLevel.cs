@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour, ICharacterLevel
@@ -64,6 +66,8 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
             return false;
 
         CoinController.Instance.AddCoins(-rerollCost);
+        rerollCost = Convert.ToInt32(rerollCost * rerollCostMultiplier);
+
         var items = randomizer.GetRandomItems(3);
         ui.Open(items);
         return true;

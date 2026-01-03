@@ -66,6 +66,7 @@ public class Mage : MonoBehaviour, IMove
 
     private void OnEnable()
     {
+        state = MageState.Idle;
         groundChecker.OnTriggeredStateChanged += OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged += OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged += OnObstacleTriggered;

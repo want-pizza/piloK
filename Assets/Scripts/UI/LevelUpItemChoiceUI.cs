@@ -60,7 +60,6 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         }
     }
 
-
     private void SelectItem(BaseItemObject item)
     {
         Debug.Log("inventoryPresenter.TryPickupItem");
@@ -82,5 +81,4 @@ public class LevelUpItemChoiceUI : MonoBehaviour
         GetComponent<SM_Window>().Toggle(false); 
         isOpened = false;
     }
-
 }

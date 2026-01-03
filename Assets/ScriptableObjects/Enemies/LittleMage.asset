@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   type: 1
-  basePowerCost: 8
+  basePowerCost: 9
   prefab: {fileID: 1048926771099986389, guid: 5537aca78d1ad7c4bacf3d6c65e9d8f2, type: 3}

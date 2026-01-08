@@ -18,7 +18,7 @@ MonoBehaviour:
   rareness: 0
   pickupSound: {fileID: 0}
   canEquip: 1
-  canUnequip: 0
+  canUnequip: 1
   isStackable: 0
   description: Good for a start
   bonuses:

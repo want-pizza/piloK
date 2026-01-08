@@ -6,13 +6,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
 
-public class PlayerInventoryPresenter : InventoryPresenterBase
+public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
 {
     [SerializeField] private PlayerContext playerContext;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerMovement pLayerMovement;
-    [SerializeField] private InventoryEquipEventChannelSO equipEventChannel;
-    [SerializeField] private InventoryEquipEventChannelSO unequipEventChannel;
 
     protected override void OnEnable()
     {
@@ -20,16 +18,11 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         base.OnEnable();
         inventory.OnItemEquiped += AddStats;
         inventory.OnItemUnequiped += RemoveStats;
-        inventory.OnItemUnequiped += UnequipItem;
+
+        PauseManager.OnPauseChanged += OnPausedChanged;
+
         isOpen.Value = false;
         //displayInventory.gameObject.SetActive(isOpen);
-    }
-
-    private void UnequipItem(BaseItemObject @object)
-    {
-        Debug.Log("UnequipItem");
-        unequipEventChannel.OnItemEquipped.Invoke(@object);
-        //must edit UI
     }
     private void AddStats(BaseItemObject itemObject)
     {
@@ -39,7 +32,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         }
         if(itemObject is RuntimeItemData)
         {
-            itemObject.OnEquip(playerContext);
+            itemObject.OnEquip(playerContext);//!!!!!!equip runtime
         }
     }
     private void RemoveStats(BaseItemObject itemObject)
@@ -102,9 +95,6 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
         {
             RefreshInteractionMenu();
             BaseItemObject weapon = inventory.InventorySlots[selectedIndex].Item;
-
-            if (weapon is WeaponItemObject)
-                equipEventChannel.RaiseEvent(weapon);
         }
     }
     protected void RefreshInteractionMenu()
@@ -116,10 +106,18 @@ public class PlayerInventoryPresenter : InventoryPresenterBase
     {
         base.OnDisable();
         inventory.OnItemEquiped -= AddStats;
-        inventory.OnItemUnequiped -= UnequipItem;
+        inventory.OnItemUnequiped -= RemoveStats;
+
+        PauseManager.OnPauseChanged -= OnPausedChanged;
     }
     private void OnApplicationQuit()
     {
         inventory.InventorySlots = new InventorySlot[15];
+    }
+
+    public void OnPausedChanged(bool paused)
+    {
+        Debug.Log("ToggleInventory(paused);");
+        ToggleInventory(paused);
     }
 }

@@ -1,11 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatsController : MonoBehaviour
+public class PlayerStatsController : MonoBehaviour, ICanBePaused
 {
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerStatsUI statsUI;
+
+    private void OnEnable()
+    {
+        Subscribe();
+        PauseManager.OnPauseChanged += OnPausedChanged;
+    }
+    private void OnDisable()
+    {
+        Unsubscribe();
+        PauseManager.OnPauseChanged -= OnPausedChanged;
+    }
+
+    private void Subscribe()
+    {
+        foreach (var stat in playerStats.GetAllStats().Values)
+        {
+            stat.OnValueChangedNoArgs += ShowStats;
+        }
+    }
+
+    private void Unsubscribe()
+    {
+        foreach (var stat in playerStats.GetAllStats().Values)
+        {
+            stat.OnValueChangedNoArgs -= ShowStats;
+        }
+    }
+
+    public void ShowStats(bool value)
+    {
+        statsUI.gameObject.SetActive(value);
+
+        if (value)
+        {
+            var stats = playerStats.GetAllStats();
+            statsUI.DisplayStats(stats);
+        }
+    }
 
     public void ShowStats()
     {
@@ -61,4 +100,8 @@ public class PlayerStatsController : MonoBehaviour
         statsUI.ClearAllPreviews();
     }
 
+    public void OnPausedChanged(bool paused)
+    {
+        ShowStats(paused);
+    }
 }

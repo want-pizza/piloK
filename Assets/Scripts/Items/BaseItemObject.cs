@@ -25,7 +25,7 @@ public abstract class BaseItemObject : ScriptableObject
     public virtual void OnEquip(PlayerContext context) { }
     public virtual void OnUnequip() { }
 
-    [TextArea(15, 20)]
+    [TextArea(15, 8)]
     [SerializeField] private string description;
 }
 

@@ -7,7 +7,7 @@ public class PauseController : MonoBehaviour
 {
     public static PauseController Instance { get; private set; }
 
-    [SerializeField] private SM_Window window;
+    [SerializeField] private SM_Window pauseWindow;
     private PlayerAction _inputActions;
     private static bool canPause = true;
     private void Awake()
@@ -41,8 +41,9 @@ public class PauseController : MonoBehaviour
 
         bool valueToSend = !PauseManager.IsPaused;
 
-        window.Toggle(valueToSend);
+        pauseWindow.Toggle(valueToSend);
         PauseManager.InternalSetPause(valueToSend);
+        Time.timeScale = valueToSend ? 0.0f : 1.0f;
     }
     public static void SetCanPause(bool value)
     {

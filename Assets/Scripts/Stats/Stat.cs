@@ -11,6 +11,7 @@ public class Stat<T>
     public List<IStatModifier<T>> Modifires => modifiers;
 
     public event Action<T> OnValueChanged;
+    public event Action OnValueChangedNoArgs;
 
     private T lastValue;
 
@@ -39,6 +40,7 @@ public class Stat<T>
             {
                 lastValue = value;
                 OnValueChanged?.Invoke(value);
+                OnValueChangedNoArgs?.Invoke();
             }
 
             return value;

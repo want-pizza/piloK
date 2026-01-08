@@ -26,7 +26,6 @@ public class LevelUpItemChoiceUI : MonoBehaviour
 
         isOpened = true;
         inventoryPresenter.RefreUI();
-        statsController.ShowStats();
         GetComponent<SM_Window>().Toggle(true);
 
         foreach (Transform child in itemsContainer)

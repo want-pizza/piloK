@@ -18,7 +18,7 @@ MonoBehaviour:
   rareness: 3
   pickupSound: {fileID: 0}
   canEquip: 1
-  canUnequip: 0
+  canUnequip: 1
   isStackable: 0
   description: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
 

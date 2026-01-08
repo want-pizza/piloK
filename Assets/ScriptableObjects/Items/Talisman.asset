@@ -18,7 +18,7 @@ MonoBehaviour:
   rareness: 2
   pickupSound: {fileID: 0}
   canEquip: 1
-  canUnequip: 0
+  canUnequip: 1
   isStackable: 0
   description: 'Wanna more choice?
 

@@ -31,11 +31,30 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         inventory.OnItemAdded += ShowInventoryItem;
-        //inputActions.Player.Inventory.started += ToggleInventory;
     }
     protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
         isOpen.Value = !isOpen;
+        displayInventory.gameObject.SetActive(isOpen);
+
+        if (isOpen)
+        {
+            displayInventory.RefreshUI(inventory.InventorySlots);
+            EnableMoveItem();
+            EnableInventoryInput();
+        }
+        else
+        {
+            DisableMoveItem();
+            DisableInventoryInput();
+        }
+    }
+    protected virtual void ToggleInventory(bool value)
+    {
+        if (isOpen.Value == value)
+            return;
+
+        isOpen.Value = value;
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)
@@ -223,6 +242,5 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void OnDisable()
     {
         inventory.OnItemAdded -= ShowInventoryItem;
-        //inputActions.Player.Inventory.started -= ToggleInventory;
     }
 }

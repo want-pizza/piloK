@@ -20,6 +20,7 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: Give new type of damage "Fire Damage"
   description: Give new type of damage "Fire Damage"
   bonuses:
   - statType: 8

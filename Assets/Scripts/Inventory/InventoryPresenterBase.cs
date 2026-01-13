@@ -11,7 +11,8 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected bool inventoryInputEnabled;
     protected PlayerAction inputActions;
     protected Field<bool> isOpen = new Field<bool>();
-    protected int selectedIndex;
+    protected int selectedIndex = 0;
+    protected int previousIndex = 0;
     protected bool itemIsMoving = false;
     protected int movingItemIndex;
 
@@ -35,26 +36,6 @@ public abstract class InventoryPresenterBase : MonoBehaviour
     protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
         isOpen.Value = !isOpen;
-        displayInventory.gameObject.SetActive(isOpen);
-
-        if (isOpen)
-        {
-            displayInventory.RefreshUI(inventory.InventorySlots);
-            EnableMoveItem();
-            EnableInventoryInput();
-        }
-        else
-        {
-            DisableMoveItem();
-            DisableInventoryInput();
-        }
-    }
-    protected virtual void ToggleInventory(bool value)
-    {
-        if (isOpen.Value == value)
-            return;
-
-        isOpen.Value = value;
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)
@@ -148,7 +129,7 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         int totalSlots = inventory.CountSlots;
         int rows = Mathf.CeilToInt((float)totalSlots / columns);
 
-        int previousIndex = selectedIndex;
+        previousIndex = selectedIndex;
 
         if (input.x > 0.1f)
         {
@@ -181,17 +162,27 @@ public abstract class InventoryPresenterBase : MonoBehaviour
             return;
         }
 
+        SelectCell();
+    }
+
+    protected void SelectCell()
+    {
+        Debug.Log($"selectedIndex = {selectedIndex}");
+
         displayInventory.UnhighlightCell(previousIndex);
-        displayInventory.CleanInteractionMenu();
+        displayInventory.ClearInteractionMenu();
 
         displayInventory.HighlightCell(selectedIndex);
         if (inventory.InventorySlots[selectedIndex].Item != null)
         {
             displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
+            displayInventory.ShowDescriptionWindow(inventory.InventorySlots[selectedIndex].Item.Description);
         }
         else
         {
+            Debug.Log("inventory.InventorySlots[selectedIndex].Item == null");
             displayInventory.HideInteractionMenu();
+            displayInventory.HideDescriptionWindow();
         }
     }
 

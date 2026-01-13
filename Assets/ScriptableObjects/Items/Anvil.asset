@@ -20,6 +20,9 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
+
+'
   description: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
 
 '

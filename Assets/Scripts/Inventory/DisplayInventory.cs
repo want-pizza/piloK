@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class DisplayInventory : MonoBehaviour
 
     [SerializeField] private UnityEngine.GameObject interactionMenu;
     [SerializeField] private UnityEngine.GameObject hintTemplate;
+    [SerializeField] private GameObject itemDescriptionHolder;
+    [SerializeField] private TMP_Text itemDescriptionText;
 
     private List<UnityEngine.GameObject> cells = new();
 
@@ -88,7 +91,7 @@ public class DisplayInventory : MonoBehaviour
             }
         }
     }
-    internal void CleanInteractionMenu()
+    internal void ClearInteractionMenu()
     {
         foreach (Transform child in interactionMenu.transform)
             Destroy(child.gameObject);
@@ -96,6 +99,16 @@ public class DisplayInventory : MonoBehaviour
     public void HideInteractionMenu()
     {
         interactionMenu?.SetActive(false);
+    }
+
+    public void ShowDescriptionWindow(string text)
+    {
+        itemDescriptionText.text = text;
+        itemDescriptionHolder.SetActive(true);
+    }
+    public void HideDescriptionWindow()
+    {
+        itemDescriptionHolder.SetActive(false);
     }
     private Vector3 GetPosition(int i)
     {

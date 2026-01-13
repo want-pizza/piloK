@@ -20,6 +20,7 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: Good for a start
   description: Good for a start
   bonuses:
   - statType: 7

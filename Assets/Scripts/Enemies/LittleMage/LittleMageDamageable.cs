@@ -15,8 +15,9 @@ public class LittleMageDamageable : Damageable
         resistances[DamageType.Fire] = 0.7f;
 
     }
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         OnDamagedEvent += OnHit;
         currentHP = maxHP;
     }
@@ -45,7 +46,7 @@ public class LittleMageDamageable : Damageable
 
     protected override void Die(DamageInfo info)
     {
-        Debug.Log("Slime is dead");
+        Debug.Log("LittelMage is dead");
         AudioManager.Instance.PlaySFX(deathClip, transform.position);
         //FXManager.Instance.Play(deathKey, transform.position, Quaternion.identity);
         base.Die(info);

@@ -12,21 +12,25 @@ public abstract class BaseItemObject : ScriptableObject
     [SerializeField] private bool canUnequip;
     [SerializeField] private bool isStackable;
 
+    [TextArea(15, 8)]
+    [SerializeField] private string shopDescription;
+
+    [TextArea(15, 8)]
+    [SerializeField] private string description;
+
     public int Id => id;
     public Sprite Icon => icon;
     public ItemRareness Rareness => rareness;
     public AudioClip PickupSound => pickupSound;
     public string DisplayName => displayName;
     public bool IsStackable => isStackable;
+    public string ShopDescription => shopDescription;
     public string Description => description;
-
     public bool CanUnequip => canUnequip;
     public bool CanEquip => canEquip;
     public virtual void OnEquip(PlayerContext context) { }
     public virtual void OnUnequip() { }
 
-    [TextArea(15, 8)]
-    [SerializeField] private string description;
 }
 
 [System.Serializable]

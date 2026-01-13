@@ -20,6 +20,7 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: "Increases \u0421rit \u042Cultiplier"
   description: "Increases \u0421rit \u042Cultiplier"
   bonuses:
   - statType: 6

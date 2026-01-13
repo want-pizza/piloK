@@ -15,7 +15,7 @@ public class PickupItem : MonoBehaviour, IPickupable
 
     public string GetDisplayName => itemData.DisplayName;
 
-    public string GetDescription => itemData.Description;
+    public string GetDescription => itemData.ShopDescription;
 
     private void Reset()
     {

@@ -20,6 +20,7 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: Wonna better crit?
   description: Wonna better crit?
   bonuses:
   - statType: 6

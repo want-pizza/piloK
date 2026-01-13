@@ -15,9 +15,11 @@ MonoBehaviour:
   id: 3
   displayName: Shield
   icon: {fileID: 21300000, guid: 826f4abe25efc964f8e0704ecca25e38, type: 3}
+  rareness: 0
   pickupSound: {fileID: 8300000, guid: d28544cf027a8e74cbcc11e2ccc8b83d, type: 3}
   canEquip: 0
   canUnequip: 0
   isStackable: 0
+  shopDescription: Give u bonus star
   description: Give u bonus star
   bonuses: []

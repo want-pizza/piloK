@@ -78,7 +78,7 @@ public class ItemCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             Destroy(child.gameObject);
 
         TMP_Text txt = Instantiate(bonusPrefab, bonusesParent);
-        txt.text += $"{baseItemData.Description}";
+        txt.text += $"{baseItemData.ShopDescription}";
         txt.enabled = true;
         Debug.Log($"Instantiated Bonus active={txt.gameObject.activeSelf} enabled={txt.enabled}", txt.gameObject);
     }

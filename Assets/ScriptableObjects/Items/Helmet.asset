@@ -20,6 +20,7 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: Doubtfully choice...
   description: Doubtfully choice...
   bonuses:
   - statType: 11

@@ -31,6 +31,10 @@ public class Damageable : MonoBehaviour, IDamageable
     {
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
     }
+    protected virtual void OnEnable()
+    {
+        isAlive = true;
+    }
 
     public virtual DamageResult TakeDamage(DamageInfo info)
     {

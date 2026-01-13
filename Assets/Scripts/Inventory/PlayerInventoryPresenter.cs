@@ -5,6 +5,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
 {
@@ -55,20 +56,49 @@ public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
         {
             displayInventory.RefreshUI(inventory.InventorySlots);
             //InputManager.Instance.SwitchState(PlayerState.Inventory);
-            //Debug.Log("Inventory opened, enabling input");
+            Debug.Log("Inventory opened, enabling input");
             EnableInventoryInput();
             EnableMoveItem();
             displayInventory.HighlightCell(selectedIndex);
-            displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
+            SelectCell();
         }
         else
         {
             //InputManager.Instance.SwitchState(PlayerState.Normal);
-            //Debug.Log("Inventory closed, disabling input");
+            Debug.Log("Inventory closed, disabling input");
             DisableInventoryInput();
             DisableMoveItem();
             displayInventory.UnhighlightCell(selectedIndex);
-            displayInventory.CleanInteractionMenu();
+            displayInventory.ClearInteractionMenu();
+            displayInventory.HideInteractionMenu();
+        }
+    }
+    protected void ToggleInventory(bool value)
+    {
+        if (isOpen.Value == value)
+            return;
+
+        isOpen.Value = value;
+        displayInventory.gameObject.SetActive(isOpen);
+
+        if (isOpen)
+        {
+            displayInventory.RefreshUI(inventory.InventorySlots);
+            //InputManager.Instance.SwitchState(PlayerState.Inventory);
+            Debug.Log("Inventory opened, enabling input");
+            EnableInventoryInput();
+            EnableMoveItem();
+            SelectCell();
+            displayInventory.HighlightCell(selectedIndex);
+        }
+        else
+        {
+            //InputManager.Instance.SwitchState(PlayerState.Normal);
+            Debug.Log("Inventory closed, disabling input");
+            DisableInventoryInput();
+            DisableMoveItem();
+            displayInventory.UnhighlightCell(selectedIndex);
+            displayInventory.ClearInteractionMenu();
             displayInventory.HideInteractionMenu();
         }
     }
@@ -99,7 +129,7 @@ public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
     }
     protected void RefreshInteractionMenu()
     {
-        displayInventory.CleanInteractionMenu();
+        displayInventory.ClearInteractionMenu();
         displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
     }
     protected override void OnDisable()

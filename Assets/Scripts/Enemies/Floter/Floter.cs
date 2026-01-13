@@ -50,6 +50,7 @@ public class Floter : MonoBehaviour, IMove
     private void OnDisable()
     {
         damageSource.OnDamageDealedNoArgs -= TakeDamageHitEfficiency;
+        isEfficiency = false;
     }
 
     private void TakeDamageHitEfficiency()

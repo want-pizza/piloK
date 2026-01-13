@@ -20,6 +20,9 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
+  shopDescription: 'Wanna more choice?
+
+    Gives a bonus item when selecting items'
   description: 'Wanna more choice?
 
     Gives a bonus item when selecting items'

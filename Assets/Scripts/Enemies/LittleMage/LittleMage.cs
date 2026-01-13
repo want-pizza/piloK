@@ -77,6 +77,7 @@ public class Mage : MonoBehaviour, IMove
     private void OnDisable()
     {
         anim.SetBool("isAttacking", false);
+        isEfficiency = false;
         groundChecker.OnTriggeredStateChanged -= OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged -= OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged -= OnObstacleTriggered;

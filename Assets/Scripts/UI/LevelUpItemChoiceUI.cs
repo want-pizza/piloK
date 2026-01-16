@@ -15,7 +15,6 @@ public class LevelUpItemChoiceUI : MonoBehaviour
 
     [Header("Audio Settings")]
     [SerializeField] private AudioClip levelUp;
-    [SerializeField] private AudioClip rerollCancled;
 
     private bool isOpened = false;
 
@@ -25,7 +24,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
             AudioManager.Instance.PlayCantPausedSFX(levelUp);
 
         isOpened = true;
-        inventoryPresenter.RefreUI();
+        inventoryPresenter.RefreshUI();
         GetComponent<SM_Window>().Toggle(true);
 
         foreach (Transform child in itemsContainer)
@@ -71,7 +70,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     {
         if (!playerLevel.Reroll())
         {
-            AudioManager.Instance.PlayCantPausedSFX(rerollCancled);
+            ErrorHandler.Instance.PlayErrorNoArgs();
         }
     }
 

@@ -17,7 +17,7 @@ public class DeathMenuUI : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         contentRT.gameObject.SetActive(true);
         StartCoroutine(OpenRoutine());
-        
+
     }
 
     private IEnumerator OpenRoutine()
@@ -76,5 +76,10 @@ public class DeathMenuUI : MonoBehaviour
         int min = Mathf.FloorToInt(seconds / 60f);
         int sec = Mathf.FloorToInt(seconds % 60f);
         return $"{min:00}:{sec:00}";
+    }
+
+    public void LoadScene(string scene)
+    {
+        SceneLoader.Instance.StartLoadScene(scene);
     }
 }

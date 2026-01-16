@@ -10,7 +10,7 @@ public class InventoryObject : ScriptableObject
 {
     public int CountSlots = 15;
     public InventorySlot[] InventorySlots;
-    public Action<BaseItemObject> OnItemEquiped, OnItemAdded, OnItemUnequiped;
+    public Action<BaseItemObject> OnItemEquiped, OnItemAdded, OnItemUnequiped, OnItemDropped;
     private int EquippedWeaponIndex = -1;
     private void OnEnable()
     {
@@ -70,8 +70,10 @@ public class InventoryObject : ScriptableObject
     {
         if (InventorySlots[index]?.Item )
         {
+            UnequipItem(index);
             InventorySlots[index].Item = null;
             InventorySlots[index].Amount = 0;
+            OnItemDropped?.Invoke(InventorySlots[index].Item);
             return true;
         }
         return false;

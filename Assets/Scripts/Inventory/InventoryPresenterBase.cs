@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,119 +7,151 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 {
     [SerializeField] protected InventoryObject inventory;
     [SerializeField] protected DisplayInventory displayInventory;
-    protected bool inventoryInputEnabled;
+
     protected PlayerAction inputActions;
-    protected Field<bool> isOpen = new Field<bool>();
-    protected int selectedIndex = 0;
-    protected int previousIndex = 0;
-    protected bool itemIsMoving = false;
+
+    protected readonly Field<bool> isOpen = new();
+    protected int selectedIndex;
+    protected int previousIndex;
+
+    protected bool itemIsMoving;
     protected int movingItemIndex;
 
-    // public Field getters
     public Field<bool> IsOpen => isOpen;
+
+    #region Unity lifecycle
 
     protected virtual void Awake()
     {
         inputActions = InputManager.Instance.PlayerActions;
-        for (int i = 0; i < inventory.CountSlots; i++)
-        {
-            inventory.InventorySlots[i] = new InventorySlot(i, null, 0);
-        }
-        displayInventory.CreateSlots(inventory.InventorySlots.Length);
+        InitializeInventory();
     }
 
     protected virtual void OnEnable()
     {
         inventory.OnItemAdded += ShowInventoryItem;
     }
+
+    protected virtual void OnDisable()
+    {
+        inventory.OnItemAdded -= ShowInventoryItem;
+        UnbindInput();
+    }
+
+    #endregion
+
+    #region Inventory initialization
+
+    private void InitializeInventory()
+    {
+        for (int i = 0; i < inventory.CountSlots; i++)
+        {
+            inventory.InventorySlots[i] = new InventorySlot(i, null, 0);
+        }
+
+        displayInventory.CreateSlots(inventory.InventorySlots.Length);
+    }
+
+    #endregion
+
+    #region Inventory open / close
+
     protected virtual void ToggleInventory(InputAction.CallbackContext ctx)
     {
         isOpen.Value = !isOpen;
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)
-        {
-            displayInventory.RefreshUI(inventory.InventorySlots);
-            EnableMoveItem();
-            EnableInventoryInput();
-        }
+            OpenInventory();
         else
-        {
-            DisableMoveItem();
-            DisableInventoryInput();
-        }
+            CloseInventory();
     }
-    protected void EnableMoveItem()
-    {
-        Debug.Log("EnableMoveItem");
-        inputActions.Player.Jump.started += MoveItem;
-        EnableEquip();
-    }
-    protected void DisableMoveItem()
-    {
-        Debug.Log("DisableMoveItem");
-        inputActions.Player.Jump.started -= MoveItem;
-        if (itemIsMoving)
-            DisableEquip();
 
+    protected virtual void OpenInventory()
+    {
+        displayInventory.RefreshUI(inventory.InventorySlots);
+        BindInput();
+    }
+
+    protected virtual void CloseInventory()
+    {
+        UnbindInput();
         itemIsMoving = false;
     }
-    protected void EnableInventoryInput()
+
+    #endregion
+
+    #region Input binding
+
+    protected virtual void BindInput()
     {
         inputActions.Player.Move.performed += MoveInCells;
-        
+        inputActions.Player.Jump.started += MoveItem;
+        inputActions.Player.Attack.started += TryEquip;
+        inputActions.Player.Dash.canceled += TryDrop;
     }
-    protected void DisableInventoryInput()
+
+    protected virtual void UnbindInput()
     {
         inputActions.Player.Move.performed -= MoveInCells;
-    }
-    protected void EnableEquip()
-    {
-        inputActions.Player.Attack.started += TryEquip;
-    }
-    protected void DisableEquip()
-    {
+        inputActions.Player.Jump.started -= MoveItem;
         inputActions.Player.Attack.started -= TryEquip;
+        inputActions.Player.Dash.canceled -= TryDrop;
     }
-    protected void MoveItem(InputAction.CallbackContext ctx)
+
+    #endregion
+
+    #region Item interaction
+
+    protected virtual void MoveItem(InputAction.CallbackContext ctx)
     {
         if (!itemIsMoving)
         {
-            if (inventory.InventorySlots[selectedIndex].Item != null)
-            {
-                movingItemIndex = selectedIndex;
-                itemIsMoving = true;
-                DisableEquip();
-            }
+            if (inventory.InventorySlots[selectedIndex].Item == null)
+                return;
+
+            movingItemIndex = selectedIndex;
+            itemIsMoving = true;
+            inputActions.Player.Attack.started -= TryEquip;
         }
         else
         {
             inventory.SwapItems(movingItemIndex, selectedIndex);
             itemIsMoving = false;
-            EnableEquip();
+            inputActions.Player.Attack.started += TryEquip;
             displayInventory.RefreshUI(inventory.InventorySlots);
         }
-        Debug.Log($"movingItemIndex - {movingItemIndex}; itemIsMoving - {itemIsMoving};");
-    }
-    private void MoveInCells(InputAction.CallbackContext ctx)
-    {
-        Vector2 input = ctx.ReadValue<Vector2>();
-        //Debug.Log($"Inventory received move input: {input}");
-        HandleInventoryNavigation(input);
     }
 
     protected virtual void TryEquip(InputAction.CallbackContext ctx)
     {
         if (inventory.SlotIsEquiped(selectedIndex))
         {
-            bool itemunequiped = inventory.UnequipItem(selectedIndex);
+            if(!inventory.UnequipItem(selectedIndex))
+                ErrorHandler.Instance.PlayErrorNoArgs();
+
             return;
         }
-        bool itemEquiped = inventory.EquipItem(selectedIndex);
-        if (!itemEquiped)
-        {
-            Debug.Log("item wasnt equiped");
-        }
+
+        if (!inventory.EquipItem(selectedIndex))
+            ErrorHandler.Instance.PlayErrorNoArgs();
+    }
+
+    protected virtual void TryDrop(InputAction.CallbackContext ctx)
+    {
+        if (inventory.DropItem(selectedIndex))
+            displayInventory.RefreshUI(inventory.InventorySlots);
+
+        else ErrorHandler.Instance.PlayErrorNoArgs();
+    }
+
+    #endregion
+
+    #region Navigation
+
+    private void MoveInCells(InputAction.CallbackContext ctx)
+    {
+        HandleInventoryNavigation(ctx.ReadValue<Vector2>());
     }
 
     protected void HandleInventoryNavigation(Vector2 input)
@@ -132,31 +163,15 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         previousIndex = selectedIndex;
 
         if (input.x > 0.1f)
-        {
-            int col = (selectedIndex % columns + 1) % columns;
-            int row = selectedIndex / columns;
-            selectedIndex = row * columns + col;
-        }
+            selectedIndex += 1;
         else if (input.x < -0.1f)
-        {
-            int col = (selectedIndex % columns - 1 + columns) % columns;
-            int row = selectedIndex / columns;
-            selectedIndex = row * columns + col;
-        }
+            selectedIndex -= 1;
         else if (input.y > 0.1f)
-        {
-            int col = selectedIndex % columns;
-            int row = (selectedIndex / columns - 1 + rows) % rows;
-            selectedIndex = row * columns + col;
-        }
+            selectedIndex -= columns;
         else if (input.y < -0.1f)
-        {
-            int col = selectedIndex % columns;
-            int row = (selectedIndex / columns + 1) % rows;
-            selectedIndex = row * columns + col;
-        }
+            selectedIndex += columns;
 
-        if (selectedIndex >= totalSlots)
+        if (selectedIndex < 0 || selectedIndex >= totalSlots)
         {
             selectedIndex = previousIndex;
             return;
@@ -167,58 +182,69 @@ public abstract class InventoryPresenterBase : MonoBehaviour
 
     protected void SelectCell()
     {
-        Debug.Log($"selectedIndex = {selectedIndex}");
-
         displayInventory.UnhighlightCell(previousIndex);
+        displayInventory.HighlightCell(selectedIndex);
+
         displayInventory.ClearInteractionMenu();
 
-        displayInventory.HighlightCell(selectedIndex);
-        if (inventory.InventorySlots[selectedIndex].Item != null)
+        var slot = inventory.InventorySlots[selectedIndex];
+
+        if (slot.Item == null)
         {
-            displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
-            displayInventory.ShowDescriptionWindow(inventory.InventorySlots[selectedIndex].Item.Description);
-        }
-        else
-        {
-            Debug.Log("inventory.InventorySlots[selectedIndex].Item == null");
             displayInventory.HideInteractionMenu();
             displayInventory.HideDescriptionWindow();
+            return;
         }
+
+        displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
+        displayInventory.ShowDescriptionWindow(slot.Item.Description);
     }
+
+    #endregion
+
+    #region External API
 
     protected virtual void ShowInventoryItem(BaseItemObject item)
     {
         if (isOpen)
-        {
             displayInventory.RefreshUI(inventory.InventorySlots);
-        }
     }
+
     public virtual bool TryPickupItem(BaseItemObject item, int amount)
     {
-        bool success = inventory.SetEmptySlot(item, amount);
-        if (!success)
-        {
-            Debug.Log("Inventory is full");
-        }
+        return inventory.SetEmptySlot(item, amount);
+    }
 
-        return success;
-    }
-    public virtual bool IsItemInInventory(BaseItemObject baseItem)
+    public virtual bool IsItemInInventory(BaseItemObject item)
     {
-        return inventory.IsEquipped(baseItem);
+        return inventory.IsEquipped(item);
     }
+
+    #endregion
+
+    #region Interaction hints
 
     protected virtual List<InteractionHint> GetInteractionHintsForSlot(int slotIndex)
     {
         var slot = inventory.InventorySlots[slotIndex];
         var hints = new List<InteractionHint>();
 
-        if (slot.Item == null) return hints;
+        if (slot.Item == null)
+            return hints;
 
-        hints.Add(new InteractionHint { Description = "Drop", Key = inputActions.Player.Dash.GetBindingDisplayString() });
-        hints.Add(new InteractionHint { Description = "Move", Key = inputActions.Player.Jump.GetBindingDisplayString() });
+        hints.Add(new InteractionHint
+        {
+            Description = "Drop",
+            Key = inputActions.Player.Dash.GetBindingDisplayString()
+        });
 
-        if (slot.Item.CanEquip)  //need add intervace for equipable items
+        hints.Add(new InteractionHint
+        {
+            Description = "Move",
+            Key = inputActions.Player.Jump.GetBindingDisplayString()
+        });
+
+        if (slot.Item.CanEquip)
         {
             hints.Add(new InteractionHint
             {
@@ -230,8 +256,5 @@ public abstract class InventoryPresenterBase : MonoBehaviour
         return hints;
     }
 
-    protected virtual void OnDisable()
-    {
-        inventory.OnItemAdded -= ShowInventoryItem;
-    }
+    #endregion
 }

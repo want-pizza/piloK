@@ -1,78 +1,68 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
-using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
+public class PlayerInventoryPresenter: InventoryPresenterBase, ICanBePaused
 {
     [SerializeField] private PlayerContext playerContext;
     [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private PlayerMovement pLayerMovement;
+    [SerializeField] private PlayerMovement playerMovement;
+
+    #region Unity lifecycle
 
     protected override void OnEnable()
     {
-        Debug.Log("PlayerInventoryPresenter OnEnable");
         base.OnEnable();
-        inventory.OnItemEquiped += AddStats;
-        inventory.OnItemUnequiped += RemoveStats;
 
+        inventory.OnItemEquiped += OnItemEquipped;
+        inventory.OnItemUnequiped += OnItemUnequipped;
         PauseManager.OnPauseChanged += OnPausedChanged;
 
         isOpen.Value = false;
-        //displayInventory.gameObject.SetActive(isOpen);
+        displayInventory.gameObject.SetActive(false);
     }
-    private void AddStats(BaseItemObject itemObject)
-    {
-        if (itemObject is ISendModifires statData)
-        {
-            statData.Apply(playerStats);
-        }
-        if(itemObject is RuntimeItemData)
-        {
-            itemObject.OnEquip(playerContext);//!!!!!!equip runtime
-        }
-    }
-    private void RemoveStats(BaseItemObject itemObject)
-    {
-        if (itemObject is ISendModifires statData)
-        {
-            statData.Remove(playerStats);
-        }
-        if (itemObject is RuntimeItemData)
-        {
-            itemObject.OnUnequip();
-        }
-    }
-    protected override void ToggleInventory(InputAction.CallbackContext ctx)
-    {
-        isOpen.Value = !isOpen;
-        displayInventory.gameObject.SetActive(isOpen);
 
-        if (isOpen)
-        {
-            displayInventory.RefreshUI(inventory.InventorySlots);
-            //InputManager.Instance.SwitchState(PlayerState.Inventory);
-            Debug.Log("Inventory opened, enabling input");
-            EnableInventoryInput();
-            EnableMoveItem();
-            displayInventory.HighlightCell(selectedIndex);
-            SelectCell();
-        }
-        else
-        {
-            //InputManager.Instance.SwitchState(PlayerState.Normal);
-            Debug.Log("Inventory closed, disabling input");
-            DisableInventoryInput();
-            DisableMoveItem();
-            displayInventory.UnhighlightCell(selectedIndex);
-            displayInventory.ClearInteractionMenu();
-            displayInventory.HideInteractionMenu();
-        }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        inventory.OnItemEquiped -= OnItemEquipped;
+        inventory.OnItemUnequiped -= OnItemUnequipped;
+        PauseManager.OnPauseChanged -= OnPausedChanged;
     }
+
+    private void OnApplicationQuit()
+    {
+        inventory.InventorySlots = new InventorySlot[15];
+    }
+
+    #endregion
+
+    #region Pause handling
+
+    public void OnPausedChanged(bool paused)
+    {
+        ToggleInventory(paused);
+    }
+
+    #endregion
+
+    #region Inventory open / close overrides
+
+    protected override void OpenInventory()
+    {
+        base.OpenInventory();
+        SelectCell();
+    }
+
+    protected override void CloseInventory()
+    {
+        base.CloseInventory();
+
+        displayInventory.UnhighlightCell(selectedIndex);
+        displayInventory.ClearInteractionMenu();
+        displayInventory.HideInteractionMenu();
+    }
+
     protected void ToggleInventory(bool value)
     {
         if (isOpen.Value == value)
@@ -82,72 +72,72 @@ public class PlayerInventoryPresenter : InventoryPresenterBase, ICanBePaused
         displayInventory.gameObject.SetActive(isOpen);
 
         if (isOpen)
-        {
-            displayInventory.RefreshUI(inventory.InventorySlots);
-            //InputManager.Instance.SwitchState(PlayerState.Inventory);
-            Debug.Log("Inventory opened, enabling input");
-            EnableInventoryInput();
-            EnableMoveItem();
-            SelectCell();
-            displayInventory.HighlightCell(selectedIndex);
-        }
+            OpenInventory();
         else
-        {
-            //InputManager.Instance.SwitchState(PlayerState.Normal);
-            Debug.Log("Inventory closed, disabling input");
-            DisableInventoryInput();
-            DisableMoveItem();
-            displayInventory.UnhighlightCell(selectedIndex);
-            displayInventory.ClearInteractionMenu();
-            displayInventory.HideInteractionMenu();
-        }
+            CloseInventory();
     }
-    public void RefreUI()
-    {
-        displayInventory.RefreshUI(inventory.InventorySlots);
-    }
+
+    #endregion
+
+    #region Equip / Unequip
+
     protected override void TryEquip(InputAction.CallbackContext ctx)
     {
+        bool changed;
+
         if (inventory.SlotIsEquiped(selectedIndex))
-        {
-            if (inventory.UnequipItem(selectedIndex))
-            {
-                RefreshInteractionMenu();
-            }
-            return;
-        }
-       
-        if (!inventory.EquipItem(selectedIndex))
-        {
-            Debug.Log("item wasnt equiped");
-        }
+            changed = inventory.UnequipItem(selectedIndex);
         else
-        {
+            changed = inventory.EquipItem(selectedIndex);
+
+        if (changed)
             RefreshInteractionMenu();
-            BaseItemObject weapon = inventory.InventorySlots[selectedIndex].Item;
-        }
     }
+
+    private void OnItemEquipped(BaseItemObject item)
+    {
+        ApplyItemEffects(item);
+    }
+
+    private void OnItemUnequipped(BaseItemObject item)
+    {
+        RemoveItemEffects(item);
+    }
+
+    private void ApplyItemEffects(BaseItemObject item)
+    {
+        if (item is ISendModifires modifiers)
+            modifiers.Apply(playerStats);
+
+        if (item is RuntimeItemData runtimeItem)
+            runtimeItem.OnEquip(playerContext);
+    }
+
+    private void RemoveItemEffects(BaseItemObject item)
+    {
+        if (item is ISendModifires modifiers)
+            modifiers.Remove(playerStats);
+
+        if (item is RuntimeItemData runtimeItem)
+            runtimeItem.OnUnequip();
+    }
+
+    #endregion
+
+    #region UI helpers
+
     protected void RefreshInteractionMenu()
     {
         displayInventory.ClearInteractionMenu();
-        displayInventory.ShowInteractionMenu(GetInteractionHintsForSlot(selectedIndex));
-    }
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        inventory.OnItemEquiped -= AddStats;
-        inventory.OnItemUnequiped -= RemoveStats;
-
-        PauseManager.OnPauseChanged -= OnPausedChanged;
-    }
-    private void OnApplicationQuit()
-    {
-        inventory.InventorySlots = new InventorySlot[15];
+        displayInventory.ShowInteractionMenu(
+            GetInteractionHintsForSlot(selectedIndex)
+        );
     }
 
-    public void OnPausedChanged(bool paused)
+    public void RefreshUI()
     {
-        Debug.Log("ToggleInventory(paused);");
-        ToggleInventory(paused);
+        displayInventory.RefreshUI(inventory.InventorySlots);
     }
+
+    #endregion
 }

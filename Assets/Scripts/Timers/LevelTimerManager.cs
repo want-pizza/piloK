@@ -24,7 +24,7 @@ public class LevelTimerManager : MonoBehaviour, ICanBePaused
         
  
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()

@@ -17,7 +17,6 @@ public class PauseController : MonoBehaviour
         {
             Instance = this;
         }
-        DontDestroyOnLoad(gameObject);
     }
     private void OnEnable()
     {

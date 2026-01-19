@@ -421,7 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 30
   currentHP: 30
-  xp: 15
+  xp: 13
   enemyPoolMember: {fileID: 7690306322366297688}
   hitKey: FloterHit
   deathKey: FloterDeath

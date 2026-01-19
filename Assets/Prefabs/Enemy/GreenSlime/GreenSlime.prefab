@@ -342,7 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   currentHP: 50
-  xp: 100
+  xp: 10
   enemyPoolMember: {fileID: 4483661773436897308}
   hitKey: GreenSlimeHit
   deathKey: GreenSlimeDeath

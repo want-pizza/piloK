@@ -35,10 +35,10 @@ public class XPBar : MonoBehaviour
         PlayerLevel level = FindAnyObjectByType<PlayerLevel>();
 
         currentXP = level.CurrentXP.Value;
-        maxXP = level.GetXPToNextLevel();
+        maxXP = level.GetXPToNextLevel(level.CurrentLevel);
 
         level.CurrentXP.OnValueChanged += xp => CurrentXP = xp;
-        level.CurrentLevel.OnValueChanged += _ => MaxXP = level.GetXPToNextLevel();
+        level.CurrentLevel.OnValueChanged += _ => MaxXP = level.GetXPToNextLevel(level.CurrentLevel);
 
         UpdateXPBar();
     }

@@ -9,5 +9,5 @@ public interface ICharacterLevel
     Field<int> CurrentXP { get; }
 
     public void GainXP(int value);
-    public int GetXPToNextLevel();
+    public int GetXPToNextLevel(int level);
 }

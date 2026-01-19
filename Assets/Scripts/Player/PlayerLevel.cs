@@ -13,7 +13,7 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     private ItemPoolRuntime runtimePool;
     private ItemRandomizer randomizer;
 
-    private Field<int> currentLevel = new Field<int>(1);
+    private Field<int> currentLevel = new Field<int>(0);
     private Field<int> currentXP = new Field<int>(0);
 
     public Field<int> CurrentLevel => currentLevel;
@@ -77,16 +77,22 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     {
         currentXP.Value += value;
 
-        while (currentXP >= GetXPToNextLevel())
+        while (currentXP >= GetXPToNextLevel(currentLevel))
         {
-            currentXP.Value -= GetXPToNextLevel();
+            currentXP.Value -= GetXPToNextLevel(currentLevel);
             currentLevel.Value++;
             OnLevelUp();
         }
     }
 
-    public int GetXPToNextLevel()
+    public int GetXPToNextLevel(int level)
     {
-        return currentLevel * 100;
+        if(level == 0)
+            return 40;
+
+        return Mathf.Min(
+                GetXPToNextLevel(--level) + 50,
+                300
+            );
     }
 }

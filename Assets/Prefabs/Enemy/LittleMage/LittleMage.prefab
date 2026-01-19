@@ -549,7 +549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   currentHP: 50
-  xp: 30
+  xp: 18
   enemyPoolMember: {fileID: 2327698422658996540}
   hitClips:
   - {fileID: 8300000, guid: e25ac875cbafe0d469346b4e236d7b69, type: 3}

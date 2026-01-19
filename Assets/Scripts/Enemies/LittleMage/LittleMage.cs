@@ -49,7 +49,7 @@ public class Mage : MonoBehaviour, IMove
     private bool isPaused = false;
     private Coroutine stunCorutine;
 
-    private MageState state = MageState.Idle;
+    public MageState state = MageState.Idle;
     public MageState State => state;
 
     private float currentVelocityX;
@@ -78,6 +78,7 @@ public class Mage : MonoBehaviour, IMove
     {
         anim.SetBool("isAttacking", false);
         isEfficiency = false;
+        isAttackCooldown = false;
         groundChecker.OnTriggeredStateChanged -= OnGroundedTriggered;
         edgeChecker.OnTriggeredStateChanged -= OnEdgeTriggered;
         obstacleChecker.OnTriggeredStateChanged -= OnObstacleTriggered;
@@ -152,6 +153,7 @@ public class Mage : MonoBehaviour, IMove
         // --- 1) Тримання дистанції ---
         if (dist < retreatDistance)
         {
+            Debug.Log("isRetreatDistance");
             isRetreatDistance = true;
             Move(-dir);
             return;
@@ -167,6 +169,7 @@ public class Mage : MonoBehaviour, IMove
             // якщо є прірва попереду — стоїмо
             if (isEdgeAhead)
             {
+                Debug.Log("isEdgeAhead");
                 Move(0);
                 return;
             }
@@ -174,12 +177,14 @@ public class Mage : MonoBehaviour, IMove
             // якщо ми далеко — підходимо ближче
             if (dist > keepDistance)
             {
+                Debug.Log("keepDistance");
                 Move(dir);
                 return;
             }
 
             // якщо ми в нормальній дистанції але нема видимості — підходимо доки не буде видно
             Move(dir);
+            Debug.Log("seekPlayer");
             return;
         }
 
@@ -189,7 +194,7 @@ public class Mage : MonoBehaviour, IMove
             // Поворот на гравця перед атакою
             if (characterFacing.IsFacingRight ? dir == -1 : dir == 1)
                 Move(dir);
-
+            Debug.Log("attack");
             isAttacking = true;
             state = MageState.Attacking;
             return;
@@ -198,11 +203,13 @@ public class Mage : MonoBehaviour, IMove
         // --- 4) Якщо все ок просто підтримуємо дистанцію ---
         if (dist > keepDistance)
         {
+            Debug.Log("keepDistance4");
             isKeepDisatance = false;
             Move(dir);
         }
         else
         {
+            Debug.Log("keepDistance0");
             isKeepDisatance = true;
             Move(0);
         }
@@ -235,8 +242,23 @@ public class Mage : MonoBehaviour, IMove
     // ──────────────────── HELPERS ────────────────────-
     void Move(int dir)
     {
-        if (isEfficiency || isObstacleAhead || (isEdgeAhead && !isRetreatDistance || !isKeepDisatance))
+        if (isEfficiency || isObstacleAhead || (isEdgeAhead && !isRetreatDistance))
+        {
+            bool conditionEfficiency = isEfficiency;
+            bool conditionObstacle = isObstacleAhead;
+            bool conditionEdgeRetreat = isEdgeAhead && !isRetreatDistance;
+            bool conditionKeepDistance = !isKeepDisatance;
+
+
+            Debug.Log(
+        $"AI Decision triggered:\n" +
+        $"- isEfficiency: {isEfficiency}\n" +
+        $"- isObstacleAhead: {isObstacleAhead}\n" +
+        $"- isEdgeAhead && !isRetreatDistance: {conditionEdgeRetreat}\n" +
+        $"- !isKeepDisatance: {conditionKeepDistance}"
+    );
             return;
+        }
         
         //Debug.Log($"mOVE dir -{dir}");
         float targetVelocityX = isGrounded ? dir * moveSpeed: dir * moveSpeed/2;

@@ -142,7 +142,7 @@ public class WaveController : MonoBehaviour
         isInterWave = false;
 
         float wavePower = CalculateWavePower(currentWave);
-        float waveDuration = CalculateWaveDuration(wavePower);
+        float waveDuration = CalculateWaveDuration(currentWave);
 
         timer = waveDuration;
         OnWaveStarted?.Invoke(currentWave);
@@ -174,7 +174,10 @@ public class WaveController : MonoBehaviour
 
     private float CalculateWavePower(int waveIndex)
     {
-        return scaling.startPower * Mathf.Pow(scaling.powerGrowth, waveIndex);
+        return Mathf.Min(
+            Mathf.Pow(waveIndex + 1, 1.2f) * 1.1f - 0.1f,
+            scaling.maxPower
+        );
     }
 
     private float CalculateWaveDuration(float power)
@@ -185,12 +188,25 @@ public class WaveController : MonoBehaviour
         );
     }
 
+    private float CalculateWaveDuration(int waveIndex)
+    {
+        if (waveIndex == 0)
+            return scaling.baseDuration;
+
+        return Mathf.Round(
+            Mathf.Min(
+                CalculateWaveDuration(--waveIndex) * scaling.durationPerWaveIndex,
+                scaling.maxDuration
+            )
+        );
+    }
+
     private List<WaveSpawnData> GenerateWave(float powerBudget)
     {
         List<WaveSpawnData> result = new();
 
-        int minEnemies = Mathf.FloorToInt(powerBudget / 8f);
-        int maxEnemies = Mathf.CeilToInt(powerBudget / 5f);
+        int minEnemies = Mathf.FloorToInt(powerBudget / 2f);
+        int maxEnemies = Mathf.CeilToInt(powerBudget / 1f);
 
         int enemyCount = Random.Range(minEnemies, maxEnemies + 1);
         enemyCount = Mathf.Min(enemyCount, spawnPoints.Count);

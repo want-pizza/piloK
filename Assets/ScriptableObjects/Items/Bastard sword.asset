@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: Good for a start
-  description: Good for a start
+  description: Give 5 Phisical Damage
   bonuses:
   - statType: 7
     modifier: 0

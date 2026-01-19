@@ -6399,10 +6399,12 @@ MonoBehaviour:
   waveTimerUI: {fileID: 1219886399}
   scaling:
     startPower: 10
+    maxPower: 35
     powerGrowth: 1.25
     baseDuration: 10
     maxDuration: 20
     durationPerPower: 0.5
+    durationPerWaveIndex: 1.25
   enemies:
   - {fileID: 11400000, guid: df76c1d6cd8710d49b6232ee5bb1074d, type: 2}
   - {fileID: 11400000, guid: b8ddeb21d685eca40a84d53bc888f195, type: 2}

@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: Wonna better crit?
-  description: Wonna better crit?
+  description: Give 0.3 Crit multiplier
   bonuses:
   - statType: 6
     modifier: 0

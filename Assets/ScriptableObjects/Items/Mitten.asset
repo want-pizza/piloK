@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: Increases crit chance
-  description: Increases crit chance
+  description: Give 5% of Crit Chance
   bonuses:
   - statType: 5
     modifier: 0

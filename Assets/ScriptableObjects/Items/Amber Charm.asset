@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: Give small amount of Fire Resistence
-  description: Give small amount of Fire Resistence
+  description: Give 10 Fire Resistence
   bonuses:
   - statType: 12
     modifier: 0

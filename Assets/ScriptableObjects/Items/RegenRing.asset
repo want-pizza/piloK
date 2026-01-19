@@ -20,6 +20,6 @@ MonoBehaviour:
   canEquip: 1
   canUnequip: 1
   isStackable: 0
-  shopDescription: Regen 1 hp every 2 seconds
+  shopDescription: Regenerate hp over time
   description: Regen 1 hp every 2 seconds
   runtimePrefab: {fileID: 5672583373000306497, guid: feaf6b6c6910b7a43a7f6f8278cf4da0, type: 3}

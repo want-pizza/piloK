@@ -238,6 +238,23 @@ public class WaveController : MonoBehaviour
             totalCost += (int)cost;
         }
 
+        if (result.Count == 0)
+        {
+            foreach (var point in shuffledPoints)
+            {
+                EnemyDefinition cheapest = GetCheapestEnemy(point, powerBudget);
+                if (cheapest == null) continue;
+
+                result.Add(new WaveSpawnData
+                {
+                    enemy = cheapest,
+                    spawnPoint = point.transform
+                });
+
+                break;
+            }
+        }
+
         float error = Mathf.Abs(totalCost - powerBudget) / powerBudget;
 
         return result;
@@ -265,6 +282,24 @@ public class WaveController : MonoBehaviour
         }
 
         return best;
+    }
+
+    private EnemyDefinition GetCheapestEnemy(SpawnPoint point, float budget)
+    {
+        EnemyDefinition cheapest = null;
+        float minCost = float.MaxValue;
+
+        foreach (var enemy in enemies)
+        {
+            float cost = enemy.basePowerCost * point.GetCostMultiplier(enemy.type);
+            if (cost <= budget && cost < minCost)
+            {
+                minCost = cost;
+                cheapest = enemy;
+            }
+        }
+
+        return cheapest;
     }
 
     private void Shuffle<T>(List<T> list)

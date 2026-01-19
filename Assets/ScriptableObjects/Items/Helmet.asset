@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: Doubtfully choice...
-  description: Doubtfully choice...
+  description: Give 5 Phisical Resistance
   bonuses:
   - statType: 11
     modifier: 0

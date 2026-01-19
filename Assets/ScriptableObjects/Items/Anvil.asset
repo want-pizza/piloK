@@ -23,9 +23,8 @@ MonoBehaviour:
   shopDescription: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
 
 '
-  description: 'This is powerful stuff, dude. Give Phisical Damage Multiplier
-
-'
+  description: Give 5 Physical Resistance, 10 Phisical Damage, 1.5 Phisical Damage
+    multiplier
   bonuses:
   - statType: 11
     modifier: 0

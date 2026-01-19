@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelUpItemChoiceUI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LevelUpItemChoiceUI : MonoBehaviour
     [SerializeField] private PlayerStatsController statsController;
     [SerializeField] private PlayerLevel playerLevel;
     [SerializeField] private ItemCardUI itemCardPrefab;
+    [SerializeField] private TMP_Text rerollValueTMP;
     [SerializeField] private Transform itemsContainer;
 
     [Header("Audio Settings")]
@@ -56,6 +58,11 @@ public class LevelUpItemChoiceUI : MonoBehaviour
             card.gameObject.SetActive(true);
             yield return new WaitForSecondsRealtime(0.15f);
         }
+    }
+
+    public void UpdateRerollPrise(int value)
+    {
+        rerollValueTMP.text = value.ToString();
     }
 
     private void SelectItem(BaseItemObject item)

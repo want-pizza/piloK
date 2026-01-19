@@ -21,7 +21,7 @@ MonoBehaviour:
   canUnequip: 1
   isStackable: 0
   shopDescription: "Increases \u0421rit \u042Cultiplier"
-  description: "Increases \u0421rit \u042Cultiplier"
+  description: Give 1 strength of Crit Multiplier
   bonuses:
   - statType: 6
     modifier: 0

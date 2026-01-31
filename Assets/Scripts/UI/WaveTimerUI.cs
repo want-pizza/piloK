@@ -40,7 +40,7 @@ public class WaveTimerUI : MonoBehaviour
     private void UpdateInterWaveTimer(float timeLeft)
     {
         waveText.text = "Time to next wave";
-        waveNumber.text = "";
+        waveNumber.text = " ";
         timerText.text = Mathf.Ceil(timeLeft).ToString();
 
         animator.SetBool(IsEnding, false);
@@ -49,6 +49,7 @@ public class WaveTimerUI : MonoBehaviour
 
     private void SetWaveNumber(int waveIndex)
     {
+        waveText.text = "Wave";
         waveNumber.text = $"{waveIndex + 1}";
     }
 }

@@ -28,12 +28,6 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 86a0d878daeac574cab7ea8e8a784830, type: 2}
     count: 3
     rareness: 2
-  - item: {fileID: 11400000, guid: 54175afc5df3d8e438e3d5bc6e15e3d2, type: 2}
-    count: 3
-    rareness: 2
-  - item: {fileID: 11400000, guid: 23561432a62556d4fbcc5cadc4506e25, type: 2}
-    count: 3
-    rareness: 2
   - item: {fileID: 11400000, guid: a267fea24082b6a49a274eab4706a48a, type: 2}
     count: -1
     rareness: 0
@@ -51,10 +45,7 @@ MonoBehaviour:
     rareness: 1
   - item: {fileID: 11400000, guid: 6cb39d3c29b0c3d4891c1eb97d989661, type: 2}
     count: -1
-    rareness: 0
-  - item: {fileID: 11400000, guid: fdeacaa15df86e44ba652bcc6823681d, type: 2}
-    count: 3
-    rareness: 2
+    rareness: 1
   usualCount: -1
   rareCount: 5
   epicCount: 3

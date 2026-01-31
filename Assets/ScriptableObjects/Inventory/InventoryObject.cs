@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
-using static UnityEditor.Progress;
+
 [CreateAssetMenu(fileName = "New Inventory", menuName = "InventorySystem/Inventory")]
 public class InventoryObject : ScriptableObject
 {

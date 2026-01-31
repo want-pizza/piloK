@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour, ICharacterLevel
 {
-    [SerializeField] private LevelUpItemChoiceUI ui;
+    [SerializeField] private LevelUpItemChoiceUI levelUpItemChoiceUI;
+    [SerializeField] private PlayerLevelUI levelUI;
     [SerializeField] private BaseItemObject test;
     [SerializeField] private ItemPool itemPool;
 
@@ -15,6 +16,8 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
 
     private Field<int> currentLevel = new Field<int>(0);
     private Field<int> currentXP = new Field<int>(0);
+
+    private Field<bool> isDead;
 
     public Field<int> CurrentLevel => currentLevel;
     public Field<int> CurrentXP => currentXP;
@@ -27,6 +30,7 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
     private void Awake()
     {
         runtimePool = new ItemPoolRuntime(itemPool.entries);
+        isDead = GetComponent<PlayerLifeCircle>().FieldIsDead;
 
         var weights = new Dictionary<ItemRareness, int>
         {
@@ -38,16 +42,8 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
 
         randomizer = new ItemRandomizer(runtimePool, weights);
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            GainXP(100);
-        }
-    }
-
     private void OnLevelUp()
-    {
+    {   
         RunStatsCollector.Instance.SetLevel(currentLevel);
 
         var items = randomizer.GetRandomItems(3);
@@ -55,7 +51,8 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
         // for tests
         //items[0] = test;
 
-        ui.Open(items);
+        levelUI.SetLevel(currentLevel);
+        levelUpItemChoiceUI.Open(items);
         PauseController.Instance.SetPause(true);
         Time.timeScale = 0;
     }
@@ -68,15 +65,18 @@ public class PlayerLevel : MonoBehaviour, ICharacterLevel
         CoinController.Instance.AddCoins(-rerollPrice);
         rerollPrice = Convert.ToInt32(rerollPrice * rerollCostMultiplier);
 
-        ui.UpdateRerollPrise(rerollPrice);
+        levelUpItemChoiceUI.UpdateRerollPrise(rerollPrice);
 
         var items = randomizer.GetRandomItems(3);
-        ui.Open(items);
+        levelUpItemChoiceUI.Open(items);
         return true;
     }
 
     public void GainXP(int value)
     {
+        if (isDead)
+            return;
+
         currentXP.Value += value;
 
         while (currentXP >= GetXPToNextLevel(currentLevel))

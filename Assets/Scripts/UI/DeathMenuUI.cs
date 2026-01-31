@@ -77,9 +77,4 @@ public class DeathMenuUI : MonoBehaviour
         int sec = Mathf.FloorToInt(seconds % 60f);
         return $"{min:00}:{sec:00}";
     }
-
-    public void LoadScene(string scene)
-    {
-        SceneLoader.Instance.StartLoadScene(scene);
-    }
 }

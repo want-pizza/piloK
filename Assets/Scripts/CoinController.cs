@@ -20,6 +20,7 @@ public class CoinController : MonoBehaviour
         OnCoinsDelta?.Invoke(amount);
 
         // RunStatsCollector
-        RunStatsCollector.Instance.AddCoins(amount);
+        if(amount > 0)
+            RunStatsCollector.Instance.AddCoins(amount);
     }
 }

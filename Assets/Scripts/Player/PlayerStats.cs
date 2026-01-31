@@ -16,10 +16,10 @@ public class PlayerStats : MonoBehaviour
     public Stat<float> KnockBackForce = new(4f);
 
     public Stat<float> ResistTime = new(0.2f);
-    public Stat<float> SelfKnockBackForceMultiplier = new(0.5f);
+    public Stat<float> SelfKnockBackForceMultiplier = new(0.3f);
 
-    public Stat<float> VampirismChance = new(100f);
-    public Stat<float> VampirismStrength = new(15.5f);
+    public Stat<float> VampirismChance = new(0f);
+    public Stat<float> VampirismStrength = new(10f);
 
     public Stat<float> FireDamage = new(0f);
 

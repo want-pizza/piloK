@@ -49115,6 +49115,10 @@ PrefabInstance:
       propertyPath: impulseSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7920215532763920067, guid: 31ee363c450b14849869584868aa3540, type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e1c4dda891d7054dabf9e26f46ed44d, type: 3}
     - target: {fileID: 8916316378402986916, guid: 31ee363c450b14849869584868aa3540, type: 3}
       propertyPath: m_Name
       value: GameManager

@@ -1,35 +1,47 @@
-piloK – Instrukcja uruchomienia
+# piloK
 
-Opis projektu:
-----------------
-piloK to projekt gry stworzony w środowisku Unity. Gra wykorzystuje skrypty w C#, ShaderLab oraz elementy HTML/HLSL.
+## Opis
+Projekt roguelike napisany w Unity (C#).
 
-Wymagane oprogramowanie:
--------------------------
-1. Unity Hub (rekomendowana wersja: 2021.3 LTS)
-2. Unity Editor z zainstalowanym modułem platformy docelowej (PC/Mac/Linux)
-3. Visual Studio 2019 lub 2022 z wtyczką do Unity (do edycji C#)
-4. Git (opcjonalnie, do pobrania repozytorium)
+Główna idea:
+Gra oparta na falach przeciwników, z systemem przedmiotów i statystyk wpływających na rozgrywkę.
 
-Instrukcja uruchomienia:
--------------------------
-1. Sklonuj repozytorium:
-   git clone https://github.com/want-pizza/piloK.git
+## Gdzie warto zajrzeć
 
-2. Otwórz Unity Hub i wybierz "Add project", wskazując folder projektu `piloK`.
+---
 
-3. Po otwarciu projektu w Unity Editor upewnij się, że wszystkie pakiety w "Package Manager" są zainstalowane.
+### 1. Damageable system
 
-4. W Unity Editor przejdź do folderu `Assets/Scenes` i otwórz główną scenę (MainMenu).
+- [[Damageable.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/DamageSystem/Damageable.cs)]
+- [[FloterDamageable.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Enemies/Floter/FloterDamageable.cs)]
 
-5. Kliknij przycisk "Play" w Unity Editor, aby uruchomić grę w trybie edycji.
+Tutaj starałem się zrobić bardziej uniwersalne rozwiązanie do obsługi obrażeń.
 
-Dodatkowe informacje:
----------------------
-- Wszystkie skrypty znajdują się w folderze `Assets/Scripts`.
-- Shadery i materiały w folderze `Assets/Shaders`.
-- Ewentualne błędy brakujących pakietów można rozwiązać poprzez Unity Package Manager.
+---
 
-Kontakt / wsparcie:
---------------------
-W razie problemów z uruchomieniem projektu, proszę o kontakt z autorem repozytorium poprzez GitHub Issues.
+### 2. Item / Stats system
+
+- [[BaseItemObject.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Items/BaseItemObject.cs)]
+- [[RuntimeItemData.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Items/RuntimeItemData.cs)]
+- [[ItemStatData.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Items/ItemStatObject.cs)]
+
+---
+
+### 3. Inventory system
+
+- [[InventoryObject.cs](https://github.com/want-pizza/piloK/blob/main/Assets/ScriptableObjects/Inventory/InventoryObject.cs)]
+- [[InventoryPresenterBase.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Inventory/InventoryPresenterBase.cs)]
+- [[DisplayInventory.cs](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Inventory/DisplayInventory.cs)]
+
+Niektóre elementy UI (np. menu wyboru przedmiotów, timer fal) nie mają osobnej warstwy modelu, tylko kontroler i view — jestem ciekaw, czy takie podejście jest uznawane za poprawne w większych projektach.
+
+### 4. Movement / Player state machine
+
+Niektóre kwestie związane z [[ruchem gracza](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Player/PlayerMovement.cs)] i [[state machine](https://github.com/want-pizza/piloK/blob/main/Assets/Scripts/Player/PlayerStateMachine.cs)] nadal są dla mnie wątpliwe.  
+Nie jestem pewien, czy obecny sposób organizacji logiki movement jest optymalny i czy warto wprowadzać zmiany.  
+Chętnie poznałbym opinię, czy takie podejście ma sens, czy lepiej byłoby inaczej rozdzielić odpowiedzialności.
+
+
+## Dodatkowo
+
+Repozytorium jest dość duże, więc wybrałem kilka miejsc do przejrzenia 🙂
